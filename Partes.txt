@@ -1,0 +1,29 @@
+Portal Publico
+
+Home (Inicio): Jean
+
+Venta de AeroNaves y Piezas (Aircraft Sales): Morao
+
+Charter Services (Alquiler y Chartes): Jesus
+
+Bolsa de Trabajo para Postulantes (Careers): Osuna
+
+About Us (Nosotros): Cardona
+
+Contact Us (Contacto): Cardona
+
+
+Portal Administracion
+
+Login Administración: Jhon
+
+Gestion de Postulantes: Osuna
+
+Manejo de Inventario (Aircraft Sales & Parts): Morao
+
+Gestion de Operaciones Charters: Jesus
+
+Configuracion (Respaldo de Base de Datos y Administradores): Jhon
+
+Dashboard de Metricas Y Pdfs: Dionkel
+

@@ -1,0 +1,73 @@
+<!-- 
+  ===================================================
+  Componente: Footer
+  Responsable Asignado: Jean (Líder del Proyecto)
+  Descripción: Pie de página corporativo con logo destacado, enlaces y datos de contacto
+  =================================================== 
+-->
+<footer class="skymaster-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <!-- Columna 1: Logo destacado y descripción -->
+      <div class="footer-col">
+        <a href="/" title="SkyMaster Group">
+          <img src="/img/LogoSky.png" alt="SkyMaster Group" class="footer-logo-img">
+        </a>
+        <p style="color: var(--text-muted); max-width: 320px;">
+          Líderes en aviación ejecutiva, comercialización de aeronaves, operaciones charter privadas y formación de
+          tripulaciones de élite.
+        </p>
+      </div>
+
+      <!-- Columna 2: Servicios -->
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="/charters">Vuelos Charter Privados</a></li>
+          <li><a href="/sales">Venta de Aeronaves</a></li>
+          <li><a href="/sales">Repuestos & Turbinas</a></li>
+          <li><a href="/careers">Vacantes Aeronáuticas</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Empresa -->
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="/about">Sobre Nosotros</a></li>
+          <li><a href="/contact">Bases & Hangares</a></li>
+          <li><a href="/careers">Trabaja con Nosotros</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 4: Contacto -->
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p style="color: var(--text-muted); margin-bottom: 0.45rem;">
+          📞 <a href="tel:+18005550199" style="color: var(--accent-gold); font-weight: 600;">+1 (800) 555-0199</a>
+        </p>
+        <p style="color: var(--text-muted); margin-bottom: 0.55rem;">
+          ✉️ <a href="mailto:contacto@skymaster.com" style="color: var(--text-muted);">contacto@skymaster.com</a>
+        </p>
+        <p style="color: var(--text-dim);">
+          Atención ejecutiva.
+        </p>
+      </div>
+    </div>
+
+    <!-- Barra inferior de copyright y créditos -->
+    <div class="footer-bottom">
+      <div>
+        &copy; <%= new Date().getFullYear() %> SkyMaster Aviation Corporation. Todos los derechos reservados.
+      </div>
+      <div>
+        Desarrollado bajo arquitectura MVC por ZamurosRangers.
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+
+</html>

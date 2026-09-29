@@ -1,0 +1,70 @@
+Actúa como un arquitecto de software Senior especializado en Node.js, Express y desarrollo colaborativo en Git. 
+
+Necesito que generes la estructura de archivos y carpetas completa para un sistema web corporativo de aviación/charters con portal público y panel de administración, estructurado bajo el patrón MVC. El backend se desplegará posteriormente en Hostinger.
+
+Genera la estructura de carpetas física y crea los archivos (en formato de código/script o árbol con contenido base estructurado) respetando exactamente la siguiente distribución por integrantes del equipo:
+
+1. ESTRUCTURA DE ARCHIVOS Y CARPETAS A CREAR:
+
+/mi-proyecto-aero
+├── /src
+│   ├── /config
+│   │   └── db.js                       # Configuración de base de datos
+│   ├── /controllers
+│   │   ├── authController.js           # Jhon: Login y autenticación
+│   │   ├── salesController.js          # Morao: Venta de naves e inventario
+│   │   ├── charterController.js        # Jesus: Alquiler y operaciones charters
+│   │   ├── careerController.js         # Osuna: Bolsa de trabajo y postulantes
+│   │   └── adminController.js          # Dionkel: Dashboard de métricas y PDFs
+│   ├── /models
+│   │   ├── User.js                     # Jhon
+│   │   ├── Aircraft.js                 # Morao
+│   │   ├── Charter.js                  # Jesus
+│   │   └── Candidate.js                # Osuna
+│   ├── /routes
+│   │   ├── authRoutes.js               # Jhon
+│   │   ├── salesRoutes.js              # Morao
+│   │   ├── charterRoutes.js             # Jesus
+│   │   ├── careerRoutes.js             # Osuna
+│   │   └── adminRoutes.js              # Dionkel
+│   ├── /middlewares
+│   │   └── authMiddleware.js           # Middleware de protección de rutas
+│   └── app.js                          # Servidor principal de Express
+│
+├── /public
+│   ├── /css
+│   │   └── styles.css                  # Estilos globales
+│   ├── /js
+│   │   └── main.js                     # Script global
+│   ├── /uploads                        # Carpeta para archivos subidos (PDFs/Imágenes)
+│   └── /img
+│
+├── /views
+│   ├── /partials
+│   │   ├── navbar.ejs                  # Jean (Líder)
+│   │   └── footer.ejs                  # Jean (Líder)
+│   ├── index.ejs                       # Jean (Landing page / Home)
+│   ├── sales.ejs                       # Morao (Venta de aeronaves)
+│   ├── charters.ejs                    # Jesus (Alquiler y Charters)
+│   ├── careers.ejs                     # Osuna (Bolsa de trabajo)
+│   ├── about.ejs                       # Cardona (Nosotros)
+│   ├── contact.ejs                     # Cardona (Contacto)
+│   └── /admin
+│       ├── login.ejs                   # Jhon
+│       ├── candidatos.ejs              # Osuna
+│       ├── inventario.ejs              # Morao
+│       ├── operaciones.ejs             # Jesus
+│       ├── configuracion.ejs           # Jhon
+│       └── dashboard.ejs               # Dionkel
+│
+├── .env.example                        # Ejemplo de variables de entorno para Hostinger
+├── .gitignore                          # Ignorar node_modules y .env
+├── package.json                        # Configuración inicial del proyecto Node.js
+└── README.md                           # Guía de contribución para el equipo
+
+2. REQUISITOS DEL CÓDIGO INICIAL:
+- Los archivos de rutas (`/routes`) deben tener la estructura básica inicial exportando el router de Express (`express.Router()`).
+- Los controllers (`/controllers`) deben incluir las funciones vacías (placeholders) comentadas con el nombre del integrante asignado.
+- La vista principal `index.ejs` y las demás vistas de `/views` deben incluir las etiquetas de inclusión de EJS para el navbar y footer (`<%- include('partials/navbar') %>` y `<%- include('partials/footer') %>`).
+- El archivo `app.js` debe dejar configurado el servidor Express, el motor de plantillas EJS, el middleware de archivos estáticos para `/public` y la importación de las rutas.
+- Todo debe quedar listo para que cada desarrollador solo abra su archivo asignado y comience a codificar sin interferir con el resto.

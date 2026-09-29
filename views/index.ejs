@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= typeof title !=='undefined' ? title : 'SkyMaster Group | Aviation Solutions Worldwide' %>
+  </title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="index-white-bg is-index-page">
+
+  <!-- Inclusión de Barra de Navegación Pública -->
+  <%- include('partials/navbar') %>
+
+    <!-- Contenido Principal de Landing Page (Jean - Líder) -->
+    <main style="width: 100%; padding: 0; margin: 0; background-color: #ffffff;">
+
+      <!-- ========================================================
+         HERO SECTION PRINCIPAL (REFERENCIA OFICIAL SKYMASTER)
+         ======================================================== -->
+      <section class="hero-ref-container">
+
+        <!-- 1. Banner Superior con Fondo de Pista, Aeronaves y Logo Central -->
+        <div class="hero-ref-banner">
+          <div class="hero-ref-content">
+            <!-- Logo Oficial SkyMaster Group (Con trazo negro de contraste) -->
+            <img src="/img/LogoSky.png" alt="SkyMaster Group - Aviation Solutions Worldwide" class="hero-ref-logo">
+
+            <!-- Ticker de Líneas de Negocio (Reubicado directamente bajo el logo) -->
+            <div class="hero-ref-ticker">
+              <a href="/sales">AERONAVES EN VENTA</a>
+              <span class="ticker-dot">|</span>
+              <a href="/charters">VUELOS CHARTER</a>
+              <span class="ticker-dot">|</span>
+              <a href="/sales">PIEZAS</a>
+              <span class="ticker-dot">|</span>
+              <a href="/careers">TRIPULACIÓN</a>
+              <span class="ticker-dot">|</span>
+              <a href="/about">CONSULTORÍA</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Grilla de 6 Columnas con Tarjetas Fotográficas de Servicios -->
+        <div class="hero-ref-services">
+
+          <!-- Tarjeta 1: Aircraft Sales -->
+          <a href="/sales" class="hero-service-card" title="Compra y Venta de Aeronaves">
+            <div class="hero-service-img-wrapper">
+              <img src="/img/card_sales.jpg" alt="Aircraft Sales" class="hero-service-img">
+            </div>
+            <div class="hero-service-info">
+              <div class="hero-service-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+                </svg>
+              </div>
+              <h3 class="hero-service-title">AIRCRAFT SALES</h3>
+              <span class="hero-service-sub">COMPRA Y VENTA DE AERONAVES</span>
+            </div>
+          </a>
+
+          <!-- Tarjeta 2: Charter -->
+          <a href="/charters" class="hero-service-card" title="Vuelos Charter Privados">
+            <div class="hero-service-img-wrapper">
+              <img src="/img/recurso1.jpeg" alt="Charter Services" class="hero-service-img">
+            </div>
+            <div class="hero-service-info">
+              <div class="hero-service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </div>
+              <h3 class="hero-service-title">CHARTER</h3>
+              <span class="hero-service-sub">VUELOS CHÁRTER PRIVADOS</span>
+            </div>
+          </a>
+
+          <!-- Tarjeta 3: Brokerage -->
+          <a href="/sales" class="hero-service-card" title="Intermediación Aeronáutica">
+            <div class="hero-service-img-wrapper">
+              <img src="/img/card_brokerage.jpg" alt="Aviation Brokerage" class="hero-service-img">
+            </div>
+            <div class="hero-service-info">
+              <div class="hero-service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M11 17l-1.5-1.5a2.12 2.12 0 0 1 0-3L13 9M13 17l1.5-1.5a2.12 2.12 0 0 0 0-3L11 9" />
+                  <path d="M7 11V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4" />
+                  <rect x="3" y="11" width="18" height="9" rx="2" />
+                </svg>
+              </div>
+              <h3 class="hero-service-title">BROKERAGE</h3>
+              <span class="hero-service-sub">INTERMEDIACIÓN AERONÁUTICA</span>
+            </div>
+          </a>
+
+          <!-- Tarjeta 4: Parts -->
+          <a href="/sales" class="hero-service-card" title="Partes Aeronáuticas">
+            <div class="hero-service-img-wrapper">
+              <img src="/img/card_parts.jpg" alt="Aircraft Parts & Turbines" class="hero-service-img">
+            </div>
+            <div class="hero-service-info">
+              <div class="hero-service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+              </div>
+              <h3 class="hero-service-title">PARTS</h3>
+              <span class="hero-service-sub">PARTES AERONÁUTICAS</span>
+            </div>
+          </a>
+
+          <!-- Tarjeta 5: Crew -->
+          <a href="/careers" class="hero-service-card" title="Tripulaciones y Talento">
+            <div class="hero-service-img-wrapper">
+              <img src="/img/card_crew.jpg" alt="Aviation Crew" class="hero-service-img">
+            </div>
+            <div class="hero-service-info">
+              <div class="hero-service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h3 class="hero-service-title">CREW</h3>
+              <span class="hero-service-sub">TRIPULACIONES</span>
+            </div>
+          </a>
+
+          <!-- Tarjeta 6: Consulting -->
+          <a href="/about" class="hero-service-card" title="Asesoría y Consultoría Aeronáutica">
+            <div class="hero-service-img-wrapper">
+              <img src="/img/card_consulting.jpg" alt="Aviation Consulting" class="hero-service-img">
+            </div>
+            <div class="hero-service-info">
+              <div class="hero-service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                  <path d="m9 14 2 2 4-4" />
+                </svg>
+              </div>
+              <h3 class="hero-service-title">CONSULTING</h3>
+              <span class="hero-service-sub">ASESORÍA AERONÁUTICA</span>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- 3. Barra Inferior de Experiencia en Español -->
+        <div class="hero-experience-bar">
+          <span>SKYMASTER GROUP</span>
+          <span class="exp-sep">|</span>
+          <span><strong class="exp-highlight">+20 AÑOS</strong> COMO EMPRESA AERONÁUTICA</span>
+          <span class="exp-sep">|</span>
+          <span><strong class="exp-highlight">+35 AÑOS</strong> DE EXPERIENCIA EN AVIACIÓN</span>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+         SECCIÓN 1: SERVICIOS AERONÁUTICOS DETALLADOS
+         ======================================================== -->
+      <section class="services-detail-section">
+        <div class="services-detail-container">
+
+          <div class="section-header-center">
+            <span class="section-tag">Nuestras Soluciones Corporativas</span>
+            <h2 class="section-title-dark">Servicios Especializados de Alto Estándar</h2>
+            <p class="section-desc-dark">
+              En SkyMaster integramos la comercialización global de naves, operaciones de vuelo chárter sin demoras y
+              soporte logístico AOG con trazabilidad certificada.
+            </p>
+          </div>
+
+          <div class="services-detail-grid">
+
+            <!-- Detalle 1: Venta y Adquisición -->
+            <div class="service-detail-card">
+              <div class="service-card-icon-box">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+                </svg>
+              </div>
+              <h3 class="service-card-title">Venta, Adquisición & Brokerage</h3>
+              <p class="service-card-p">
+                Gestión integral para compra y venta de jets ejecutivos y turbohélices con certificación internacional y
+                asesoría legal en trámites aduaneros.
+              </p>
+              <ul class="service-card-list">
+                <li>Inspecciones precompra rigurosas (PPI) y avalúos</li>
+                <li>Trazabilidad completa de libros de mantenimiento</li>
+                <li>Estructuración de contratos y fideicomiso internacional</li>
+                <li>Modelos Gulfstream, Bombardier, Citation y Falcon</li>
+              </ul>
+              <a href="/sales" class="service-card-btn">Ver Catálogo de Naves &rarr;</a>
+            </div>
+
+            <!-- Detalle 2: Vuelos Chárter -->
+            <div class="service-detail-card">
+              <div class="service-card-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path
+                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              </div>
+              <h3 class="service-card-title">Vuelos Chárter Ejecutivos & VIP</h3>
+              <p class="service-card-p">
+                Vuela a tu propio ritmo con despegue garantizado en menos de 3 horas. Máxima privacidad, sin filas y con
+                acceso a miles de aeropuertos privados.
+              </p>
+              <ul class="service-card-list">
+                <li>Itinerarios personalizados a nivel nacional e internacional</li>
+                <li>Salida directa desde terminales privadas FBO</li>
+                <li>Catering gourmet de autor y conectividad en vuelo</li>
+                <li>Protocolo de seguridad auditado bajo ARG/US Platinum</li>
+              </ul>
+              <a href="/charters" class="service-card-btn">Cotizar Vuelo Privado &rarr;</a>
+            </div>
+
+            <!-- Detalle 3: Partes y Tripulaciones -->
+            <div class="service-detail-card">
+              <div class="service-card-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+              </div>
+              <h3 class="service-card-title">Soporte AOG, Partes & Tripulaciones</h3>
+              <p class="service-card-p">
+                Suministro ágil de componentes aeronáuticos y repuestos certificados para reducir tiempos en tierra,
+                junto a selección y reclutamiento de personal de cabina y vuelo.
+              </p>
+              <ul class="service-card-list">
+                <li>Despacho de emergencia AOG las 24 horas</li>
+                <li>Componentes certificados con FAA 8130 / EASA Form 1</li>
+                <li>Pilotos certificados con habilitación tipo y chequeo médico</li>
+                <li>Personal técnico calificado en mantenimiento de turbinas</li>
+              </ul>
+              <a href="/careers" class="service-card-btn">Postulación y Tripulaciones &rarr;</a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+         SECCIÓN 2: POR QUÉ ELEGIR SKYMASTER (VENTAJAS Y GARANTÍAS)
+         ======================================================== -->
+      <section class="why-skymaster-section">
+        <div class="why-container">
+
+          <div class="section-header-center">
+            <span class="section-tag" style="background: rgba(197, 160, 89, 0.2); color: var(--accent-gold);">Respaldo y
+              Compromiso</span>
+            <h2
+              style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.85rem;">
+              ¿Por Qué Volar y Comercializar con SkyMaster?
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Nuestra experiencia de más de tres décadas en el sector garantiza operaciones fluidas, transparentes y de
+              estricta conformidad técnica.
+            </p>
+          </div>
+
+          <div class="why-grid">
+            <!-- Pilar 1 -->
+            <div class="why-item">
+              <div class="why-number">01</div>
+              <h3 class="why-title">Seguridad Innegociable</h3>
+              <p class="why-desc">
+                Cada aeronave pasa por protocolos exhaustivos de inspección y nuestras tripulaciones promedian más de
+                4,500 horas de vuelo certificadas.
+              </p>
+            </div>
+
+            <!-- Pilar 2 -->
+            <div class="why-item">
+              <div class="why-number">02</div>
+              <h3 class="why-title">Alcance Continental</h3>
+              <p class="why-desc">
+                Red estratégica de hangares, FBOs asociados y cuadrillas técnicas en las principales rutas corporativas
+                de América, Europa y el Caribe.
+              </p>
+            </div>
+
+            <!-- Pilar 3 -->
+            <div class="why-item">
+              <div class="why-number">03</div>
+              <h3 class="why-title">Confidencialidad Absoluta</h3>
+              <p class="why-desc">
+                Discreción total para corporaciones, ejecutivos de alta dirección y figuras públicas, asegurando
+                privacidad y resguardo de datos en cada vuelo.
+              </p>
+            </div>
+
+            <!-- Pilar 4 -->
+            <div class="why-item">
+              <div class="why-number">04</div>
+              <h3 class="why-title">Operaciones Activas 24/7/365</h3>
+              <p class="why-desc">
+                Centro de monitoreo en tiempo real, seguimiento de vuelos minuto a minuto y respuesta expedita ante
+                requerimientos AOG inesperados.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================
+         SECCIÓN FINAL: CONTACT US & CONNECT (REFERENCIA OFICIAL)
+         ======================================================== -->
+      <section class="banner-contact-ref">
+        <div class="banner-contact-bg"></div>
+        <div class="banner-contact-container">
+          <div class="banner-contact-content">
+            <h2 class="banner-contact-title">CONTÁCTANOS</h2>
+
+            <div class="banner-contact-subtitle">
+              <span>ESTAMOS AQUÍ PARA AYUDARTE.</span>
+              <span>CONECTEMOS.</span>
+            </div>
+
+            <div class="banner-contact-divider"></div>
+
+            <p class="banner-contact-text">
+              Ya sea que estés buscando comprar, vender, fletar un vuelo chárter o necesites repuestos o asesoría
+              técnica experta, nuestro equipo está listo para asistirte.
+            </p>
+
+            <div class="banner-contact-tagline">
+              EXPERIENCIA. INTEGRIDAD. RESULTADOS.
+            </div>
+
+            <div class="banner-contact-cta">
+              <a href="/contact" class="banner-contact-btn">
+                <span>CONTÁCTANOS AHORA</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Inclusión de Footer -->
+    <%- include('partials/footer') %>
