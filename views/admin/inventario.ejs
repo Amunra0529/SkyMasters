@@ -1,19 +1,738 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Manejo de Inventario | SkyMaster Admin' %></title>
+  <title>
+    <%= typeof title !=='undefined' ? title : 'Manejo de Inventario | SkyMaster Admin' %>
+  </title>
   <link rel="stylesheet" href="/css/styles.css">
+  <!-- Tailwind CSS por CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
   <!-- Inclusión de Barra de Navegación Administrativa -->
   <%- include('../partials/navbar_admin') %>
 
-  <!-- Espacio para diseño: Morao - Manejo de Inventario (Aircraft Sales & Parts) -->
-  <main class="main-content">
-  </main>
+    <!-- Panel Principal de Gestión de Inventario -->
+    <main class="main-content flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-  <!-- Inclusión de Footer -->
-  <%- include('../partials/footer') %>
+      <!-- Encabezado de la Sección -->
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-800 mb-6">
+        <div>
+          <span class="text-xs text-amber-400 font-semibold uppercase tracking-widest block">Panel de Control
+            Ejecutivo</span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Gestión de Inventario Aeronáutico
+          </h1>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1">Administra la flota de aeronaves, motores y componentes en
+            stock para venta pública.</p>
+        </div>
+
+        <!-- Contenedor Flex para alinear ambos botones -->
+        <div class="flex items-center gap-3 self-start md:self-auto">
+
+          <!-- 1. Botón Secundario: Exportar Inventario -->
+          <button onclick="exportInventory()"
+            class="inline-flex items-center justify-center gap-2 bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold border border-slate-700/80 hover:border-slate-600 px-4 py-2.5 rounded-xl text-sm transition-all active:scale-95 shadow-sm">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+              </path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9h1"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 13h1.5a1 1 0 001-1v-1a1 1 0 00-1-1H9v5m6-5h-1.5v5m1.5-2.5H15"></path>
+            </svg>
+            <span>Exportar inventario</span>
+          </button>
+
+          <!-- 2. Botón Principal: Nueva Publicación -->
+          <button onclick="openModal('create')"
+            class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg hover:shadow-amber-500/20 active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span>Nueva Publicación</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Tarjetas de Métricas Rápidas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+        <div
+          class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl backdrop-blur-md flex items-center justify-between">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Aeronaves en Stock</p>
+            <p class="text-2xl font-bold text-white mt-1" id="stat-aircraft-count">4</p>
+          </div>
+          <div class="bg-amber-500/10 text-amber-400 p-3 rounded-lg border border-amber-500/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5a2.5 2.5 0 002.5-2.5V8.5M12 3a9 9 0 110 18 9 9 0 010-18z" />
+            </svg>
+          </div>
+        </div>
+
+        <div
+          class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl backdrop-blur-md flex items-center justify-between">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Piezas y Repuestos</p>
+            <p class="text-2xl font-bold text-white mt-1">48</p>
+          </div>
+          <div class="bg-amber-500/10 text-amber-400 p-3 rounded-lg border border-amber-500/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+        </div>
+
+        <div
+          class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl backdrop-blur-md flex items-center justify-between">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Publicaciones Activas</p>
+            <p class="text-2xl font-bold text-emerald-400 mt-1" id="stat-active-count">4</p>
+          </div>
+          <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg border border-emerald-500/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
+            </svg>
+          </div>
+        </div>
+
+        <div
+          class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl backdrop-blur-md flex items-center justify-between">
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Valor Estimado</p>
+            <p class="text-xl font-bold text-amber-300 mt-1">$114.3M USD</p>
+          </div>
+          <div class="bg-amber-500/10 text-amber-400 p-3 rounded-lg border border-amber-500/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Filtros, Búsqueda y Pestañas -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 mb-6 shadow-xl backdrop-blur-md">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+
+          <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800/80 w-full lg:w-auto">
+            <button onclick="switchTab('all')" id="tab-all"
+              class="tab-btn flex-1 lg:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all bg-amber-500 text-slate-950 shadow-md">
+              Todos
+            </button>
+            <button onclick="switchTab('aircraft')" id="tab-aircraft"
+              class="tab-btn flex-1 lg:flex-none px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+              Aeronaves
+            </button>
+            <button onclick="switchTab('part')" id="tab-part"
+              class="tab-btn flex-1 lg:flex-none px-4 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              Piezas & Motores
+            </button>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+            <div class="relative w-full sm:w-64">
+              <input type="text" id="searchInput" onkeyup="filterInventory()"
+                placeholder="Buscar por modelo, fabricante..."
+                class="w-full bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 rounded-xl px-3.5 py-2.5 pl-9 focus:outline-none focus:border-amber-500 transition-colors">
+              <svg class="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+
+            <select id="statusFilter" onchange="filterInventory()"
+              class="w-full sm:w-auto bg-slate-950 border border-slate-800 text-xs text-slate-300 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500">
+              <option value="all">Todos los Estados</option>
+              <option value="Disponible">Disponible</option>
+              <option value="Reservado">Reservado</option>
+              <option value="Borrador">Borrador</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tabla de Inventario -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-md">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-950/90 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[10px]">
+                <th class="py-4 px-4 font-semibold">Ítem / Modelo</th>
+                <th class="py-4 px-4 font-semibold">Categoría / Tipo</th>
+                <th class="py-4 px-4 font-semibold">Fabricante & Año</th>
+                <th class="py-4 px-4 font-semibold">Stock</th>
+                <th class="py-4 px-4 font-semibold">Precio (USD)</th>
+                <th class="py-4 px-4 font-semibold">Estado</th>
+                <th class="py-4 px-4 font-semibold text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody" class="divide-y divide-slate-800/60 text-slate-200 font-medium">
+
+              <!-- Fila 1: Gulfstream G650ER -->
+              <tr id="row-1" class="inventory-row hover:bg-slate-800/40 transition-colors" data-type="aircraft"
+                data-status="Disponible">
+                <td class="py-3.5 px-4 flex items-center gap-3">
+                  <img src="/img/card_sales.jpg" onclick="openImageModal(this.src, 'Gulfstream G650ER')"
+                    title="Haz clic para ampliar"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'50\' viewBox=\'0 0 80 50\'><rect width=\'100%\' height=\'100%\' fill=\'%230f172a\'/><text x=\'50%\' y=\'50%\' fill=\'%23f59e0b\' font-size=\'10\' font-family=\'sans-serif\' text-anchor=\'middle\' dy=\'.3em\'>G650ER</text></svg>';"
+                    class="w-12 h-9 object-cover rounded-lg border border-slate-700 shadow-sm cursor-pointer hover:opacity-80 hover:border-amber-500 transition-all">
+                  <div>
+                    <p class="font-bold text-white text-sm item-title">Gulfstream G650ER</p>
+                    <p class="text-[10px] text-slate-400">Cert: FAA/EASA • Horas: 850 hrs</p>
+                  </div>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span
+                    class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold inline-block">
+                    Jet Pesado
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">Gulfstream <span class="text-slate-400 block text-[10px]">Año 2021</span></td>
+                <td class="py-3.5 px-4"><span class="text-white font-bold">1</span> unidad</td>
+                <td class="py-3.5 px-4 font-bold text-slate-100">$65,000,000</td>
+                <td class="py-3.5 px-4 status-cell">
+                  <span
+                    class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                    ● Disponible
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <button onclick="openModal('edit', 1)" title="Editar"
+                      class="p-1.5 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button onclick="toggleStatus(1)" title="Cambiar Estado"
+                      class="p-1.5 bg-slate-800 hover:bg-blue-500 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </button>
+                    <button onclick="requestDelete(1)" title="Eliminar"
+                      class="p-1.5 bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Fila 2: Bombardier Global 6000 -->
+              <tr id="row-2" class="inventory-row hover:bg-slate-800/40 transition-colors" data-type="aircraft"
+                data-status="Disponible">
+                <td class="py-3.5 px-4 flex items-center gap-3">
+                  <img src="/img/card_brokerage.jpg" onclick="openImageModal(this.src, 'Bombardier Global 6000')"
+                    title="Haz clic para ampliar"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'50\' viewBox=\'0 0 80 50\'><rect width=\'100%\' height=\'100%\' fill=\'%230f172a\'/><text x=\'50%\' y=\'50%\' fill=\'%23f59e0b\' font-size=\'10\' font-family=\'sans-serif\' text-anchor=\'middle\' dy=\'.3em\'>Global 6000</text></svg>';"
+                    class="w-12 h-9 object-cover rounded-lg border border-slate-700 shadow-sm cursor-pointer hover:opacity-80 hover:border-amber-500 transition-all">
+                  <div>
+                    <p class="font-bold text-white text-sm item-title">Bombardier Global 6000</p>
+                    <p class="text-[10px] text-slate-400">Cert: FAA • Horas: 1,850 hrs</p>
+                  </div>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span
+                    class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold inline-block">
+                    Jet Ultralargo
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">Bombardier <span class="text-slate-400 block text-[10px]">Año 2018</span></td>
+                <td class="py-3.5 px-4"><span class="text-white font-bold">1</span> unidad</td>
+                <td class="py-3.5 px-4 font-bold text-slate-100">$28,000,000</td>
+                <td class="py-3.5 px-4 status-cell">
+                  <span
+                    class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                    ● Disponible
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <button onclick="openModal('edit', 2)" title="Editar"
+                      class="p-1.5 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button onclick="toggleStatus(2)" title="Cambiar Estado"
+                      class="p-1.5 bg-slate-800 hover:bg-blue-500 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </button>
+                    <button onclick="requestDelete(2)" title="Eliminar"
+                      class="p-1.5 bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Fila 3: Cessna Citation Latitude -->
+              <tr id="row-3" class="inventory-row hover:bg-slate-800/40 transition-colors" data-type="aircraft"
+                data-status="Disponible">
+                <td class="py-3.5 px-4 flex items-center gap-3">
+                  <img src="/img/card_sales.jpg" onclick="openImageModal(this.src, 'Cessna Citation Latitude')"
+                    title="Haz clic para ampliar"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'50\' viewBox=\'0 0 80 50\'><rect width=\'100%\' height=\'100%\' fill=\'%230f172a\'/><text x=\'50%\' y=\'50%\' fill=\'%23f59e0b\' font-size=\'10\' font-family=\'sans-serif\' text-anchor=\'middle\' dy=\'.3em\'>Latitude</text></svg>';"
+                    class="w-12 h-9 object-cover rounded-lg border border-slate-700 shadow-sm cursor-pointer hover:opacity-80 hover:border-amber-500 transition-all">
+                  <div>
+                    <p class="font-bold text-white text-sm item-title">Cessna Citation Latitude</p>
+                    <p class="text-[10px] text-slate-400">Cert: FAA/EASA • Horas: 1,200 hrs</p>
+                  </div>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span
+                    class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold inline-block">
+                    Jet Mediano
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">Textron <span class="text-slate-400 block text-[10px]">Año 2020</span></td>
+                <td class="py-3.5 px-4"><span class="text-white font-bold">1</span> unidad</td>
+                <td class="py-3.5 px-4 font-bold text-slate-100">$16,500,000</td>
+                <td class="py-3.5 px-4 status-cell">
+                  <span
+                    class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                    ● Disponible
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <button onclick="openModal('edit', 3)" title="Editar"
+                      class="p-1.5 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button onclick="toggleStatus(3)" title="Cambiar Estado"
+                      class="p-1.5 bg-slate-800 hover:bg-blue-500 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </button>
+                    <button onclick="requestDelete(3)" title="Eliminar"
+                      class="p-1.5 bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Fila 4: Beechcraft King Air 350i -->
+              <tr id="row-4" class="inventory-row hover:bg-slate-800/40 transition-colors" data-type="part"
+                data-status="Disponible">
+                <td class="py-3.5 px-4 flex items-center gap-3">
+                  <img src="/img/card_brokerage.jpg" onclick="openImageModal(this.src, 'King Air 350i')"
+                    title="Haz clic para ampliar"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'50\' viewBox=\'0 0 80 50\'><rect width=\'100%\' height=\'100%\' fill=\'%230f172a\'/><text x=\'50%\' y=\'50%\' fill=\'%23f59e0b\' font-size=\'10\' font-family=\'sans-serif\' text-anchor=\'middle\' dy=\'.3em\'>King Air</text></svg>';"
+                    class="w-12 h-9 object-cover rounded-lg border border-slate-700 shadow-sm cursor-pointer hover:opacity-80 hover:border-amber-500 transition-all">
+                  <div>
+                    <p class="font-bold text-white text-sm item-title">King Air 350i</p>
+                    <p class="text-[10px] text-slate-400">Cert: FAA • Horas: 1,450 hrs</p>
+                  </div>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span
+                    class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold inline-block">
+                    Turbohélice
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">Beechcraft <span class="text-slate-400 block text-[10px]">Año 2017</span></td>
+                <td class="py-3.5 px-4"><span class="text-white font-bold">1</span> unidad</td>
+                <td class="py-3.5 px-4 font-bold text-slate-100">$4,800,000</td>
+                <td class="py-3.5 px-4 status-cell">
+                  <span
+                    class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                    ● Disponible
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <button onclick="openModal('edit', 4)" title="Editar"
+                      class="p-1.5 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button onclick="toggleStatus(4)" title="Cambiar Estado"
+                      class="p-1.5 bg-slate-800 hover:bg-blue-500 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </button>
+                    <button onclick="requestDelete(4)" title="Eliminar"
+                      class="p-1.5 bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-300 rounded-lg transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- MODAL DE CREACIÓN / EDICIÓN -->
+    <div id="itemModal"
+      class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4 overflow-y-auto">
+      <div
+        class="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden my-8 transform transition-all">
+
+        <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+          <div>
+            <h3 id="modalTitle" class="text-lg font-bold text-white">Nueva Publicación de Inventario</h3>
+            <p class="text-xs text-slate-400">Ingresa las especificaciones de la aeronave o componente.</p>
+          </div>
+          <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1">&times;</button>
+        </div>
+
+        <form id="inventoryForm" action="/admin/inventario/guardar" method="POST" enctype="multipart/form-data"
+          class="p-6 space-y-4">
+          <input type="hidden" id="itemId" name="id">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Tipo de Elemento</label>
+              <select name="tipo" id="modalTipo" required onchange="toggleFieldsByTipo()"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                <option value="aeronave">Aeronave Completa</option>
+                <option value="pieza">Pieza / Motor / Repuesto</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Modelo / Denominación</label>
+              <input type="text" name="modelo" id="modalModelo" required placeholder="Ej. Bombardier Global 7500"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Fabricante</label>
+              <input type="text" name="fabricante" id="modalFabricante" required
+                placeholder="Ej. Bombardier, Gulfstream"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Año</label>
+              <input type="number" name="anio" id="modalAnio" required placeholder="2022"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Precio (USD)</label>
+              <input type="number" step="0.01" name="precio" id="modalPrecio" required placeholder="15000000"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Cantidad / Stock</label>
+              <input type="number" name="stock" id="modalStock" value="1" min="1" required
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div id="fieldHoras">
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Horas de Vuelo</label>
+              <input type="number" name="horas_vuelo" id="modalHoras" placeholder="850"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Estado Comercial</label>
+              <select name="estado" id="modalEstado"
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                <option value="Disponible">Disponible</option>
+                <option value="Reservado">Reservado</option>
+                <option value="Borrador">Borrador (Oculto)</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="pt-2">
+            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Imagen Principal (.jpg, .png,
+              .webp)</label>
+            <input type="file" name="imagen" id="modalImagen" accept="image/*"
+              class="w-full bg-slate-950 border border-slate-800 text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 rounded-xl cursor-pointer">
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+            <button type="button" onclick="closeModal()"
+              class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors">
+              Cancelar
+            </button>
+            <button type="submit"
+              class="px-5 py-2 rounded-xl text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 transition-all shadow-md">
+              Guardar Publicación
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL PERSONALIZADO PARA ELIMINACIÓN -->
+    <div id="deleteModal"
+      class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+      <div
+        class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl p-6 text-center transform transition-all">
+        <div
+          class="w-12 h-12 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">¿Confirmar Eliminación?</h3>
+        <p class="text-xs text-slate-400 mb-6">
+          Estás a punto de eliminar el registro <span id="deleteItemTitle" class="text-amber-400 font-semibold"></span>
+          del inventario. Esta acción no se puede deshacer.
+        </p>
+
+        <div class="flex items-center justify-center gap-3">
+          <button onclick="closeDeleteModal()"
+            class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition-colors">
+            Cancelar
+          </button>
+          <button id="confirmDeleteBtn" onclick="confirmDelete()"
+            class="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-lg transition-colors">
+            Sí, Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUEVO MODAL VISOR DE IMAGEN (LIGHTBOX) -->
+    <div id="imagePreviewModal" onclick="closeImageModal(event)"
+      class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+      <div
+        class="relative bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-3 shadow-2xl overflow-hidden flex flex-col items-center">
+        <!-- Botón para cerrar -->
+        <button onclick="closeImageModalForce()"
+          class="absolute top-4 right-4 bg-slate-950/80 hover:bg-rose-600 text-white p-2 rounded-full border border-slate-700 transition-colors z-10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <!-- Imagen ampliada -->
+        <img id="previewImageSrc" src="" alt="Vista previa de aeronave"
+          class="max-h-[75vh] w-auto object-contain rounded-xl border border-slate-800 shadow-md">
+        <!-- Pie de foto -->
+        <div class="mt-3 text-center">
+          <p id="previewImageTitle" class="text-sm font-bold text-white tracking-wide"></p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Vista previa en alta resolución</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inclusión de Footer -->
+    <%- include('../partials/footer') %>
+
+      <!-- Scripts de Control e Interacción -->
+      <script>
+        let deleteTargetId = null;
+
+        function openModal(mode, id = null) {
+          const modal = document.getElementById('itemModal');
+          const title = document.getElementById('modalTitle');
+
+          if (mode === 'create') {
+            title.innerText = 'Nueva Publicación de Inventario';
+            document.getElementById('inventoryForm').reset();
+            document.getElementById('itemId').value = '';
+          } else {
+            title.innerText = 'Editar Registro de Inventario #' + id;
+          }
+
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+
+        function closeModal() {
+          const modal = document.getElementById('itemModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+
+        function toggleFieldsByTipo() {
+          const tipo = document.getElementById('modalTipo').value;
+          const fieldHoras = document.getElementById('fieldHoras');
+          fieldHoras.style.display = tipo === 'aeronave' ? 'block' : 'none';
+        }
+
+        let currentTab = 'all';
+
+        function switchTab(tab) {
+          currentTab = tab;
+          document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('bg-amber-500', 'text-slate-950');
+            btn.classList.add('text-slate-400');
+          });
+
+          const activeBtn = document.getElementById('tab-' + tab);
+          activeBtn.classList.add('bg-amber-500', 'text-slate-950');
+          activeBtn.classList.remove('text-slate-400');
+
+          filterInventory();
+        }
+
+        function filterInventory() {
+          const search = document.getElementById('searchInput').value.toLowerCase();
+          const status = document.getElementById('statusFilter').value;
+          const rows = document.querySelectorAll('.inventory-row');
+
+          rows.forEach(row => {
+            const typeMatch = currentTab === 'all' || row.dataset.type === currentTab;
+            const statusMatch = status === 'all' || row.dataset.status === status;
+            const textMatch = row.innerText.toLowerCase().includes(search);
+
+            if (typeMatch && statusMatch && textMatch) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        }
+
+        // --- SISTEMA DE CAMBIO DE ESTADO DINÁMICO ---
+        function toggleStatus(id) {
+          const row = document.getElementById('row-' + id);
+          if (!row) return;
+
+          const statusCell = row.querySelector('.status-cell');
+          const currentStatus = row.dataset.status;
+          let nextStatus = '';
+          let badgeHTML = '';
+
+          if (currentStatus === 'Disponible') {
+            nextStatus = 'Reservado';
+            badgeHTML = '<span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">● Reservado</span>';
+          } else if (currentStatus === 'Reservado') {
+            nextStatus = 'Borrador';
+            badgeHTML = '<span class="bg-slate-500/10 text-slate-400 border border-slate-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">● Borrador</span>';
+          } else {
+            nextStatus = 'Disponible';
+            badgeHTML = '<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full text-[10px] font-semibold">● Disponible</span>';
+          }
+
+          row.dataset.status = nextStatus;
+          statusCell.innerHTML = badgeHTML;
+          updateActiveCount();
+        }
+
+        // --- SISTEMA DE ELIMINACIÓN CON MODAL PERSONALIZADO ---
+        function requestDelete(id) {
+          deleteTargetId = id;
+          const row = document.getElementById('row-' + id);
+          const title = row ? row.querySelector('.item-title').innerText : 'este ítem';
+
+          document.getElementById('deleteItemTitle').innerText = `"${title}"`;
+
+          const modal = document.getElementById('deleteModal');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+          deleteTargetId = null;
+          const modal = document.getElementById('deleteModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+
+        function confirmDelete() {
+          if (!deleteTargetId) return;
+
+          const row = document.getElementById('row-' + deleteTargetId);
+          if (row) {
+            row.remove();
+            updateActiveCount();
+          }
+
+          closeDeleteModal();
+        }
+
+        // --- FUNCIONES PARA EL VISOR DE IMAGEN (MODAL) ---
+        function openImageModal(src, title) {
+          const modal = document.getElementById('imagePreviewModal');
+          document.getElementById('previewImageSrc').src = src;
+          document.getElementById('previewImageTitle').innerText = title;
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+
+        function closeImageModal(event) {
+          if (event.target.id === 'imagePreviewModal') {
+            closeImageModalForce();
+          }
+        }
+
+        function closeImageModalForce() {
+          const modal = document.getElementById('imagePreviewModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+
+        function updateActiveCount() {
+          const activeRows = document.querySelectorAll('.inventory-row[data-status="Disponible"]').length;
+          const totalRows = document.querySelectorAll('.inventory-row').length;
+
+          const activeCountElem = document.getElementById('stat-active-count');
+          const aircraftCountElem = document.getElementById('stat-aircraft-count');
+
+          if (activeCountElem) activeCountElem.innerText = activeRows;
+          if (aircraftCountElem) aircraftCountElem.innerText = totalRows;
+        }
+      </script>
+
+</body>
+
+</html>

@@ -1,19 +1,476 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Venta de Aeronaves y Piezas | SkyMaster' %></title>
+  <title>
+    <%= typeof title !=='undefined' ? title : 'Venta de Aeronaves y Piezas | SkyMaster' %>
+  </title>
   <link rel="stylesheet" href="/css/styles.css">
+  <!-- Tailwind CSS por CDN para los estilos VIP -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+
+<body class="bg-slate-950 text-slate-100 flex flex-col min-h-screen">
 
   <!-- Inclusión de Barra de Navegación Pública -->
   <%- include('partials/navbar') %>
 
-  <!-- Espacio para diseño: Morao - Venta de Aeronaves y Piezas (Aircraft Sales) -->
-  <main class="main-content">
-  </main>
+    <!-- Espacio para diseño: Morao - Venta de Aeronaves y Piezas (Aircraft Sales) -->
 
-  <!-- Inclusión de Footer -->
-  <%- include('partials/footer') %>
+    <main class="main-content flex-grow font-['Montserrat'] text-slate-100 bg-slate-950 w-full overflow-x-hidden">
+
+      <!-- Banner Hero Principal -->
+      <section
+        class="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-10 pt-24 pb-20 md:pt-32 md:pb-28 px-6 text-center border-b border-slate-800/80 bg-cover bg-center bg-no-repeat shadow-2xl"
+        style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('/img/contact_tarmac.jpg');">
+        <div class="max-w-5xl mx-auto">
+          <span
+            class="text-amber-400/90 font-semibold uppercase tracking-widest text-xs px-4 py-1.5 bg-amber-500/10 rounded-full border border-amber-500/30 backdrop-blur-md inline-block">
+            Exclusividad & Desempeño Executive
+          </span>
+          <h1 class="text-3xl md:text-5xl font-extrabold mt-5 tracking-tight text-white drop-shadow-md">
+            Catálogo de Aeronaves & Repuestos
+          </h1>
+          <p class="text-slate-200/90 mt-4 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+            Adquisición ejecutiva de jets, helicópteros y partes certificadas FAA/EASA con trazabilidad garantizada.
+          </p>
+        </div>
+      </section>
+
+      <!-- Contenido Principal -->
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- Bloque de Controles Principal: Pestañas + Buscador -->
+        <div
+          class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center mb-6 gap-4 border-b border-slate-800/80 pb-6">
+
+          <!-- Pestañas (Tabs Interactivas) -->
+          <div class="inline-flex rounded-xl bg-slate-900/90 p-1.5 border border-slate-800 shadow-inner overflow-x-auto"
+            id="tab-container">
+            <button id="tab-all" onclick="setCategory('all')"
+              class="tab-btn active-tab px-4 py-2 rounded-lg text-xs md:text-sm font-semibold bg-amber-500 text-slate-950 shadow-md transition duration-200 whitespace-nowrap">
+              Catálogo Completo
+            </button>
+            <button id="tab-aircraft" onclick="setCategory('aircraft')"
+              class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-medium text-slate-400 hover:text-amber-300 transition duration-200 whitespace-nowrap">
+              Flota de Aeronaves
+            </button>
+            <button id="tab-parts" onclick="setCategory('part')"
+              class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-medium text-slate-400 hover:text-amber-300 transition duration-200 whitespace-nowrap">
+              Repuestos & Turbinas
+            </button>
+          </div>
+
+          <!-- Buscador -->
+          <div class="relative w-full lg:w-80">
+            <input type="text" id="search-input" onkeyup="applyFilters()"
+              placeholder="Buscar por modelo, P/N o fabricante..."
+              class="w-full bg-slate-900/90 text-slate-100 border border-slate-800 rounded-xl px-4 py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-amber-500/60 focus:ring-1 focus:ring-amber-500/40 transition-all duration-300 placeholder-slate-500 shadow-sm backdrop-blur-sm">
+
+            <span class="absolute left-3 top-2.5 text-slate-400 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-3.5 h-3.5 text-amber-500">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Barra de Filtro Dinámico de Precio (Ajustable por Mínimo y Máximo) -->
+        <div
+          class="flex flex-wrap items-center justify-between gap-4 mb-8 bg-slate-900/50 border border-slate-800/80 px-4 py-3 rounded-xl backdrop-blur-md">
+          <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-4 text-amber-400">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.874c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+              </svg>
+              Presupuesto USD:
+            </span>
+
+            <!-- Selectores de Rango Mínimo / Máximo -->
+            <div class="flex items-center gap-2">
+              <select id="min-price" onchange="applyFilters()"
+                class="bg-slate-950 border border-slate-800 text-slate-300 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500/60 transition-colors cursor-pointer">
+                <option value="0">Mín: Sin Mínimo</option>
+                <option value="500000">$500,000</option>
+                <option value="1000000">$1,000,000</option>
+                <option value="10000000">$10,000,000</option>
+                <option value="25000000">$25,000,000</option>
+              </select>
+
+              <span class="text-slate-600 text-xs">—</span>
+
+              <select id="max-price" onchange="applyFilters()"
+                class="bg-slate-950 border border-slate-800 text-slate-300 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500/60 transition-colors cursor-pointer">
+                <option value="Infinity">Máx: Sin Límite</option>
+                <option value="1000000">$1,000,000</option>
+                <option value="15000000">$15,000,000</option>
+                <option value="30000000">$30,000,000</option>
+                <option value="70000000">$70,000,000</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Botón Restablecer -->
+          <button onclick="resetFilters()"
+            class="text-xs text-amber-400/80 hover:text-amber-300 underline underline-offset-4 transition-colors">
+            Limpiar Filtros
+          </button>
+        </div>
+
+        <!-- Cuadrícula de Tarjetas VIP Ligeramente Reducidas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="catalog-grid">
+
+          <!-- Tarjeta 1: Gulfstream G650ER -->
+          <div data-category="aircraft" data-price="65000000"
+            class="card-item group bg-slate-900/70 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+            <div>
+              <div class="relative overflow-hidden">
+                <img src="/img/card_sales.jpg" alt="Gulfstream G650ER"
+                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                <span
+                  class="absolute top-3 right-3 bg-amber-500 text-slate-950 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-sm">
+                  Disponible
+                </span>
+              </div>
+              <div class="p-5">
+                <span class="text-[11px] text-amber-400 font-semibold tracking-wider uppercase">Jet Pesado •
+                  Gulfstream</span>
+                <h3 class="text-lg font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">Gulfstream
+                  G650ER</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Año 2021</p>
+
+                <div
+                  class="grid grid-cols-2 gap-2 my-4 py-3 border-y border-slate-800/80 text-xs text-slate-300/90 font-normal">
+                  <div class="flex items-center gap-1.5">🏭 <span><strong>Fab:</strong> Gulfstream</span></div>
+                  <div class="flex items-center gap-1.5">📅 <span><strong>Año:</strong> 2021</span></div>
+                  <div class="flex items-center gap-1.5">⏱️ <span><strong>Horas:</strong> 850 hrs</span></div>
+                  <div class="flex items-center gap-1.5">📜 <span><strong>Cert:</strong> FAA/EASA</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-1 flex items-center justify-between border-t border-slate-800/40">
+              <div>
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-medium">Precio de
+                  Lista</span>
+                <span class="text-sm font-bold text-slate-100">$65,000,000 USD</span>
+              </div>
+              <a href="https://wa.me/584120000000?text=Hola,%20me%20interesa%20el%20Gulfstream%20G650ER" target="_blank"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition-all duration-200 shadow-md">
+                Cotizar
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Bombardier Global 6000 (Nueva) -->
+          <div data-category="aircraft" data-price="28000000"
+            class="card-item group bg-slate-900/70 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+            <div>
+              <div class="relative overflow-hidden">
+                <img src="/img/card_brokerage.jpg" alt="Bombardier Global 6000"
+                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                <span
+                  class="absolute top-3 right-3 bg-amber-500 text-slate-950 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-sm">
+                  Disponible
+                </span>
+              </div>
+              <div class="p-5">
+                <span class="text-[11px] text-amber-400 font-semibold tracking-wider uppercase">Jet Ultralargo •
+                  Bombardier</span>
+                <h3 class="text-lg font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">Bombardier
+                  Global 6000</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Año 2018</p>
+
+                <div
+                  class="grid grid-cols-2 gap-2 my-4 py-3 border-y border-slate-800/80 text-xs text-slate-300/90 font-normal">
+                  <div class="flex items-center gap-1.5">🏭 <span><strong>Fab:</strong> Bombardier</span></div>
+                  <div class="flex items-center gap-1.5">📅 <span><strong>Año:</strong> 2018</span></div>
+                  <div class="flex items-center gap-1.5">⏱️ <span><strong>Horas:</strong> 1,850 hrs</span></div>
+                  <div class="flex items-center gap-1.5">📜 <span><strong>Cert:</strong> FAA</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-1 flex items-center justify-between border-t border-slate-800/40">
+              <div>
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-medium">Precio de
+                  Lista</span>
+                <span class="text-sm font-bold text-slate-100">$28,000,000 USD</span>
+              </div>
+              <a href="https://wa.me/584120000000?text=Hola,%20me%20interesa%20el%20Bombardier%20Global%206000"
+                target="_blank"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition-all duration-200 shadow-md">
+                Cotizar
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta 3: Cessna Citation Latitude -->
+          <div data-category="aircraft" data-price="16500000"
+            class="card-item group bg-slate-900/70 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+            <div>
+              <div class="relative overflow-hidden">
+                <img src="/img/card_sales.jpg" alt="Cessna Citation Latitude"
+                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                <span
+                  class="absolute top-3 right-3 bg-amber-500 text-slate-950 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-sm">
+                  Disponible
+                </span>
+              </div>
+              <div class="p-5">
+                <span class="text-[11px] text-amber-400 font-semibold tracking-wider uppercase">Jet Mediano •
+                  Textron</span>
+                <h3 class="text-lg font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">Cessna
+                  Citation Latitude</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Año 2020</p>
+
+                <div
+                  class="grid grid-cols-2 gap-2 my-4 py-3 border-y border-slate-800/80 text-xs text-slate-300/90 font-normal">
+                  <div class="flex items-center gap-1.5">🏭 <span><strong>Fab:</strong> Textron</span></div>
+                  <div class="flex items-center gap-1.5">📅 <span><strong>Año:</strong> 2020</span></div>
+                  <div class="flex items-center gap-1.5">⏱ <span><strong>Horas:</strong> 1,200 hrs</span></div>
+                  <div class="flex items-center gap-1.5">📜 <span><strong>Cert:</strong> FAA/EASA</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-1 flex items-center justify-between border-t border-slate-800/40">
+              <div>
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-medium">Precio de
+                  Lista</span>
+                <span class="text-sm font-bold text-slate-100">$16,500,000 USD</span>
+              </div>
+              <a href="https://wa.me/584120000000?text=Hola,%20me%20interesa%20el%20Cessna%20Citation%20Latitude"
+                target="_blank"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition-all duration-200 shadow-md">
+                Cotizar
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta 4: Beechcraft King Air 350i (Nueva) -->
+          <div data-category="aircraft" data-price="4800000"
+            class="card-item group bg-slate-900/70 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+            <div>
+              <div class="relative overflow-hidden">
+                <img src="/img/card_brokerage.jpg" alt="Beechcraft King Air 350i"
+                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                <span
+                  class="absolute top-3 right-3 bg-amber-500 text-slate-950 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-sm">
+                  Disponible
+                </span>
+              </div>
+              <div class="p-5">
+                <span class="text-[11px] text-amber-400 font-semibold tracking-wider uppercase">Turbohélice •
+                  Beechcraft</span>
+                <h3 class="text-lg font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">King Air
+                  350i</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Año 2017</p>
+
+                <div
+                  class="grid grid-cols-2 gap-2 my-4 py-3 border-y border-slate-800/80 text-xs text-slate-300/90 font-normal">
+                  <div class="flex items-center gap-1.5">🏭 <span><strong>Fab:</strong> Beechcraft</span></div>
+                  <div class="flex items-center gap-1.5">📅 <span><strong>Año:</strong> 2017</span></div>
+                  <div class="flex items-center gap-1.5">⏱️ <span><strong>Horas:</strong> 2,100 hrs</span></div>
+                  <div class="flex items-center gap-1.5">📜 <span><strong>Cert:</strong> FAA</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-1 flex items-center justify-between border-t border-slate-800/40">
+              <div>
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-medium">Precio de
+                  Lista</span>
+                <span class="text-sm font-bold text-slate-100">$4,800,000 USD</span>
+              </div>
+              <a href="https://wa.me/584120000000?text=Hola,%20me%20interesa%20el%20King%20Air%20350i" target="_blank"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition-all duration-200 shadow-md">
+                Cotizar
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta 5: Turbina Pratt & Whitney PT6A -->
+          <div data-category="part" data-price="420000"
+            class="card-item group bg-slate-900/70 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+            <div>
+              <div class="relative overflow-hidden">
+                <img src="/img/card_parts.jpg" alt="Turbina Pratt & Whitney PT6A"
+                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                <span
+                  class="absolute top-3 right-3 bg-slate-950/90 text-amber-400 border border-amber-500/30 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-md">
+                  Pieza / Motor
+                </span>
+              </div>
+              <div class="p-5">
+                <span class="text-[11px] text-amber-400 font-semibold tracking-wider uppercase">Piezas • P&W</span>
+                <h3 class="text-lg font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">Turbina
+                  PT6A-60A</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Año 2022 • Condición: Overhaul</p>
+
+                <div
+                  class="grid grid-cols-2 gap-2 my-4 py-3 border-y border-slate-800/80 text-xs text-slate-300/90 font-normal">
+                  <div class="flex items-center gap-1.5">🏭 <span><strong>Fab:</strong> P&W</span></div>
+                  <div class="flex items-center gap-1.5">📅 <span><strong>Año:</strong> 2022</span></div>
+                  <div class="flex items-center gap-1.5">⚙️ <span><strong>Uso:</strong> Turboprop</span></div>
+                  <div class="flex items-center gap-1.5">📜 <span><strong>Cert:</strong> Form 8130</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-1 flex items-center justify-between border-t border-slate-800/40">
+              <div>
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-medium">Precio Pieza</span>
+                <span class="text-sm font-bold text-slate-100">$420,000 USD</span>
+              </div>
+              <a href="https://wa.me/584120000000?text=Hola,%20solicito%20cotizacion%20de%20la%20Turbina%20PT6A"
+                target="_blank"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition-all duration-200 shadow-md">
+                Solicitar
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta 6: Radar Honeywell RDR-4000 (Nueva) -->
+          <div data-category="part" data-price="85000"
+            class="card-item group bg-slate-900/70 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+            <div>
+              <div class="relative overflow-hidden">
+                <img src="/img/card_parts.jpg" alt="Radar Honeywell RDR-4000"
+                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                <span
+                  class="absolute top-3 right-3 bg-slate-950/90 text-amber-400 border border-amber-500/30 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-md">
+                  Aviónica
+                </span>
+              </div>
+              <div class="p-5">
+                <span class="text-[11px] text-amber-400 font-semibold tracking-wider uppercase">Aviónica •
+                  Honeywell</span>
+                <h3 class="text-lg font-bold text-white mt-0.5 group-hover:text-amber-300 transition-colors">Radar
+                  Honeywell RDR-4000</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Año 2023 • Condición: Nuevo</p>
+
+                <div
+                  class="grid grid-cols-2 gap-2 my-4 py-3 border-y border-slate-800/80 text-xs text-slate-300/90 font-normal">
+                  <div class="flex items-center gap-1.5">🏭 <span><strong>Fab:</strong> Honeywell</span></div>
+                  <div class="flex items-center gap-1.5">📅 <span><strong>Año:</strong> 2023</span></div>
+                  <div class="flex items-center gap-1.5">📡 <span><strong>Tipo:</strong> Radar 3D</span></div>
+                  <div class="flex items-center gap-1.5">📜 <span><strong>Cert:</strong> Form 8130</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-1 flex items-center justify-between border-t border-slate-800/40">
+              <div>
+                <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-medium">Precio Pieza</span>
+                <span class="text-sm font-bold text-slate-100">$85,000 USD</span>
+              </div>
+              <a href="https://wa.me/584120000000?text=Hola,%20solicito%20cotizacion%20del%20Radar%20Honeywell"
+                target="_blank"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition-all duration-200 shadow-md">
+                Solicitar
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Estado Vacío: Cuando no se encuentren resultados a la busqueda -->
+        <div id="empty-state"
+          class="hidden text-center py-16 bg-slate-900/40 border border-slate-800/80 rounded-2xl backdrop-blur-md mt-6">
+          <div class="w-10 h-10 mx-auto text-amber-400/80 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold text-white">No se encontraron unidades</h3>
+          <p class="text-slate-400 text-xs mt-1 max-w-md mx-auto leading-relaxed">
+            Intenta ajustar los límites de precio o realiza una búsqueda libre. Si requieres un modelo específico,
+            contáctanos directamente.
+          </p>
+          <a href="https://wa.me/584120000000?text=Hola,%20busco%20una%20aeronave%20o%20repuesto%20especifico"
+            target="_blank"
+            class="inline-block mt-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all duration-200">
+            Consultar Asesor VIP
+          </a>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Script de Filtrado Dinámico por Rango de Precio -->
+    <script>
+      let currentCategory = 'all';
+
+      function setCategory(category) {
+        currentCategory = category;
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('bg-amber-500', 'text-slate-950', 'font-semibold', 'shadow-md');
+          btn.classList.add('text-slate-400', 'font-medium');
+        });
+
+        const activeBtn = document.getElementById(`tab-${category}`);
+        if (activeBtn) {
+          activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-semibold', 'shadow-md');
+          activeBtn.classList.remove('text-slate-400', 'font-medium');
+        }
+
+        applyFilters();
+      }
+
+      function applyFilters() {
+        const query = document.getElementById('search-input').value.toLowerCase();
+        const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+        const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+        const cards = document.querySelectorAll('.card-item');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          const price = parseFloat(card.getAttribute('data-price') || '0');
+          const cardText = card.innerText.toLowerCase();
+
+          // Pestaña
+          const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+          // Texto
+          const matchesText = cardText.includes(query);
+          // Rango Dinámico Mínimo / Máximo
+          const matchesPrice = (price >= minPrice && price <= maxPrice);
+
+          if (matchesCategory && matchesText && matchesPrice) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Control de Estado Vacío
+        const emptyState = document.getElementById('empty-state');
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+
+      function resetFilters() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('min-price').value = '0';
+        document.getElementById('max-price').value = 'Infinity';
+        setCategory('all');
+      }
+    </script>
+
+    <!-- Inclusión de Footer -->
+    <%- include('partials/footer') %>
