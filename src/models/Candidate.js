@@ -81,6 +81,32 @@ class Candidate {
       throw error;
     }
   }
+
+  static async update(id, data) {
+    try {
+      const { full_name, email, phone, position, experience_years, flight_hours } = data;
+      await pool.query(
+        `UPDATE candidates 
+         SET full_name = ?, email = ?, phone = ?, position = ?, experience_years = ?, flight_hours = ? 
+         WHERE id = ?`,
+        [full_name, email, phone, position, experience_years || 0, flight_hours || 0, id]
+      );
+      return { id, ...data };
+    } catch (error) {
+      console.error('Error en Candidate.update:', error);
+      throw error;
+    }
+  }
+
+  static async delete(id) {
+    try {
+      await pool.query('DELETE FROM candidates WHERE id = ?', [id]);
+      return { id };
+    } catch (error) {
+      console.error('Error en Candidate.delete:', error);
+      throw error;
+    }
+  }
 }
 
 module.exports = Candidate;

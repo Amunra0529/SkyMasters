@@ -1,19 +1,1982 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Bolsa de Trabajo y Talento | SkyMaster' %></title>
+  <title>
+    <%= typeof title !=='undefined' ? title : 'Careers & Talent | SkyMaster Aviation' %>
+  </title>
+  <meta name="description"
+    content="Únete a SkyMaster Aviation. Oportunidades para pilotos, técnicos aeronáuticos y tripulación VIP de élite. Postula en línea.">
   <link rel="stylesheet" href="/css/styles.css">
+
+  <style>
+    /* ============================================================
+       CAREERS — Estilos exclusivos módulo Osuna
+       No se modifica styles.css global.
+       ============================================================ */
+
+    /* (barra de módulo eliminada) */
+
+    /* ── HERO PRINCIPAL — Foto de pista + overlay ── */
+    .careers-hero-full {
+      position: relative;
+      width: 100%;
+      min-height: 580px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .careers-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('/img/card_crew.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+
+    .careers-hero-full:hover .careers-hero-bg {
+      transform: scale(1);
+    }
+
+    /* Overlay escalonado */
+    .careers-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(15, 15, 15, 0.85) 0%, rgba(15, 15, 15, 0.5) 52%, rgba(15, 15, 15, 0.1) 100%),
+        linear-gradient(to top, rgba(15, 15, 15, 0.85) 0%, transparent 2%);
+    }
+
+    /* Línea dorada lateral */
+    .careers-hero-full::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, transparent, var(--accent-gold) 30%, var(--accent-gold) 70%, transparent);
+      z-index: 3;
+    }
+
+    .careers-hero-inner {
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 3rem;
+    }
+
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-eyebrow-line {
+      width: 36px;
+      height: 1.5px;
+      background: var(--accent-gold);
+    }
+
+    .hero-eyebrow-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    .careers-hero-title {
+      font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: #ffffff;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .careers-hero-title em {
+      font-style: normal;
+      color: var(--accent-gold);
+    }
+
+    .careers-hero-desc {
+      font-size: 0.97rem;
+      color: rgba(248, 250, 252, 0.72);
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(248, 250, 252, 0.55);
+      transition: color 0.25s;
+    }
+
+    .hero-cta-link:hover {
+      color: var(--accent-gold);
+    }
+
+    .hero-cta-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Panel de estadísticas del lado derecho del hero */
+    .hero-stats-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      min-width: 210px;
+      backdrop-filter: blur(12px);
+      background: rgba(7, 13, 30, 0.55);
+    }
+
+    .hero-stat-block {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.12);
+      transition: background 0.25s;
+    }
+
+    .hero-stat-block:last-child {
+      border-bottom: none;
+    }
+
+    .hero-stat-block:hover {
+      background: rgba(197, 160, 89, 0.06);
+    }
+
+    .hstat-val {
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: var(--accent-gold);
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    .hstat-lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── SISTEMA DE TABS ── */
+    .careers-tabs-bar {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: #040a1a;
+      border-bottom: 1px solid var(--card-border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .careers-tabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ctab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.95rem 1.75rem;
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: var(--font-sans);
+    }
+
+    .ctab-btn svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .ctab-btn:hover:not(.active) {
+      color: var(--text-muted);
+    }
+
+    .ctab-btn.active {
+      color: var(--accent-gold);
+      border-bottom-color: var(--accent-gold);
+    }
+
+    /* Paneles de tab: ocultos por defecto */
+    .ctab-panel {
+      display: none;
+    }
+
+    .ctab-panel.active {
+      display: block;
+      animation: tabFadeIn 0.3s ease forwards;
+    }
+
+    @keyframes tabFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Patrón geométrico aplicado a los tres paneles */
+    #panel-vacantes,
+    #panel-postular,
+    #panel-beneficios {
+      position: relative;
+      z-index: 1;
+    }
+
+    #panel-vacantes::before,
+    #panel-postular::before,
+    #panel-beneficios::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='56' height='100' viewBox='0 0 56 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23ffffff' stroke-opacity='0.12' stroke-width='1.5'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%23ffffff' stroke-opacity='0.12' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-size: 84px 150px;
+      background-position: center;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ── SECCIÓN: VACANTES ── */
+    .careers-vacancies {
+      padding: 5rem 2rem;
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+
+    .section-intro-split {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .section-eyebrow span {
+      display: block;
+      width: 28px;
+      height: 1.5px;
+      background: var(--accent-gold);
+    }
+
+    .section-eyebrow em {
+      font-style: normal;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    .section-h2 {
+      font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .section-intro-right {
+      text-align: right;
+    }
+
+    .section-counter {
+      font-size: 4.5rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: var(--accent-gold);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    /* Listado de vacantes — Versión ultra clara y luminosa */
+    .vacancies-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid rgba(180, 210, 255, 0.35);
+      /* Borde claro reluciente */
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      /* Fondo azul pizarra mucho más claro y brillante */
+      background: linear-gradient(135deg,
+          rgba(50, 68, 102, 0.82) 0%,
+          rgba(35, 50, 78, 0.82) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      /* Sombra que levanta la caja del fondo oscuro */
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.45),
+        0 0 35px rgba(56, 189, 248, 0.18),
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.3);
+      /* Reflejo de luz superior */
+    }
+
+    .vac-row {
+      display: grid;
+      grid-template-columns: 56px 1fr auto auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.75rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.02);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+
+    .vac-row:last-child {
+      border-bottom: none;
+    }
+
+    .vac-row:hover {
+      background: rgba(255, 255, 255, 0.08);
+      /* Hover más vistoso */
+    }
+
+    .vac-num {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.1);
+      /* Caja del número más clara */
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      font-family: var(--font-display);
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .vac-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+      line-height: 1.25;
+    }
+
+    .vac-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .vac-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.82);
+      /* Texto secundario más legible */
+    }
+
+    .vac-meta-item svg {
+      width: 13px;
+      height: 13px;
+      color: #f1c40f;
+      /* Amarillo/dorado brillante */
+    }
+
+    .vac-action {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    /* Botón Postularme bien definido */
+    .vac-action .btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: #ffffff;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+      transition: all 0.25s ease;
+    }
+
+    .vac-action .btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .vac-arrow {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .vac-row:hover .vac-arrow {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateX(3px);
+    }
+
+    .vac-arrow svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Badge ACTIVA Neón */
+    .vac-status .badge-success {
+      background: rgba(0, 230, 118, 0.18);
+      color: #00e676;
+      border: 1px solid rgba(0, 230, 118, 0.5);
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(0, 230, 118, 0.3);
+    }
+
+    /* ── SECCIÓN: PROCESO + FORMULARIO (two-col) ── */
+    .careers-apply-section {
+      background: transparent;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 5rem 2rem;
+    }
+
+    .careers-apply-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    /* Panel izquierdo - proceso */
+    .apply-left {
+      position: sticky;
+      top: 110px;
+    }
+
+    .apply-left-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .apply-left-tag::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--accent-cyan);
+    }
+
+    .apply-left-title {
+      font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: #ffffff;
+      line-height: 1.18;
+      margin-bottom: 1.25rem;
+    }
+
+    .apply-left-title strong {
+      display: block;
+      color: var(--accent-gold);
+    }
+
+    .apply-left-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 2.75rem;
+    }
+
+    /* Timeline de pasos */
+    .process-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .pt-step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .pt-step:not(:last-child) .pt-left-col::after {
+      content: '';
+      display: block;
+      width: 1px;
+      flex: 1;
+      background: rgba(197, 160, 89, 0.18);
+      margin: 0.35rem auto 0;
+      min-height: 28px;
+    }
+
+    .pt-left-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.15rem;
+    }
+
+    .pt-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(197, 160, 89, 0.1);
+      border: 1.5px solid rgba(197, 160, 89, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      flex-shrink: 0;
+    }
+
+    .pt-right-col {
+      padding-bottom: 1.75rem;
+    }
+
+    .pt-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+    }
+
+    .pt-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Formulario derecho — Versión ultra clara y luminosa */
+
+    .apply-form-shell {
+      background: linear-gradient(135deg,
+          rgba(50, 68, 102, 0.82) 0%,
+          rgba(35, 50, 78, 0.82) 100%);
+      border: 1px solid rgba(180, 210, 255, 0.35);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.45),
+        0 0 35px rgba(56, 189, 248, 0.18),
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .apply-form-header {
+      background: rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 1.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .apply-form-header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .apply-form-header-sub {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 0.2rem;
+    }
+
+    .apply-form-header-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #00e676;
+      background: rgba(0, 230, 118, 0.18);
+      border: 1px solid rgba(0, 230, 118, 0.5);
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 0 10px rgba(0, 230, 118, 0.25);
+    }
+
+    .apply-form-header-badge::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00e676;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .apply-form-body {
+      padding: 2rem;
+    }
+
+    /* Grid interno del formulario */
+    .fgrid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Input custom */
+    .fg {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+
+    .fg label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+    }
+
+    .fg label .req {
+      color: #f1c40f;
+      margin-left: 2px;
+    }
+
+    /* Override de inputs con transparencia y bordes iluminados */
+    .fg .form-input,
+    .fg .form-select,
+    .fg .form-textarea {
+      background: rgba(20, 30, 50, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transition: all 0.25s ease;
+    }
+
+    .fg .form-input:focus,
+    .fg .form-select:focus,
+    .fg .form-textarea:focus {
+      background: rgba(250, 250, 255, 0.15);
+      border-color: rgba(180, 210, 255, 0.6);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+      outline: none;
+    }
+
+    .fg .form-input::placeholder,
+    .fg .form-textarea::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.88rem;
+    }
+
+    .fg .form-select option {
+      background: #182238;
+      color: #ffffff;
+    }
+
+    /* Zona de upload de CV */
+    .cv-upload-zone {
+      border: 1.5px dashed rgba(255, 255, 255, 0.35);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: rgba(255, 255, 255, 0.04);
+      position: relative;
+    }
+
+    .cv-upload-zone:hover,
+    .cv-upload-zone.drag-active {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+
+    .cv-upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .cv-upload-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.85rem;
+      color: #38bdf8;
+    }
+
+    .cv-upload-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .cv-upload-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+    }
+
+    .cv-upload-title span {
+      color: #38bdf8;
+    }
+
+    .cv-upload-hint {
+      font-size: 0.73rem;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .cv-file-selected {
+      margin-top: 0.65rem;
+      font-size: 0.78rem;
+      color: #38bdf8;
+      font-weight: 600;
+      min-height: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    /* ── TOAST NOTIFICATION ── */
+    .toast-notification {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: rgba(7, 13, 30, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 99999;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast-notification.success {
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.15);
+    }
+
+    .toast-notification.error {
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(239, 68, 68, 0.15);
+    }
+
+    .toast-notification.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toast-notification.success .toast-icon {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .toast-notification.error .toast-icon {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .toast-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toast-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .toast-msg {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      margin-left: 1rem;
+      cursor: pointer;
+      padding: 0.2rem;
+    }
+
+    .toast-close:hover {
+      color: #fff;
+    }
+
+    /* Botón submit */
+    .apply-submit-btn {
+      width: 100%;
+      padding: 1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, #a8843a 100%);
+      color: #070d1e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      transition: all 0.3s;
+      margin-top: 0.75rem;
+      box-shadow: 0 4px 18px rgba(197, 160, 89, 0.25);
+    }
+
+    .apply-submit-btn:hover {
+      background: linear-gradient(135deg, var(--accent-gold-hover) 0%, var(--accent-gold) 100%);
+      box-shadow: 0 6px 25px rgba(197, 160, 89, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .apply-submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .apply-submit-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── SECCIÓN: POR QUÉ SKYMASTER ── */
+    .careers-benefits {
+      padding: 5rem 2rem;
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+
+    /* Grid asimétrico de beneficios — Versión ultra clara y luminosa */
+    .benefits-asymmetric {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.5px;
+      background: rgba(255, 255, 255, 0.15);
+      /* Separación entre celdas */
+      border: 1px solid rgba(180, 210, 255, 0.35);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: 3rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.45),
+        0 0 35px rgba(56, 189, 248, 0.18),
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .ben-cell {
+      background: linear-gradient(135deg,
+          rgba(45, 62, 95, 0.85) 0%,
+          rgba(30, 44, 70, 0.85) 100%);
+      padding: 2.25rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+    }
+
+    .ben-cell:hover {
+      background: rgba(60, 82, 122, 0.9);
+    }
+
+    .ben-cell.featured {
+      grid-row: span 2;
+      background: linear-gradient(160deg,
+          rgba(55, 75, 112, 0.9) 0%,
+          rgba(35, 50, 78, 0.9) 100%);
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .ben-cell.featured:hover {
+      background: linear-gradient(160deg,
+          rgba(68, 92, 138, 0.95) 0%,
+          rgba(42, 60, 92, 0.95) 100%);
+    }
+
+    .ben-num {
+      font-size: 3.5rem;
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: rgba(255, 255, 255, 0.22);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    .ben-cell.featured .ben-num {
+      font-size: 5rem;
+      color: rgba(255, 255, 255, 0.28);
+    }
+
+    .ben-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f1c40f;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 12px rgba(241, 196, 15, 0.2);
+    }
+
+    .ben-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .ben-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .ben-cell.featured .ben-title {
+      font-size: 1.35rem;
+    }
+
+    .ben-desc {
+      font-size: 0.83rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.65;
+    }
+
+    /* Decorador de esquina en la celda destacada */
+    .ben-cell.featured::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at bottom right, rgba(197, 160, 89, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── CTA FINAL — Foto de pista ── */
+    .careers-final-cta {
+      position: relative;
+      overflow: hidden;
+      background-color: #040a18;
+    }
+
+    .careers-final-cta-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('/img/jet_dusk_backdrop.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.28;
+    }
+
+    .careers-final-cta-overlay {
+      position: absolute;
+      inset: 0;
+    }
+
+    .careers-final-cta-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-final-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+
+    .cta-final-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: #ffffff;
+      line-height: 1.18;
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-final-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 480px;
+    }
+
+    .cta-final-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      min-width: 220px;
+    }
+
+    .cta-email-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .cta-email-link svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent-gold);
+    }
+
+    .cta-email-link:hover {
+      color: var(--accent-gold);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .benefits-asymmetric {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .ben-cell.featured {
+        grid-row: span 1;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .careers-hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats-panel {
+        flex-direction: row;
+        min-width: auto;
+        width: 100%;
+      }
+
+      .hero-stat-block {
+        flex: 1;
+        border-bottom: none;
+        border-right: 1px solid rgba(197, 160, 89, 0.12);
+      }
+
+      .hero-stat-block:last-child {
+        border-right: none;
+      }
+
+      .careers-apply-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .apply-left {
+        position: static;
+      }
+
+      .section-intro-split {
+        grid-template-columns: 1fr;
+      }
+
+      .section-counter {
+        display: none;
+      }
+
+      .benefits-asymmetric {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .careers-hero-full {
+        min-height: auto;
+      }
+
+      .careers-hero-inner {
+        padding: 4rem 1.25rem 3rem;
+      }
+
+      .vac-row {
+        grid-template-columns: 46px 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      .vac-status,
+      .vac-action {
+        grid-column: 2;
+      }
+
+      .fgrid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .apply-form-body {
+        padding: 1.25rem;
+      }
+
+      .careers-apply-section {
+        padding: 3rem 1.25rem;
+      }
+
+      .careers-vacancies {
+        padding: 3rem 1.25rem;
+      }
+
+      .careers-benefits {
+        padding: 3rem 1.25rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <!-- Inclusión de Barra de Navegación Pública -->
   <%- include('partials/navbar') %>
 
-  <!-- Espacio para diseño: Osuna - Bolsa de Trabajo para Postulantes (Careers) -->
-  <main class="main-content">
-  </main>
+    <!-- barra de módulo eliminada -->
 
-  <!-- Inclusión de Footer -->
-  <%- include('partials/footer') %>
+
+    <!-- ============================================================
+       HERO — FOTOGRÁFICO CON OVERLAY
+       ============================================================ -->
+    <section class="careers-hero-full">
+      <div class="careers-hero-bg"></div>
+      <div class="careers-hero-overlay"></div>
+
+      <div class="careers-hero-inner">
+        <div class="hero-left-block">
+          <div class="hero-eyebrow">
+            <div class="hero-eyebrow-line"></div>
+            <div class="hero-eyebrow-text">Human Talent · Aviation Excellence</div>
+          </div>
+
+          <h1 class="careers-hero-title">
+            Únete al<br>
+            Equipo que<br>
+            <em>Vuela Alto.</em>
+          </h1>
+
+          <p class="careers-hero-desc">
+            En SkyMaster buscamos profesionales con vocación aeronáutica, precisión técnica
+            y compromiso de élite. Somos una empresa en expansión con flota activa en tres
+            bases regionales y operaciones continentales.
+          </p>
+
+          <div class="hero-cta-row">
+            <button class="btn btn-primary"
+              onclick="document.getElementById('tab-vacantes').click(); document.querySelector('.careers-tabs-bar').scrollIntoView({behavior: 'smooth'})">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+              Ver Vacantes
+            </button>
+            <button class="hero-cta-link" style="background:none; border:none; cursor:pointer;"
+              onclick="document.getElementById('tab-postular').click(); document.querySelector('.careers-tabs-bar').scrollIntoView({behavior: 'smooth'})">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+              Postularme ahora
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel de estadísticas -->
+        <div class="hero-stats-panel">
+          <div class="hero-stat-block">
+            <div class="hstat-val">
+              <%= vacancies ? vacancies.length : 0 %>
+            </div>
+            <div class="hstat-lbl">Vacantes Activas</div>
+          </div>
+          <div class="hero-stat-block">
+            <div class="hstat-val">3</div>
+            <div class="hstat-lbl">Bases Operativas</div>
+          </div>
+          <div class="hero-stat-block">
+            <div class="hstat-val">20+</div>
+            <div class="hstat-lbl">Años en el Sector</div>
+          </div>
+          <div class="hero-stat-block">
+            <div class="hstat-val">35+</div>
+            <div class="hstat-lbl">Años de Experiencia</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+       BARRA DE TABS
+       ============================================================ -->
+    <div class="careers-tabs-bar" role="tablist" aria-label="Secciones de Careers">
+      <button class="ctab-btn active" role="tab" aria-selected="true" aria-controls="panel-vacantes" id="tab-vacantes">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2" />
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+        </svg>
+        Vacantes
+      </button>
+      <button class="ctab-btn" role="tab" aria-selected="false" aria-controls="panel-postular" id="tab-postular">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        Postularme
+      </button>
+      <button class="ctab-btn" role="tab" aria-selected="false" aria-controls="panel-beneficios" id="tab-beneficios">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        Beneficios
+      </button>
+    </div>
+
+
+    <!-- ============================================================
+       PANELS DE TABS
+       ============================================================ -->
+
+    <!-- PANEL 1: VACANTES -->
+    <div class="ctab-panel active" id="panel-vacantes" role="tabpanel" aria-labelledby="tab-vacantes">
+      <section class="careers-vacancies">
+
+        <div class="section-intro-split">
+          <div class="section-intro-left">
+            <div class="section-eyebrow">
+              <span></span>
+              <em>Posiciones Disponibles</em>
+            </div>
+            <h2 class="section-h2">
+              Oportunidades<br>para Profesionales de Élite
+            </h2>
+          </div>
+          <div class="section-intro-right">
+            <div class="section-counter">0<%= vacancies ? vacancies.length : 0 %>
+            </div>
+          </div>
+        </div>
+
+        <% if (vacancies && vacancies.length> 0) { %>
+
+          <div class="vacancies-list">
+            <% vacancies.forEach(function(vacancy, index) { %>
+              <div class="vac-row">
+
+                <div class="vac-num">
+                  <%= String(index + 1).padStart(2, '0' ) %>
+                </div>
+
+                <div class="vac-info">
+                  <div class="vac-title">
+                    <%= vacancy.title %>
+                  </div>
+                  <div class="vac-meta">
+                    <div class="vac-meta-item">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                      </svg>
+                      <%= vacancy.department %>
+                    </div>
+                    <div class="vac-meta-item">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      <%= vacancy.location %>
+                    </div>
+                    <div class="vac-meta-item">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      Tiempo Completo
+                    </div>
+                  </div>
+                </div>
+
+                <div class="vac-status">
+                  <span class="badge badge-success">Activa</span>
+                </div>
+
+                <div class="vac-action">
+                  <a href="#postular" class="btn btn-sm btn-outline" data-position="<%= vacancy.title %>"
+                    onclick="prefillPosition('<%= vacancy.title %>')">
+                    Postularme
+                  </a>
+                  <div class="vac-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+              <% }); %>
+          </div>
+
+          <% } else { %>
+            <div
+              style="text-align:center; padding: 4rem 2rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="var(--text-dim)" stroke-width="1.5" style="margin-bottom: 1rem;">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">No hay vacantes activas en este momento. Deja tu
+                CV y te notificamos.</p>
+            </div>
+            <% } %>
+
+      </section>
+    </div><!-- /panel-vacantes -->
+
+
+    <!-- PANEL 2: POSTULARME -->
+    <div class="ctab-panel" id="panel-postular" role="tabpanel" aria-labelledby="tab-postular">
+      <!-- ============================================================
+       SECCIÓN: FORMULARIO DE POSTULACIÓN
+       ============================================================ -->
+      <section class="careers-apply-section" id="postular">
+        <div class="careers-apply-inner">
+
+          <!-- IZQUIERDA: Información del proceso -->
+          <div class="apply-left">
+            <div class="apply-left-tag">Proceso de Selección</div>
+            <h2 class="apply-left-title">
+              Tu Próximo<br>
+              <strong>Despegue<br>Comienza Aquí</strong>
+            </h2>
+            <p class="apply-left-desc">
+              Completar el formulario toma menos de 5 minutos.
+              Nuestro equipo de RRHH revisa cada candidatura de forma individual.
+            </p>
+
+            <div class="process-timeline">
+              <div class="pt-step">
+                <div class="pt-left-col">
+                  <div class="pt-dot">1</div>
+                </div>
+                <div class="pt-right-col">
+                  <div class="pt-title">Envía tu postulación</div>
+                  <div class="pt-desc">Completa el formulario con tus datos y adjunta tu CV en PDF.</div>
+                </div>
+              </div>
+              <div class="pt-step">
+                <div class="pt-left-col">
+                  <div class="pt-dot">2</div>
+                </div>
+                <div class="pt-right-col">
+                  <div class="pt-title">Revisión de perfil</div>
+                  <div class="pt-desc">RRHH evalúa tu experiencia y calificaciones en 5 días hábiles.</div>
+                </div>
+              </div>
+              <div class="pt-step">
+                <div class="pt-left-col">
+                  <div class="pt-dot">3</div>
+                </div>
+                <div class="pt-right-col">
+                  <div class="pt-title">Entrevista técnica</div>
+                  <div class="pt-desc">Los candidatos seleccionados son contactados para una entrevista.</div>
+                </div>
+              </div>
+              <div class="pt-step">
+                <div class="pt-left-col">
+                  <div class="pt-dot">4</div>
+                </div>
+                <div class="pt-right-col">
+                  <div class="pt-title">Incorporación al equipo</div>
+                  <div class="pt-desc">Proceso de inducción y onboarding en base operativa asignada.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DERECHA: Formulario -->
+          <div class="apply-right">
+            <div class="apply-form-shell">
+
+              <div class="apply-form-header">
+                <div>
+                  <div class="apply-form-header-title">Formulario de Postulación</div>
+                  <div class="apply-form-header-sub">Campos marcados con * son obligatorios</div>
+                </div>
+                <div class="apply-form-header-badge">Recibiendo CV</div>
+              </div>
+
+              <div class="apply-form-body">
+
+
+
+                        <form id="apply-form" action="/careers/postular" method="POST" enctype="multipart/form-data">
+
+                          <!-- Fila: Nombre + Email -->
+                          <div class="fgrid-2">
+                            <div class="fg">
+                              <label for="full_name">Nombre Completo <span class="req">*</span></label>
+                              <input type="text" id="full_name" name="full_name" class="form-input"
+                                placeholder="Carlos Ramírez" required autocomplete="name">
+                            </div>
+                            <div class="fg">
+                              <label for="email">Correo Electrónico <span class="req">*</span></label>
+                              <input type="email" id="email" name="email" class="form-input"
+                                placeholder="carlos@email.com" required autocomplete="email">
+                            </div>
+                          </div>
+
+                          <!-- Fila: Teléfono + Posición -->
+                          <div class="fgrid-2">
+                            <div class="fg">
+                              <label for="phone">Teléfono / WhatsApp <span class="req">*</span></label>
+                              <input type="tel" id="phone" name="phone" class="form-input"
+                                placeholder="+1 (555) 000-0000" required autocomplete="tel">
+                            </div>
+                            <div class="fg">
+                              <label for="position">Posición de Interés <span class="req">*</span></label>
+                              <select id="position" name="position" class="form-select" required>
+                                <option value="" disabled selected>Selecciona una vacante</option>
+                                <% if (vacancies && vacancies.length> 0) { %>
+                                  <% vacancies.forEach(function(v) { %>
+                                    <option value="<%= v.title %>">
+                                      <%= v.title %>
+                                    </option>
+                                    <% }); %>
+                                      <% } %>
+                                        <option value="Postulación Espontánea">Postulación Espontánea</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Fila: Experiencia + Horas de vuelo -->
+                          <div class="fgrid-2">
+                            <div class="fg">
+                              <label for="experience_years">Años de Experiencia <span class="req">*</span></label>
+                              <input type="number" id="experience_years" name="experience_years" class="form-input"
+                                placeholder="Ej. 5" min="0" max="60" required>
+                            </div>
+                            <div class="fg">
+                              <label for="flight_hours">Horas de Vuelo <span
+                                  style="font-weight:400; color:var(--text-dim);">(si aplica)</span></label>
+                              <input type="number" id="flight_hours" name="flight_hours" class="form-input"
+                                placeholder="Ej. 1 500" min="0">
+                            </div>
+                          </div>
+
+                          <!-- Carta de presentación -->
+                          <div class="fg" style="margin-bottom: 1.25rem;">
+                            <label for="cover_letter">Carta de Presentación <span class="req">*</span></label>
+                            <textarea id="cover_letter" name="cover_letter" class="form-textarea" rows="4"
+                              placeholder="Cuéntanos brevemente tu experiencia y por qué deseas unirte a SkyMaster Aviation..."
+                              required style="resize: vertical; min-height: 100px;"></textarea>
+                          </div>
+
+                          <!-- Upload CV -->
+                          <div class="fg" style="margin-bottom: 1.5rem;">
+                            <label>Currículum Vitae <span class="req">*</span></label>
+                            <div class="cv-upload-zone" id="cv-drop-zone">
+                              <input type="file" id="cv_file" name="cv_file" accept=".pdf" required>
+                              <div class="cv-upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                  stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                                  stroke-linejoin="round">
+                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                  <polyline points="17 8 12 3 7 8" />
+                                  <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                              </div>
+                              <div class="cv-upload-title">
+                                <span>Haz clic para seleccionar</span> o arrastra aquí
+                              </div>
+                              <div class="cv-upload-hint">Solo PDF · Máximo 5 MB</div>
+                              <div class="cv-file-selected" id="cv-file-name"></div>
+                            </div>
+                          </div>
+
+                          <!-- Submit -->
+                          <button type="submit" id="submit-btn" class="apply-submit-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="22" y1="2" x2="11" y2="13" />
+                              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                            Enviar Postulación
+                          </button>
+
+                        </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div><!-- /panel-postular -->
+
+    <!-- ── TOAST GLOBAL (fuera de paneles para que siempre sea visible) ── -->
+    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+      <div id="careers-toast" class="toast-notification error" style="min-width:320px;">
+        <div class="toast-icon">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="toast-content">
+          <span class="toast-title">Error al enviar</span>
+          <span class="toast-msg"><%= errorMessage %></span>
+        </div>
+        <button class="toast-close" onclick="closeToast()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    <% } %>
+    <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+      <div id="careers-toast" class="toast-notification success" style="min-width:320px;">
+        <div class="toast-icon">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <div class="toast-content">
+          <span class="toast-title">¡Postulación Enviada!</span>
+          <span class="toast-msg"><%= successMessage %></span>
+        </div>
+        <button class="toast-close" onclick="closeToast()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    <% } %>
+
+    <!-- PANEL 3: BENEFICIOS -->
+    <div class="ctab-panel" id="panel-beneficios" role="tabpanel" aria-labelledby="tab-beneficios">
+      <!-- ============================================================
+       SECCIÓN: BENEFICIOS — GRID ASIMÉTRICO
+       ============================================================ -->
+      <section class="careers-benefits" id="beneficios">
+
+        <div class="section-intro-split">
+          <div class="section-intro-left">
+            <div class="section-eyebrow">
+              <span></span>
+              <em>Por Qué SkyMaster</em>
+            </div>
+            <h2 class="section-h2">
+              Un Entorno de Trabajo<br>Sin Precedentes
+            </h2>
+          </div>
+        </div>
+
+        <div class="benefits-asymmetric">
+
+          <!-- Celda destacada (span 2 filas) -->
+          <div class="ben-cell featured">
+            <div class="ben-num">01</div>
+            <div class="ben-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+              </svg>
+            </div>
+            <div class="ben-title">Flota Ejecutiva de Última Generación</div>
+            <div class="ben-desc">Opera aeronaves Gulfstream, Bombardier y Citation con aviónica de última tecnología.
+              Nuestros programas de mantenimiento superan los estándares FAA/EASA para garantizar la máxima seguridad en
+              cada misión.</div>
+          </div>
+
+          <!-- Celda 2 -->
+          <div class="ben-cell">
+            <div class="ben-num">02</div>
+            <div class="ben-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+              </svg>
+            </div>
+            <div class="ben-title">Capacitación Continua</div>
+            <div class="ben-desc">Simuladores y cursos de recurrencia financiados por la empresa.</div>
+          </div>
+
+          <!-- Celda 3 -->
+          <div class="ben-cell">
+            <div class="ben-num">03</div>
+            <div class="ben-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <div class="ben-title">Compensación Premium</div>
+            <div class="ben-desc">Salarios competitivos, bonos por misión y cobertura médica integral.</div>
+          </div>
+
+          <!-- Celda 4 -->
+          <div class="ben-cell">
+            <div class="ben-num">04</div>
+            <div class="ben-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <div class="ben-title">Horarios con Sentido</div>
+            <div class="ben-desc">Rotaciones equitativas y descansos garantizados para calidad de vida.</div>
+          </div>
+
+          <!-- Celda 5 -->
+          <div class="ben-cell">
+            <div class="ben-num">05</div>
+            <div class="ben-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </div>
+            <div class="ben-title">3 Bases Estratégicas</div>
+            <div class="ben-desc">Hangares modernos con sala de tripulación VIP y logística de primer nivel.</div>
+          </div>
+
+        </div>
+      </section>
+    </div><!-- /panel-beneficios -->
+
+
+    <!-- ============================================================
+       CTA FINAL — FOTO CON OVERLAY
+       ============================================================ -->
+    <section class="careers-final-cta">
+      <div class="careers-final-cta-bg"></div>
+      <div class="careers-final-cta-overlay"></div>
+      <div class="careers-final-cta-inner">
+
+        <div class="cta-final-left">
+          <div class="cta-final-tag">¿No ves tu vacante ideal?</div>
+          <h2 class="cta-final-title">Postulación<br>Espontánea</h2>
+          <p class="cta-final-sub">
+            Deja tu currículum en nuestra bolsa de talento. Cuando surja una oportunidad
+            alineada con tu perfil, serás el primero en ser contactado.
+          </p>
+        </div>
+
+        <div class="cta-final-right">
+          <a href="#postular" class="btn btn-primary" style="justify-content: center;"
+            onclick="prefillPosition('Postulación Espontánea')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+            Enviar CV Espontáneo
+          </a>
+          <a href="/contact" class="btn btn-outline" style="justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 5.61 5.61l1.27-.76a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 18z" />
+            </svg>
+            Hablar con RRHH
+          </a>
+          <div class="cta-email-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            careers@skymaster.aero
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <%- include('partials/footer') %>
+
+
+      <!-- ============================================================
+       SCRIPTS MÓDULO CAREERS — Osuna
+       ============================================================ -->
+      <script>
+        // Pre-llenar posición en el select desde los botones de vacante
+        function prefillPosition(posVal) {
+          const sel = document.getElementById('position');
+          if (sel && posVal) {
+            sel.value = posVal;
+          }
+          // Cambiar a la pestaña de postular
+          const tabPostular = document.getElementById('tab-postular');
+          if (tabPostular) {
+            tabPostular.click();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+
+        // File upload — mostrar nombre del archivo y cambiar estilo
+        const cvInput = document.getElementById('cv_file');
+        const cvLabel = document.getElementById('cv-file-name');
+        const dropZone = document.getElementById('cv-drop-zone');
+
+        cvInput.addEventListener('change', function () {
+          if (this.files && this.files[0]) {
+            cvLabel.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${this.files[0].name}`;
+            dropZone.style.borderColor = 'var(--accent-gold)';
+          } else {
+            cvLabel.innerHTML = '';
+            dropZone.style.borderColor = '';
+          }
+        });
+
+        // Drag & Drop nativo
+        dropZone.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          this.classList.add('drag-active');
+        });
+        dropZone.addEventListener('dragleave', function () {
+          this.classList.remove('drag-active');
+        });
+        dropZone.addEventListener('drop', function (e) {
+          e.preventDefault();
+          this.classList.remove('drag-active');
+          const f = e.dataTransfer.files;
+          if (f.length && f[0].type === 'application/pdf') {
+            cvInput.files = f;
+            cvLabel.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${f[0].name}`;
+            this.style.borderColor = 'var(--accent-gold)';
+          }
+        });
+
+        // Tabs logic
+        const tabs = document.querySelectorAll('.ctab-btn');
+        const panels = document.querySelectorAll('.ctab-panel');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            // Remove active class from all
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding panel
+            tab.classList.add('active');
+            const panelId = tab.getAttribute('aria-controls');
+            document.getElementById(panelId).classList.add('active');
+          });
+        });
+
+        // Feedback visual al enviar
+        const form = document.getElementById('apply-form');
+        const submitBtn = document.getElementById('submit-btn');
+        if (form) {
+          form.addEventListener('submit', function () {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .9s linear infinite">
+            <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+            <line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/>
+            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
+          </svg>
+          Enviando candidatura...`;
+          });
+        }
+
+        // ── Toast Notification ──
+        function closeToast() {
+          const toast = document.getElementById('careers-toast');
+          if (toast) { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }
+        }
+
+        const toast = document.getElementById('careers-toast');
+        if (toast) {
+          // Remover parametros de la URL para que no salga el toast de nuevo si recarga (F5)
+          if (window.history.replaceState) {
+            const url = new URL(window.location);
+            url.searchParams.delete('success');
+            url.searchParams.delete('error');
+            window.history.replaceState({path:url.href}, '', url.href);
+          }
+
+          // Si hay un toast (mensaje de éxito o error de postulación), abrir automáticamente el tab de Postularme
+          const btnPostular = document.getElementById('tab-postular');
+          if (btnPostular) { btnPostular.click(); }
+          
+          setTimeout(() => toast.classList.add('show'), 100);
+          setTimeout(() => closeToast(), 8000); // Ocultar despues de 8 segundos
+        }
+      </script>
+
+      <style>
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+
+</body>
+
+</html>
