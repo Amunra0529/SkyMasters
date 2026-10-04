@@ -78,15 +78,24 @@ app.get('/', (req, res) => {
 // Cardona - About Us (Nosotros)
 app.get('/about', (req, res) => {
   res.render('about', {
-    title: 'Sobre Nosotros | SkyMaster Aviation'
+    title: 'Sobre Nosotros & Historia | SkyMaster Aviation'
   });
 });
 
 // Cardona - Contact Us (Contacto)
 app.get('/contact', (req, res) => {
+  const success = req.query.success === '1';
   res.render('contact', {
-    title: 'Contacto & Hangares | SkyMaster'
+    title: 'Contacto & Hangares | SkyMaster Aviation',
+    successMessage: success ? '¡Gracias por contactarnos! Tu mensaje ha sido enviado exitosamente. Un asesor ejecutivo de SkyMaster se pondrá en contacto a la brevedad.' : null
   });
+});
+
+// Cardona - Procesamiento de Formulario de Contacto
+app.post('/contact', (req, res) => {
+  const { name, email, phone, subject, message } = req.body;
+  console.log(`📩 [Contacto - Cardona] Solicitud recibida:`, { name, email, phone, subject, message });
+  res.redirect('/contact?success=1');
 });
 
 // Acceso directo a login
