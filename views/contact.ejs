@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Contacto & Hangares | SkyMaster' %></title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title><%= typeof title !== 'undefined' ? title : 'Contacto & Hangares | SkyMaster Aviation' %></title>
+  <link rel="stylesheet" href="/css/styles.css?v=2.0">
 </head>
 <body>
 
@@ -14,130 +14,133 @@
   <!-- Módulo Cardona - Contacto & Hangares Operativos -->
   <main class="main-content">
 
-    <!-- Hero / Header de Contacto -->
-    <section class="hero-section" style="margin-bottom: 2.5rem; text-align: left; padding: 3.5rem 3rem;">
-      <div style="max-width: 900px;">
-        <span class="developer-tag">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-          </svg>
-          MÓDULO CARDONA | CONTACTO & HANGARES
-        </span>
-        <h1 class="hero-title" style="font-size: clamp(2rem, 4vw, 3rem); margin-top: 0.75rem;">
-          Atención Ejecutiva & Central de Operaciones Aéreas 24/7
+    <!-- Hero Banner de Contacto (Estilo Tarmac SkyMaster) -->
+    <section class="hero-cockpit-banner" style="background-image: url('/img/contact_tarmac.jpg'); min-height: 340px; margin-bottom: 2.5rem;">
+      <div class="hero-cockpit-content">
+        <h1 class="hero-cockpit-title" style="font-size: clamp(2rem, 4vw, 3.2rem);" data-es="Atención Ejecutiva & Central de Operaciones 24/7" data-en="Executive Service & Flight Ops 24/7">
+          Atención Ejecutiva & Central de Operaciones 24/7
         </h1>
-        <p class="hero-subtitle" style="margin: 1rem 0 0 0; font-size: 1.05rem; color: var(--text-muted); max-width: 780px;">
-          Póngase en contacto directo con nuestros asesores de venta de aeronaves, coordinadores de vuelos charter o personal de soporte logístico. Estamos a su servicio los 365 días del año.
+        <p class="hero-cockpit-sub" data-es="Póngase en contacto directo con nuestros asesores de venta de aeronaves, coordinadores de vuelos charter o soporte AOG. Estamos a su servicio los 365 días del año." data-en="Contact our aircraft sales advisors, charter flight dispatchers or AOG support directly. Available 365 days a year.">
+          Póngase en contacto directo con nuestros asesores de venta de aeronaves, coordinadores de vuelos charter o soporte AOG. Estamos a su servicio los 365 días del año.
         </p>
       </div>
     </section>
 
     <!-- Alerta de Confirmación de Mensaje Enviado -->
     <% if (typeof successMessage !== 'undefined' && successMessage) { %>
-      <div style="margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--status-success); border-radius: var(--radius-md); display: flex; align-items: center; gap: 1rem; color: #ffffff;">
-        <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--status-success); display: flex; align-items: center; justify-content: center; color: #070d1e; flex-shrink: 0;">
+      <div style="margin-bottom: 2.5rem; padding: 1.25rem 1.5rem; background: rgba(16, 185, 129, 0.18); border: 1px solid var(--status-success); border-radius: var(--radius-md); display: flex; align-items: center; gap: 1rem; color: #ffffff;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--status-success); display: flex; align-items: center; justify-content: center; color: #070d1e; flex-shrink: 0;">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </div>
         <div>
-          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--status-success); margin-bottom: 0.2rem;">¡Mensaje Enviado Exitosamente!</h4>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--status-success); margin-bottom: 0.2rem;" data-es="¡Mensaje Enviado Exitosamente!" data-en="Message Sent Successfully!">¡Mensaje Enviado Exitosamente!</h4>
           <p style="font-size: 0.9rem; color: var(--text-main);"><%= successMessage %></p>
         </div>
       </div>
     <% } %>
 
-    <!-- Secciones Principales: Formulario + Información Directa -->
-    <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 2rem; margin-bottom: 3.5rem;">
+    <!-- Secciones Principales: Formulario Alto Contraste + Info Directa -->
+    <div class="contact-main-grid">
 
-      <!-- Formulario de Contacto Interactivo -->
-      <div class="card" style="padding: 2.5rem;">
-        <div style="margin-bottom: 1.75rem;">
-          <span class="badge badge-info" style="margin-bottom: 0.5rem;">Formulario Directo</span>
-          <h2 style="font-size: 1.6rem; color: #ffffff;">Envíenos su Consulta</h2>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">Complete los siguientes campos y un ejecutivo del área correspondiente le responderá rápidamente.</p>
+      <!-- Formulario de Contacto -->
+      <div class="card contact-form-card" style="padding: 2.5rem; background: #0c1730; border-color: var(--card-border);">
+        <div style="margin-bottom: 1.75rem; border-bottom: 1px solid var(--card-border); padding-bottom: 1rem;">
+          <span class="catalog-card-badge" style="position: static; display: inline-block; margin-bottom: 0.5rem;" data-es="ATENCIÓN DIRECTA" data-en="DIRECT INQUIRY">ATENCIÓN DIRECTA</span>
+          <h2 style="font-size: 1.8rem; color: #ffffff; font-weight: 800;" data-es="Formulario de Solicitud Ejecutiva" data-en="Executive Request Form">Formulario de Solicitud Ejecutiva</h2>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.25rem;" data-es="Complete sus datos y un asesor de SkyMaster le contactará en menos de 15 minutos." data-en="Fill in your details and a SkyMaster advisor will contact you within 15 minutes.">Complete sus datos y un asesor de SkyMaster le contactará en menos de 15 minutos.</p>
         </div>
 
-        <form action="/contact" method="POST" id="contact-form">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+        <form action="/contact" method="POST" id="contact-form" enctype="multipart/form-data">
+          <div class="form-row-2col">
             <div class="form-group">
-              <label for="name" class="form-label">Nombre Completo *</label>
-              <input type="text" id="name" name="name" class="form-input" placeholder="Ej. Carlos Mendoza" required>
+              <label for="name" class="form-label" data-es="Nombre y Apellido *" data-en="Full Name *">Nombre y Apellido *</label>
+              <input type="text" id="name" name="name" class="form-input-dark" placeholder="Ej. Carlos Mendoza" required>
             </div>
             <div class="form-group">
-              <label for="email" class="form-label">Correo Electrónico Corporativo *</label>
-              <input type="email" id="email" name="email" class="form-input" placeholder="ejemplo@empresa.com" required>
+              <label for="email" class="form-label" data-es="Correo Electrónico Corporativo *" data-en="Corporate Email *">Correo Electrónico Corporativo *</label>
+              <input type="email" id="email" name="email" class="form-input-dark" placeholder="carlos@empresa.com" required>
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="form-row-2col">
             <div class="form-group">
-              <label for="phone" class="form-label">Teléfono de Contacto</label>
-              <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 000-0000">
+              <label for="phone" class="form-label" data-es="Teléfono de Contacto *" data-en="Contact Phone *">Teléfono de Contacto *</label>
+              <input type="tel" id="phone" name="phone" class="form-input-dark" placeholder="+1 (800) 555-0199" required>
             </div>
             <div class="form-group">
-              <label for="subject" class="form-label">Área o Tipo de Consulta *</label>
-              <select id="subject" name="subject" class="form-select" required>
-                <option value="" disabled selected>Seleccione una opción...</option>
-                <option value="Venta de Aeronaves">Adquisición / Venta de Aeronave</option>
-                <option value="Vuelos Charter Privados">Cotización de Vuelo Charter Privado</option>
-                <option value="Partes y Turbinas">Repuestos, Turbinas & Soporte AOG</option>
-                <option value="Consultoria">Consultoría & Auditoría Aeronáutica</option>
-                <option value="Bolsa de Trabajo">Bolsa de Trabajo & Talento</option>
-                <option value="Otra Consulta">Otra Consulta General</option>
+              <label for="subject" class="form-label" data-es="Área o Tipo de Consulta *" data-en="Inquiry Department *">Área o Tipo de Consulta *</label>
+              <select id="subject" name="subject" class="filter-select" style="width: 100%; padding: 0.7rem 0.9rem;" required>
+                <option value="" disabled selected data-es="Seleccione departamento..." data-en="Select department...">Seleccione departamento...</option>
+                <option value="Venta de Aeronaves" data-es="Adquisición / Venta de Aeronave" data-en="Aircraft Acquisition / Sale">Adquisición / Venta de Aeronave</option>
+                <option value="Vuelos Charter Privados" data-es="Cotización de Vuelo Charter Privado" data-en="Private Charter Quote">Cotización de Vuelo Charter Privado</option>
+                <option value="Partes y Turbinas" data-es="Repuestos, Turbinas & Soporte AOG" data-en="Parts, Turbines & AOG Support">Repuestos, Turbinas & Soporte AOG</option>
+                <option value="Consultoria" data-es="Consultoría & Auditoría Aeronáutica" data-en="Aviation Consulting & Audit">Consultoría & Auditoría Aeronáutica</option>
+                <option value="Bolsa de Trabajo" data-es="Bolsa de Trabajo & Talento" data-en="Careers & Talent">Bolsa de Trabajo & Talento</option>
+                <option value="Otra Consulta" data-es="Otra Consulta General" data-en="Other General Inquiry">Otra Consulta General</option>
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="message" class="form-label">Mensaje o Detalle de Solicitud *</label>
-            <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Escriba aquí los detalles de su requerimiento (itinerarios, modelos de aeronave de interés, fechas, etc.)..." required></textarea>
+            <label for="message" class="form-label" data-es="Detalle de la Solicitud *" data-en="Inquiry Details *">Detalle de la Solicitud *</label>
+            <textarea id="message" name="message" class="form-input-dark" rows="4" placeholder="Escriba los detalles de su requerimiento (itinerarios, modelos de aeronave, matrículas, etc.)..." required></textarea>
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
-            <p style="font-size: 0.78rem; color: var(--text-dim);">🔒 Sus datos están protegidos bajo nuestra política de confidencialidad estricta.</p>
-            <button type="submit" class="btn btn-primary" style="padding: 0.8rem 2rem;">
-              <span>Enviar Mensaje Ejecutivo</span>
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          <div class="form-group">
+            <label for="attachment" class="form-label" data-es="Adjuntar Documentación o Especificación (Opcional)" data-en="Attach File or Document (Optional)">Adjuntar Documentación o Especificación (Opcional)</label>
+            <div class="file-attach-btn" style="margin-bottom: 0;">
+              <span data-es="📎 Seleccionar archivo (PDF, DOC, JPG)" data-en="📎 Select file (PDF, DOC, JPG)">📎 Seleccionar archivo (PDF, DOC, JPG)</span>
+              <input type="file" id="attachment" name="attachment" style="display: none;" onchange="this.previousElementSibling.textContent = '📎 ' + (this.files[0] ? this.files[0].name : 'Seleccionar archivo');">
+              <span class="file-attach-icon" onclick="document.getElementById('attachment').click();" data-es="📤 Explorar" data-en="📤 Browse">📤 Explorar</span>
+            </div>
+          </div>
+
+          <div class="contact-submit-row">
+            <p style="font-size: 0.78rem; color: var(--text-dim);" data-es="🔒 Sus datos están resguardados bajo política de confidencialidad estricta." data-en="🔒 Your data is protected under strict confidentiality policy.">🔒 Sus datos están resguardados bajo política de confidencialidad estricta.</p>
+            <button type="submit" class="btn btn-gold btn-publish-submit" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important; color: #070d1e !important; font-weight: 900 !important; border-radius: 30px !important; border: 1px solid rgba(251, 191, 36, 0.6) !important; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.45) !important;" data-es="ENVIAR MENSAJE EJECUTIVO ✩" data-en="SUBMIT EXECUTIVE INQUIRY ✩">
+              ENVIAR MENSAJE EJECUTIVO ✩
             </button>
           </div>
         </form>
       </div>
 
-      <!-- Tarjeta Lateral de Información Directa de Contacto -->
+      <!-- Tarjetas Laterales de Información Directa -->
       <div style="display: flex; flex-direction: column; gap: 1.5rem;">
 
         <!-- Central Telefónica 24/7 -->
-        <div class="card" style="border-left: 4px solid var(--accent-gold);">
+        <div class="card" style="border-left: 4px solid var(--accent-gold); background: #0c1730;">
           <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(197, 160, 89, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-gold);">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(245, 158, 11, 0.18); display: flex; align-items: center; justify-content: center; color: var(--accent-gold);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
             </div>
             <div>
-              <h4 style="color: #ffffff; font-size: 1rem;">Atención Telefónica 24/7</h4>
-              <p style="font-size: 0.78rem; color: var(--text-dim);">Atención inmediata sin esperas</p>
+              <h4 style="color: #ffffff; font-size: 1.05rem; font-weight: 800;" data-es="Atención Telefónica 24/7" data-en="24/7 Phone Support">Atención Telefónica 24/7</h4>
+              <p style="font-size: 0.78rem; color: var(--text-dim);" data-es="Central directiva sin esperas" data-en="Direct helpline with zero wait time">Central directiva sin esperas</p>
             </div>
           </div>
-          <p style="font-size: 1.15rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.25rem;">
+          <p style="font-size: 1.2rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.25rem;">
             <a href="tel:+18005550199">+1 (800) 555-0199</a>
           </p>
-          <p style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">
+          <p style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem;">
             <a href="tel:+582125550190">+58 (212) 555-0190</a> (Vzla Operations)
           </p>
+          <a href="https://wa.me/18005550199" target="_blank" class="btn btn-gold btn-sm" style="width: 100%; border-radius: var(--radius-sm);" data-es="💬 CHAT WHATSAPP DIRECTO" data-en="💬 DIRECT WHATSAPP CHAT">💬 CHAT WHATSAPP DIRECTO</a>
         </div>
 
         <!-- Canales de Correo Electrónico -->
-        <div class="card" style="border-left: 4px solid var(--accent-cyan);">
+        <div class="card" style="border-left: 4px solid var(--accent-cyan); background: #0c1730;">
           <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan);">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(56, 189, 248, 0.18); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
             </div>
             <div>
-              <h4 style="color: #ffffff; font-size: 1rem;">Correos Directos</h4>
-              <p style="font-size: 0.78rem; color: var(--text-dim);">Seleccione el departamento deseado</p>
+              <h4 style="color: #ffffff; font-size: 1.05rem; font-weight: 800;" data-es="Correos Directos" data-en="Direct Emails">Correos Directos</h4>
+              <p style="font-size: 0.78rem; color: var(--text-dim);" data-es="Respuesta garantizada en 15 min" data-en="Guaranteed response within 15 min">Respuesta garantizada en 15 min</p>
             </div>
           </div>
-          <ul style="list-style: none; padding: 0; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem;">
+          <ul style="list-style: none; padding: 0; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
             <li><strong>Ventas & Brokerage:</strong> <a href="mailto:sales@skymaster.com" style="color: var(--accent-cyan);">sales@skymaster.com</a></li>
             <li><strong>Vuelos Charter:</strong> <a href="mailto:charters@skymaster.com" style="color: var(--accent-cyan);">charters@skymaster.com</a></li>
             <li><strong>Operaciones & AOG:</strong> <a href="mailto:ops@skymaster.com" style="color: var(--accent-cyan);">ops@skymaster.com</a></li>
@@ -145,18 +148,18 @@
         </div>
 
         <!-- Horario & Garantía de Respuesta -->
-        <div class="card" style="border-left: 4px solid var(--status-success);">
+        <div class="card" style="border-left: 4px solid var(--status-success); background: #0c1730;">
           <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; color: var(--status-success);">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(16, 185, 129, 0.18); display: flex; align-items: center; justify-content: center; color: var(--status-success);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             </div>
             <div>
-              <h4 style="color: #ffffff; font-size: 1rem;">Tiempo de Respuesta</h4>
-              <p style="font-size: 0.78rem; color: var(--status-success); font-weight: 600;">Garantía Executive Service</p>
+              <h4 style="color: #ffffff; font-size: 1.05rem; font-weight: 800;" data-es="Tiempo de Respuesta" data-en="Response Time Guarantee">Tiempo de Respuesta</h4>
+              <p style="font-size: 0.78rem; color: var(--status-success); font-weight: 700;" data-es="Garantía Executive Service" data-en="Executive Service Guarantee">Garantía Executive Service</p>
             </div>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Todas las cotizaciones de vuelo y consultas de inventario son procesadas en menos de <strong>15 minutos</strong> por nuestro centro de dispatch.
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;" data-es="Todas las cotizaciones de vuelo e inspecciones de inventario son procesadas en menos de <strong>15 minutos</strong> por nuestro centro de dispatch." data-en="All flight quotes and inventory inspections are processed within <strong>15 minutes</strong> by our dispatch center.">
+            Todas las cotizaciones de vuelo e inspecciones de inventario son procesadas en menos de <strong>15 minutos</strong> por nuestro centro de dispatch.
           </p>
         </div>
 
@@ -164,99 +167,69 @@
 
     </div>
 
-    <!-- Bases Operativas & Hangares Principales -->
+    <!-- Bases Operativas & Hangares Principales con Filtro Interactivo -->
     <section style="margin-bottom: 3.5rem;">
       <div style="text-align: center; margin-bottom: 2rem;">
-        <span class="badge badge-warning" style="margin-bottom: 0.5rem; letter-spacing: 0.08em;">Infraestructura Global</span>
-        <h2 style="font-size: 1.8rem; color: #ffffff;">Bases Operativas & Hangares Estratégicos</h2>
-        <p style="color: var(--text-muted); max-width: 650px; margin: 0.5rem auto 0;">Presencia permanente en hubs clave para rápida atención y despacho aéreo.</p>
+        <span class="catalog-card-badge" style="position: static; display: inline-block; margin-bottom: 0.5rem;" data-es="INFRAESTRUCTURA GLOBAL" data-en="GLOBAL INFRASTRUCTURE">INFRAESTRUCTURA GLOBAL</span>
+        <h2 style="font-size: 2.1rem; color: #ffffff; font-weight: 800;" data-es="Bases Operativas & Hangares Estratégicos" data-en="Operational Bases & Strategic Hangars">Bases Operativas & Hangares Estratégicos</h2>
+        <p style="color: var(--text-muted); max-width: 650px; margin: 0.5rem auto 0; font-size: 0.95rem;" data-es="Presencia permanente en hubs clave para rápida atención y despacho aéreo." data-en="Permanent presence in key hubs for fast service and air dispatch.">Presencia permanente en hubs clave para rápida atención y despacho aéreo.</p>
       </div>
 
-      <div class="grid-3">
+      <!-- Píldoras de Selección de Base -->
+      <div class="category-pills-row" style="justify-content: center; margin-bottom: 1.75rem;" id="hangar-base-pills">
+        <button class="cat-pill active" data-base="all" data-es="Todas las Bases" data-en="All Bases">Todas las Bases</button>
+        <button class="cat-pill" data-base="svmi" data-es="Maiquetía (SVMI)" data-en="Maiquetía (SVMI)">Maiquetía (SVMI)</button>
+        <button class="cat-pill" data-base="ktmb" data-es="Miami (KTMB)" data-en="Miami (KTMB)">Miami (KTMB)</button>
+        <button class="cat-pill" data-base="lemd" data-es="Madrid (LEMD)" data-en="Madrid (LEMD)">Madrid (LEMD)</button>
+      </div>
+
+      <div class="grid-3" id="hangar-cards-grid">
 
         <!-- Base 1: Maiquetía -->
-        <div class="card" style="padding: 1.75rem;">
+        <div class="card hangar-card" data-base="svmi" style="padding: 1.75rem; background: #0c1730;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-            <span class="badge badge-info">SVMI / CCS</span>
-            <span style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 600;">Base Principal</span>
+            <span class="catalog-card-badge" style="position: static; background: #38bdf8; color: #000;">SVMI / CCS</span>
+            <span style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 800;" data-es="Base Principal" data-en="Main Hub">Base Principal</span>
           </div>
-          <h3 class="card-title" style="font-size: 1.2rem;">Hangar SkyMaster Caracas</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+          <h3 class="card-title" style="font-size: 1.25rem;">Hangar SkyMaster Caracas</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;" data-es="Aeropuerto Internacional Simón Bolívar (SVMI), Zona de Aviación General, Hangar N-14, Maiquetía, Venezuela." data-en="Simón Bolívar International Airport (SVMI), General Aviation Area, Hangar N-14, Maiquetía, Venezuela.">
             Aeropuerto Internacional Simón Bolívar (SVMI), Zona de Aviación General, Hangar N-14, Maiquetía, Venezuela.
           </p>
-          <div style="font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 0.75rem;">
-            <strong>Servicios en base:</strong> Despacho 24/7, Salón VIP FBO, Mantenimiento preventivo.
+          <div style="font-size: 0.82rem; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 0.75rem;">
+            <strong data-es="Servicios en base:" data-en="Base services:">Servicios en base:</strong> <span data-es="Despacho 24/7, Salón VIP FBO, Mantenimiento preventivo." data-en="24/7 Dispatch, VIP FBO Lounge, Preventive maintenance.">Despacho 24/7, Salón VIP FBO, Mantenimiento preventivo.</span>
           </div>
         </div>
 
         <!-- Base 2: Miami -->
-        <div class="card" style="padding: 1.75rem;">
+        <div class="card hangar-card" data-base="ktmb" style="padding: 1.75rem; background: #0c1730;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-            <span class="badge badge-info">KTMB / TMB</span>
-            <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 600;">Hub Norteamérica</span>
+            <span class="catalog-card-badge" style="position: static; background: #38bdf8; color: #000;">KTMB / TMB</span>
+            <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 800;" data-es="Hub Norteamérica" data-en="North America Hub">Hub Norteamérica</span>
           </div>
-          <h3 class="card-title" style="font-size: 1.2rem;">Hangar SkyMaster Miami</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+          <h3 class="card-title" style="font-size: 1.25rem;">Hangar SkyMaster Miami</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;" data-es="Miami Executive Airport (KTMB), 14300 SW 129th St, Hangar 4B, Kendall-Tamiami, Florida, EE.UU." data-en="Miami Executive Airport (KTMB), 14300 SW 129th St, Hangar 4B, Kendall-Tamiami, Florida, USA.">
             Miami Executive Airport (KTMB), 14300 SW 129th St, Hangar 4B, Kendall-Tamiami, Florida, EE.UU.
           </p>
-          <div style="font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 0.75rem;">
-            <strong>Servicios en base:</strong> Transacciones de Venta, Inspecciones FAA, Repuestos AOG.
+          <div style="font-size: 0.82rem; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 0.75rem;">
+            <strong data-es="Servicios en base:" data-en="Base services:">Servicios en base:</strong> <span data-es="Transacciones de Venta, Inspecciones FAA, Repuestos AOG." data-en="Sales Transactions, FAA Inspections, AOG Parts.">Transacciones de Venta, Inspecciones FAA, Repuestos AOG.</span>
           </div>
         </div>
 
         <!-- Base 3: Madrid -->
-        <div class="card" style="padding: 1.75rem;">
+        <div class="card hangar-card" data-base="lemd" style="padding: 1.75rem; background: #0c1730;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-            <span class="badge badge-info">LEMD / MAD</span>
-            <span style="font-size: 0.8rem; color: var(--status-success); font-weight: 600;">Hub Europa</span>
+            <span class="catalog-card-badge" style="position: static; background: #38bdf8; color: #000;">LEMD / MAD</span>
+            <span style="font-size: 0.8rem; color: var(--status-success); font-weight: 800;" data-es="Hub Europa" data-en="Europe Hub">Hub Europa</span>
           </div>
-          <h3 class="card-title" style="font-size: 1.2rem;">Base SkyMaster Madrid</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+          <h3 class="card-title" style="font-size: 1.25rem;">Base SkyMaster Madrid</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;" data-es="Aeropuerto Adolfo Suárez Madrid-Barajas (LEMD), Terminal de Aviación Ejecutiva y General, Madrid, España." data-en="Adolfo Suárez Madrid-Barajas Airport (LEMD), Executive & General Aviation Terminal, Madrid, Spain.">
             Aeropuerto Adolfo Suárez Madrid-Barajas (LEMD), Terminal de Aviación Ejecutiva y General, Madrid, España.
           </p>
-          <div style="font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 0.75rem;">
-            <strong>Servicios en base:</strong> Charters Transatlánticos, Tramitación EASA, Asesoría Corporativa.
+          <div style="font-size: 0.82rem; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 0.75rem;">
+            <strong data-es="Servicios en base:" data-en="Base services:">Servicios en base:</strong> <span data-es="Charters Transatlánticos, Tramitación EASA, Asesoría Corporativa." data-en="Transatlantic Charters, EASA Clearance, Corporate Advisory.">Charters Transatlánticos, Tramitación EASA, Asesoría Corporativa.</span>
           </div>
         </div>
 
-      </div>
-    </section>
-
-    <!-- Sección de Preguntas Frecuentes (FAQ Accordion / Grid) -->
-    <section>
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <span class="badge badge-info" style="margin-bottom: 0.5rem; letter-spacing: 0.08em;">Respuestas Rápidas</span>
-        <h2 style="font-size: 1.8rem; color: #ffffff;">Preguntas Frecuentes de Clientes</h2>
-      </div>
-
-      <div class="grid-2">
-        <div class="card" style="padding: 1.5rem;">
-          <h4 style="color: var(--accent-gold); font-size: 1rem; margin-bottom: 0.5rem;">¿Con cuánta anticipación debo solicitar un vuelo charter?</h4>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-            Podemos confirmar y despachar itinerarios charter en tan solo <strong>2 a 4 horas</strong> previa solicitud para vuelos regionales, sujetos a permisos de rampa y planes de vuelo.
-          </p>
-        </div>
-
-        <div class="card" style="padding: 1.5rem;">
-          <h4 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.5rem;">¿Ofrecen inspecciones pre-compra para aeronaves en venta?</h4>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-            Sí, realizamos pre-purchase inspections completas con reporte de boroscopia de turbinas, trazabilidad de logs de mantenimiento e historial de aeronavegabilidad sin costo adicional en nuestras bases.
-          </p>
-        </div>
-
-        <div class="card" style="padding: 1.5rem;">
-          <h4 style="color: var(--status-success); font-size: 1rem; margin-bottom: 0.5rem;">¿Cómo se gestiona el soporte de turbinas y piezas AOG?</h4>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-            Contamos con inventario propio en Miami y Caracas con certificación Form 8130 / EASA Form 1, despachando componentes críticos de forma inmediata por vía aérea acelerada.
-          </p>
-        </div>
-
-        <div class="card" style="padding: 1.5rem;">
-          <h4 style="color: #ffffff; font-size: 1rem; margin-bottom: 0.5rem;">¿Puedo coordinar una visita presencial a los hangares?</h4>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-            Absolutamente. Solicitándolo mediante el formulario o por vía telefónica, nuestro equipo agendará un pase VIP para inspeccionar la aeronave de su interés en cualquiera de nuestras sedes.
-          </p>
-        </div>
       </div>
     </section>
 

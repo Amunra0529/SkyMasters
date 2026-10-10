@@ -3,193 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Sobre Nosotros | SkyMaster Aviation' %></title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title><%= typeof title !== 'undefined' ? title : 'Sobre Nosotros & Historia | SkyMaster Aviation' %></title>
+  <link rel="stylesheet" href="/css/styles.css?v=2.0">
 </head>
-<body>
+<body class="about-page-body">
 
   <!-- Inclusión de Barra de Navegación Pública -->
   <%- include('partials/navbar') %>
 
+  <!-- Capa de Fondo Fijo Animado al hacer Scroll -->
+  <div class="about-fixed-bg" id="about-bg-overlay"></div>
+
   <!-- Módulo Cardona - Información Institucional & Sobre Nosotros -->
-  <main class="main-content">
-    
-    <!-- Header / Hero Institucional -->
-    <section class="hero-section" style="margin-bottom: 2.5rem; text-align: left; padding: 4rem 3rem;">
-      <div style="max-width: 900px;">
-        <span class="developer-tag">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          MÓDULO CARDONA | SOBRE NOSOTROS
-        </span>
-        <h1 class="hero-title" style="font-size: clamp(2rem, 4vw, 3.2rem); margin-top: 0.75rem;">
-          Líderes en Aviación Ejecutiva, Gestión de Flotas & Servicios Aeronáuticos de Élite
-        </h1>
-        <p class="hero-subtitle" style="margin: 1.25rem 0 2rem 0; font-size: 1.05rem; line-height: 1.7; max-width: 820px; color: var(--text-muted);">
-          Desde nuestra fundación, en <strong>SkyMaster Group</strong> hemos redefinido los estándares de la aviación privada y ejecutiva. Ofrecemos soluciones integrales que abarcan la adquisición y comercialización de aeronaves, vuelos charter a nivel global, mantenimiento mayor de piezas y turbinas, e intermediación estratégica bajo normas estrictas de seguridad internacional.
-        </p>
-        <div class="hero-actions" style="justify-content: flex-start; gap: 1rem;">
-          <a href="/contact" class="btn btn-primary">
-            <span>Contactar con la Directiva</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-          <a href="/sales" class="btn btn-outline">Explorar Flota & Inventario</a>
+  <main class="main-content" style="position: relative; z-index: 2;">
+
+    <!-- ========================================================
+       HERO PRINCIPAL CON FOTO PRESIDENTE RANIER GARRIDO
+       ======================================================== -->
+    <section class="card about-hero-card" id="about-hero-section" style="margin-bottom: 2.5rem; padding: 0; overflow: hidden; background: #0b162c; border-color: var(--card-border);">
+      <div class="about-hero-grid">
+        
+        <!-- Columna Izquierda: Foto Presidente Ranier Garrido con nave -->
+        <div class="president-photo-wrapper" id="president-photo-card">
+          <img src="/img/ranier_garrido_president.jpg" alt="Ranier Garrido - President of SkyMaster Group" class="president-img">
+          
+          <div class="president-overlay-info">
+            <span class="president-role-tag" data-es="NUESTRO PRESIDENTE" data-en="OUR PRESIDENT">NUESTRO PRESIDENTE</span>
+            <h2 class="president-name">RANIER GARRIDO</h2>
+            <div class="president-exp-badge" data-es="MÁS DE 35 AÑOS DE EXPERIENCIA EN AVIACIÓN" data-en="35+ YEARS OF AVIATION EXPERIENCE">MÁS DE 35 AÑOS DE EXPERIENCIA EN AVIACIÓN</div>
+            <p class="president-title-sub" data-es="PILOTO COMERCIAL • PILOTO CORPORATIVO • ASESOR AERONÁUTICO" data-en="AIRLINE PILOT • CORPORATE PILOT • AVIATION ADVISOR">PILOTO COMERCIAL • PILOTO CORPORATIVO • ASESOR AERONÁUTICO</p>
+            <blockquote class="president-quote" data-es="“La experiencia no es solo parte de nuestra historia: es la base de cada recomendación que hacemos.”" data-en="“Experience isn't just part of our history—it's the foundation of every recommendation we make.”">
+              “La experiencia no es solo parte de nuestra historia: es la base de cada recomendación que hacemos.”
+            </blockquote>
+          </div>
         </div>
+
+        <!-- Columna Derecha: Texto Principal SOBRE NOSOTROS -->
+        <div class="about-hero-text-content">
+          <div style="margin-bottom: 1.25rem;">
+            <h1 class="about-main-title" data-es="SOBRE NOSOTROS" data-en="ABOUT US">SOBRE NOSOTROS</h1>
+          </div>
+
+          <div class="about-tagline-bar">
+            <span data-es="EXPERIENCIA. INTEGRIDAD. RESULTADOS." data-en="EXPERIENCE. INTEGRITY. RESULTS.">EXPERIENCIA. INTEGRIDAD. RESULTADOS.</span>
+          </div>
+
+          <div class="about-mission-box">
+            <p data-es="En SkyMaster Group, no solo hablamos de aviación, la vivimos cada día. Nuestra misión es clara: <strong>Ofrecer soluciones aeronáuticas excepcionales con honestidad, experiencia y un servicio personalizado.</strong>"
+               data-en="At SkyMaster Group, we don't just talk about aviation, we live it every day. Our mission is simple: <strong>Deliver exceptional aviation solutions with honesty, expertise and personalized service.</strong>">
+              En SkyMaster Group, no solo hablamos de aviación, la vivimos cada día. Nuestra misión es clara: 
+              <strong>Ofrecer soluciones aeronáuticas excepcionales con honestidad, experiencia y un servicio personalizado.</strong>
+            </p>
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="/contact" class="btn btn-gold" data-es="CONTACTAR DIRECTIVA ✩" data-en="CONTACT MANAGEMENT ✩">CONTACTAR DIRECTIVA ✩</a>
+            <a href="#nuestra-historia" class="btn btn-outline" style="border-radius: var(--radius-pill);" data-es="CONOCER NUESTRA HISTORIA" data-en="READ OUR STORY">CONOCER NUESTRA HISTORIA</a>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Grilla de Estadísticas Clave e Hitos -->
-    <section style="margin-bottom: 3.5rem;">
-      <div class="grid-4">
-        <div class="card" style="text-align: center; border-top: 3px solid var(--accent-gold);">
-          <div class="metric-value" style="color: var(--accent-gold);">+15</div>
-          <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Años de Excelencia</p>
-          <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.35rem;">Trayectoria ininterrumpida en aviación de negocios corporativa.</p>
+    <!-- ========================================================
+       BARRA DE MÉTRICAS OFICIALES SKYMASTER (4 ICONOS)
+       ======================================================== -->
+    <section class="about-metrics-bar" style="margin-bottom: 3.5rem;">
+      <div class="metrics-official-grid">
+        
+        <!-- Métrica 1 -->
+        <div class="metric-official-item">
+          <div class="metric-official-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </div>
+          <div class="metric-official-val" data-es="MÁS DE 20 AÑOS" data-en="20+ YEARS">MÁS DE 20 AÑOS</div>
+          <div class="metric-official-sub" data-es="COMO COMPAÑÍA DE AVIACIÓN" data-en="AS AN AVIATION COMPANY">COMO COMPAÑÍA DE AVIACIÓN</div>
         </div>
-        <div class="card" style="text-align: center; border-top: 3px solid var(--accent-cyan);">
-          <div class="metric-value" style="color: var(--accent-cyan);">+250</div>
-          <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Aeronaves Transaccionadas</p>
-          <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.35rem;">Jets ejecutivos y turbohélices negociados internacionalmente.</p>
+
+        <!-- Métrica 2 -->
+        <div class="metric-official-item">
+          <div class="metric-official-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <div class="metric-official-val" data-es="MÁS DE 35 AÑOS" data-en="35+ YEARS">MÁS DE 35 AÑOS</div>
+          <div class="metric-official-sub" data-es="DE EXPERIENCIA EN AVIACIÓN" data-en="OF AVIATION EXPERIENCE">DE EXPERIENCIA EN AVIACIÓN</div>
         </div>
-        <div class="card" style="text-align: center; border-top: 3px solid var(--status-success);">
-          <div class="metric-value" style="color: var(--status-success);">100%</div>
-          <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Record de Seguridad</p>
-          <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.35rem;">Cero incidentes, operando bajo normativas FAA Part 135 y EASA.</p>
+
+        <!-- Métrica 3 -->
+        <div class="metric-official-item">
+          <div class="metric-official-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+          <div class="metric-official-val" data-es="ALCANCE GLOBAL" data-en="GLOBAL REACH">ALCANCE GLOBAL</div>
+          <div class="metric-official-sub" data-es="ATENDEMOS CLIENTES EN TODO EL MUNDO" data-en="SERVING CLIENTS WORLDWIDE">ATENDEMOS CLIENTES EN TODO EL MUNDO</div>
         </div>
-        <div class="card" style="text-align: center; border-top: 3px solid var(--accent-gold);">
-          <div class="metric-value" style="color: #ffffff;">24/7</div>
-          <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Operaciones en Vivo</p>
-          <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.35rem;">Centro de control aéreo activo todo el año para charter y AOG.</p>
+
+        <!-- Métrica 4 -->
+        <div class="metric-official-item">
+          <div class="metric-official-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+          </div>
+          <div class="metric-official-val" data-es="ALIADO DE CONFIANZA" data-en="TRUSTED PARTNER">ALIADO DE CONFIANZA</div>
+          <div class="metric-official-sub" data-es="ENFOCADOS EN SU ÉXITO" data-en="FOCUSED ON YOUR SUCCESS">ENFOCADOS EN SU ÉXITO</div>
         </div>
+
       </div>
     </section>
 
-    <!-- Pilares Fundamentales (Misión, Visión, Valores) -->
-    <section style="margin-bottom: 3.5rem;">
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <span class="badge badge-info" style="margin-bottom: 0.5rem; letter-spacing: 0.08em;">Nuestra Filosofía</span>
-        <h2 style="font-size: 1.8rem; color: #ffffff;">Misión, Visión y Compromiso Operativo</h2>
-        <p style="color: var(--text-muted); max-width: 650px; margin: 0.5rem auto 0;">La base sobre la cual construimos relaciones duraderas con clientes corporativos e inversionistas.</p>
-      </div>
-
-      <div class="grid-3">
-        <!-- Misión -->
-        <div class="card">
-          <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(197, 160, 89, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-gold); margin-bottom: 1.25rem;">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </svg>
+    <!-- ========================================================
+       SECCIÓN NUESTRA HISTORIA
+       ======================================================== -->
+    <section id="nuestra-historia" style="margin-bottom: 3.5rem;">
+      <div class="card" style="padding: 2.75rem; background: rgba(12, 22, 44, 0.85); border-color: var(--card-border);">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+          <div class="story-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
           </div>
-          <h3 class="card-title">Misión Corporativa</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
-            Proveer a nuestra distinguida clientela acceso transparente, ágil y seguro a servicios aeronáuticos integrales, combinando la máxima precisión en adquisición de aeronaves con charters privados de altísimo confort y discreción.
-          </p>
-        </div>
-
-        <!-- Visión -->
-        <div class="card">
-          <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); margin-bottom: 1.25rem;">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-          </div>
-          <h3 class="card-title">Visión Global</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
-            Consolidarnos como el grupo de aviación ejecutiva más eficiente de América Latina y El Caribe, expandiendo nuestras rutas continentales y manteniendo alianzas con los principales fabricantes y centros de mantenimiento de la industria.
-          </p>
-        </div>
-
-        <!-- Valores -->
-        <div class="card">
-          <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; color: var(--status-success); margin-bottom: 1.25rem;">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-          </div>
-          <h3 class="card-title">Valores & Seguridad</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
-            Rigor absoluto en el mantenimiento preventivo de cada aeronave, riguroso filtrado de tripulaciones altamente certificadas, confidencialidad estricta y honestidad en cada auditoría técnica de piezas y registros.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Líneas de Servicios Integrados (Visual Card Section) -->
-    <section style="margin-bottom: 3.5rem;">
-      <div class="card" style="padding: 2.5rem; background: linear-gradient(135deg, var(--secondary-navy) 0%, var(--primary-navy) 100%); border: 1px solid var(--card-border);">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem;">
           <div>
-            <span class="badge badge-warning" style="margin-bottom: 0.5rem; letter-spacing: 0.08em;">Soluciones 360°</span>
-            <h2 style="font-size: 1.8rem; color: #ffffff;">Servicios Especializados de Aviación</h2>
-          </div>
-          <a href="/sales" class="btn btn-outline btn-sm">Ver Catálogo de Ventas</a>
-        </div>
-
-        <div class="grid-3">
-          <div style="padding: 1.25rem; background: rgba(7, 13, 30, 0.5); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
-            <h4 style="color: var(--accent-gold); font-size: 1rem; margin-bottom: 0.5rem;">✈️ Brokerage & Venta de Naves</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Asesoría experta en compra, venta y transferencia de propiedad de aeronaves tipo Jet Pesado, Mediano y Turbohélice.</p>
-          </div>
-          <div style="padding: 1.25rem; background: rgba(7, 13, 30, 0.5); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
-            <h4 style="color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.5rem;">🌍 Charters Privados Ejecutivos</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Itinerarios personalizados a medida para ejecutivos, corporativos y vuelos médicos de urgencia con privacidad garantizada.</p>
-          </div>
-          <div style="padding: 1.25rem; background: rgba(7, 13, 30, 0.5); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
-            <h4 style="color: var(--status-success); font-size: 1rem; margin-bottom: 0.5rem;">⚙️ Partes, Turbinas & Logística AOG</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Suministro rápido de componentes certificados por la FAA/EASA, turbinas Pratt & Whitney, Rolls-Royce y soporte AOG 24/7.</p>
+            <h3 style="font-size: 1.6rem; color: #ffffff; font-weight: 800;" data-es="NUESTRA HISTORIA" data-en="OUR STORY">NUESTRA HISTORIA</h3>
+            <span style="font-size: 0.82rem; color: var(--accent-gold); font-weight: 700;" data-es="Trayectoria e Integridad Aeronáutica" data-en="Aviation History & Integrity">Trayectoria e Integridad Aeronáutica</span>
           </div>
         </div>
+        <p style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.8;"
+           data-es="Fundada en la pasión por la aviación y el compromiso con la excelencia, SkyMaster Group ha ayudado a personas, empresas y operadores en todo el mundo a comprar, vender, chárter y operar aeronaves con total confianza. Nuestro profundo conocimiento de la industria, la atención al detalle y nuestro enfoque en el cliente nos han convertido en un aliado confiable en cada misión que apoyamos."
+           data-en="Founded on a passion for aviation and a commitment to excellence, SkyMaster Group has helped individuals, corporations and operators around the world buy, sell, charter and operate aircraft with confidence. Our industry knowledge, attention to detail and client-first approach have made us a trusted partner in every mission we support.">
+          Fundada en la pasión por la aviación y el compromiso con la excelencia, SkyMaster Group ha ayudado a personas, empresas y operadores en todo el mundo a comprar, vender, chárter y operar aeronaves con total confianza. Nuestro profundo conocimiento de la industria, la atención al detalle y nuestro enfoque en el cliente nos han convertido en un aliado confiable en cada misión que apoyamos.
+        </p>
       </div>
     </section>
 
-    <!-- Certificaciones Internacionales & Estándares -->
+    <!-- ========================================================
+       CERTIFICACIONES Y BASES OPERATIVAS
+       ======================================================== -->
     <section style="margin-bottom: 3.5rem;">
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <span class="badge badge-info" style="margin-bottom: 0.5rem; letter-spacing: 0.08em;">Normativas Mundiales</span>
-        <h2 style="font-size: 1.8rem; color: #ffffff;">Certificaciones & Homologaciones de Vuelo</h2>
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <span class="catalog-card-badge" style="position: static; display: inline-block; margin-bottom: 0.5rem; background: #38bdf8; color: #000;" data-es="ESTÁNDARES INTERNACIONALES" data-en="GLOBAL STANDARDS">ESTÁNDARES INTERNACIONALES</span>
+        <h2 style="font-size: 2.1rem; color: #ffffff; font-weight: 800;" data-es="Homologaciones & Respaldo Operativo" data-en="Certifications & Operational Backing">Homologaciones & Respaldo Operativo</h2>
       </div>
 
       <div class="grid-4">
-        <div class="card" style="text-align: center; padding: 1.5rem;">
-          <div style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">FAA Part 135</div>
-          <p style="font-size: 0.82rem; color: var(--text-muted);">Certificado de Operación Aérea Comercial & Charter Privado bajo la Federal Aviation Administration.</p>
+        <div class="card" style="text-align: center; padding: 1.75rem; background: rgba(12, 22, 44, 0.85);">
+          <div style="font-size: 1.6rem; font-weight: 900; color: #ffffff; margin-bottom: 0.5rem;">FAA Part 135</div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;" data-es="Certificación de aviación comercial bajo la Administración Federal de Aviación." data-en="Commercial aviation certification under the Federal Aviation Administration.">Certificación de aviación comercial bajo la Administración Federal de Aviación.</p>
         </div>
 
-        <div class="card" style="text-align: center; padding: 1.5rem;">
-          <div style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">EASA Approved</div>
-          <p style="font-size: 0.82rem; color: var(--text-muted);">Cumplimiento de estándares de seguridad y aeronavegabilidad de la Unión Europea.</p>
+        <div class="card" style="text-align: center; padding: 1.75rem; background: rgba(12, 22, 44, 0.85);">
+          <div style="font-size: 1.6rem; font-weight: 900; color: #ffffff; margin-bottom: 0.5rem;">EASA Approved</div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;" data-es="Cumplimiento de normativas europeas para vuelos transatlánticos." data-en="Compliance with European regulations for transatlantic flights.">Cumplimiento de normativas europeas para vuelos transatlánticos.</p>
         </div>
 
-        <div class="card" style="text-align: center; padding: 1.5rem;">
-          <div style="font-size: 1.6rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">INAC Certificado</div>
-          <p style="font-size: 0.82rem; color: var(--text-muted);">Operador autorizados por el Instituto Nacional de Aeronáutica Civil para vuelos internacionales.</p>
+        <div class="card" style="text-align: center; padding: 1.75rem; background: rgba(12, 22, 44, 0.85);">
+          <div style="font-size: 1.6rem; font-weight: 900; color: #ffffff; margin-bottom: 0.5rem;">INAC Certificado</div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;" data-es="Operaciones autorizadas por el Instituto Nacional de Aeronáutica Civil." data-en="Operations authorized by the National Institute of Civil Aviation.">Operaciones autorizadas por el Instituto Nacional de Aeronáutica Civil.</p>
         </div>
 
-        <div class="card" style="text-align: center; padding: 1.5rem;">
-          <div style="font-size: 1.6rem; font-weight: 800; color: var(--accent-gold); margin-bottom: 0.5rem;">ARGUS / Wyvern</div>
-          <p style="font-size: 0.82rem; color: var(--text-muted);">Calificación de seguridad de auditoría independiente para tripulaciones y naves de la flota.</p>
+        <div class="card" style="text-align: center; padding: 1.75rem; background: rgba(12, 22, 44, 0.85);">
+          <div style="font-size: 1.6rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 0.5rem;">ARGUS Platinum</div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5;" data-es="Máxima calificación de auditoría en seguridad para tripulaciones y naves." data-en="Highest safety audit rating for crews and fleet aircraft.">Máxima calificación de auditoría en seguridad para tripulaciones y naves.</p>
         </div>
       </div>
     </section>
 
-    <!-- Banner de Contacto Corporativo Directo -->
-    <section>
-      <div class="card" style="padding: 3rem 2.5rem; text-align: center; background: radial-gradient(circle at center, rgba(197, 160, 89, 0.15), transparent 70%), var(--secondary-navy); border: 1px solid rgba(197, 160, 89, 0.3);">
-        <h2 style="font-size: 2rem; color: #ffffff; margin-bottom: 0.75rem;">¿Desea asesoría ejecutiva personalizada?</h2>
-        <p style="color: var(--text-muted); max-width: 680px; margin: 0 auto 1.75rem; font-size: 1rem;">
-          Nuestro equipo directivo y asesores de ventas aeronáuticas se encuentran disponibles para coordinar visitas a hangares, inspecciones pre-compra y reservaciones de vuelos ejecutivos.
-        </p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="/contact" class="btn btn-primary">
-            <span>Ir al Formulario de Contacto</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-          <a href="tel:+18005550199" class="btn btn-outline">Llamar a Atención 24/7</a>
-        </div>
+    <!-- ========================================================
+       BARRA INFERIOR DE LEMA OFICIAL
+       ======================================================== -->
+    <section class="about-quote-footer">
+      <div class="quote-footer-content">
+        <span class="quote-mark">“</span>
+        <span data-es="CONECTAMOS PERSONAS, AERONAVES Y OPORTUNIDADES." data-en="WE CONNECT PEOPLE, AIRCRAFT AND OPPORTUNITIES.">CONECTAMOS PERSONAS, AERONAVES Y OPORTUNIDADES.</span>
+        <span class="quote-mark">”</span>
       </div>
     </section>
 

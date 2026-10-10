@@ -1,46 +1,68 @@
 /**
  * ===================================================
  * Script Global: SkyMaster Aviation System
- * Manejo de interacciones en el frontend
+ * Selector dinámico de idioma, cotizadores y hangares
  * ===================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('✈️ [SkyMaster] Frontend interactivo inicializado.');
+  console.log('✈️ [SkyMaster] Frontend interactivo de referencia inicializado.');
 
-  // Auto-cierre de alertas flash o notificaciones
-  const alertBanners = document.querySelectorAll('.alert-banner');
-  alertBanners.forEach(banner => {
-    setTimeout(() => {
-      banner.style.opacity = '0';
-      banner.style.transition = 'opacity 0.5s ease';
-      setTimeout(() => banner.remove(), 500);
-    }, 5000);
-  });
+  // ========================================================
+  // 1. Selector dinámico de idioma con localStorage
+  // ========================================================
+  let currentLang = localStorage.getItem('skymaster_lang') || 'es';
+  const langToggleBtn = document.getElementById('lang-toggle-btn');
 
-  // Selector interactivo de idioma (Alternar Bandera USA <-> Venezuela)
-  const langButtons = document.querySelectorAll('.lang-toggle');
-  langButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const flagUs = btn.querySelector('.flag-us');
-      const flagVe = btn.querySelector('.flag-ve');
-      const currentLang = btn.getAttribute('data-lang') || 'en';
+  function applyLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('skymaster_lang', lang);
 
-      if (currentLang === 'en') {
-        if (flagUs) flagUs.style.display = 'none';
-        if (flagVe) flagVe.style.display = 'block';
-        btn.setAttribute('data-lang', 'es');
-        btn.setAttribute('title', 'Idioma actual: Español (VE) - Clic para cambiar a English (US)');
-      } else {
-        if (flagUs) flagUs.style.display = 'block';
-        if (flagVe) flagVe.style.display = 'none';
-        btn.setAttribute('data-lang', 'en');
-        btn.setAttribute('title', 'Idioma actual: English (US) - Clic para cambiar a Español (VE)');
+    // Actualizar todos los elementos traducibles
+    const translatableEls = document.querySelectorAll('[data-es][data-en]');
+    translatableEls.forEach(el => {
+      const targetText = el.getAttribute(`data-${lang}`);
+      if (targetText) {
+        if (targetText.includes('<') && targetText.includes('>')) {
+          el.innerHTML = targetText;
+        } else {
+          el.textContent = targetText;
+        }
       }
     });
-  });
 
-  // Control de Menú Hamburguesa Móvil Responsivo
+    // Actualizar banderas del botón
+    if (langToggleBtn) {
+      const flagUs = langToggleBtn.querySelector('.flag-us');
+      const flagVe = langToggleBtn.querySelector('.flag-ve');
+
+      if (lang === 'es') {
+        if (flagVe) flagVe.style.display = 'block';
+        if (flagUs) flagUs.style.display = 'none';
+        langToggleBtn.setAttribute('data-lang', 'es');
+        langToggleBtn.setAttribute('title', 'Idioma actual: Español (VE) - Clic para cambiar a English (US)');
+      } else {
+        if (flagVe) flagVe.style.display = 'none';
+        if (flagUs) flagUs.style.display = 'block';
+        langToggleBtn.setAttribute('data-lang', 'en');
+        langToggleBtn.setAttribute('title', 'Current language: English (US) - Click to switch to Español (VE)');
+      }
+    }
+  }
+
+  if (langToggleBtn) {
+    langToggleBtn.addEventListener('click', () => {
+      const newLang = currentLang === 'es' ? 'en' : 'es';
+      applyLanguage(newLang);
+    });
+  }
+
+  // Aplicar idioma guardado al cargar
+  applyLanguage(currentLang);
+
+  // ========================================================
+  // 2. Control del Menú Hamburguesa Móvil
+  // ========================================================
   const hamburgerButtons = document.querySelectorAll('.nav-hamburger');
   hamburgerButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -59,20 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
           iconMenu.style.display = isOpen ? 'none' : 'block';
           iconClose.style.display = isOpen ? 'block' : 'none';
         }
-
         btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       }
     });
   });
 
-  // Cerrar el menú al hacer clic en cualquier enlace
   document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      closeAllMobileMenus();
-    });
+    link.addEventListener('click', () => closeAllMobileMenus());
   });
 
-  // Cerrar el menú al hacer clic fuera de la cabecera
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.skymaster-navbar')) {
       closeAllMobileMenus();
@@ -95,8 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ========================================================
-  // Efecto Navbar Transparente exclusivo del Index
-  // Se mantiene transparente arriba y toma color de footer al hacer scroll
+  // 3. Navbar Transparente exclusivo del Index
   // ========================================================
   const isIndex = document.body.classList.contains('index-white-bg') || document.body.classList.contains('is-index-page');
   const publicNavbar = document.querySelector('.skymaster-navbar');
@@ -109,9 +125,60 @@ document.addEventListener('DOMContentLoaded', () => {
         publicNavbar.classList.remove('navbar-scrolled');
       }
     };
-
     window.addEventListener('scroll', onScrollNavbar, { passive: true });
-    onScrollNavbar(); // Verificación inicial al cargar la página
+    onScrollNavbar();
+  }
+
+  // ========================================================
+  // 4. ANIMACIÓN FLUIDA DE SCROLL PARA LA IMAGEN DEL PRESIDENTE (ABOUT US)
+  // ========================================================
+  const aboutBgOverlay = document.getElementById('about-bg-overlay');
+  const presidentPhotoCard = document.getElementById('president-photo-card');
+
+  if (aboutBgOverlay) {
+    const onAboutScroll = () => {
+      if (window.scrollY > 160) {
+        document.body.classList.add('bg-active');
+        if (presidentPhotoCard) {
+          presidentPhotoCard.style.transform = 'scale(0.98)';
+          presidentPhotoCard.style.opacity = '0.85';
+        }
+      } else {
+        document.body.classList.remove('bg-active');
+        if (presidentPhotoCard) {
+          presidentPhotoCard.style.transform = 'scale(1)';
+          presidentPhotoCard.style.opacity = '1';
+        }
+      }
+    };
+
+    window.addEventListener('scroll', onAboutScroll, { passive: true });
+    onAboutScroll();
+  }
+
+  // ========================================================
+  // 5. FILTRO INTERACTIVO DE HANGARES / BASES (CONTACTO)
+  // ========================================================
+  const hangarPills = document.querySelectorAll('#hangar-base-pills .cat-pill');
+  const hangarCards = document.querySelectorAll('.hangar-card');
+
+  if (hangarPills.length > 0 && hangarCards.length > 0) {
+    hangarPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        hangarPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        const targetBase = pill.getAttribute('data-base');
+
+        hangarCards.forEach(card => {
+          const cardBase = card.getAttribute('data-base');
+          if (targetBase === 'all' || cardBase === targetBase) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
   }
 });
-
