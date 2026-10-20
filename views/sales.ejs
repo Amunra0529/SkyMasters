@@ -1,19 +1,1454 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Venta de Aeronaves y Piezas | SkyMaster' %></title>
+  <title>
+    <%= typeof title !=='undefined' ? title : 'Venta de Aeronaves y Piezas | SkyMaster' %>
+  </title>
   <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Tailwind CSS por CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Quitar flechas y spinners nativos en inputs tipo number */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    /* Scrollbar estilizada para miniaturas y drawer */
+    .scrollbar-thin::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 9999px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(245, 158, 11, 0.5);
+      border-radius: 9999px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background: rgba(245, 158, 11, 0.8);
+    }
+  </style>
 </head>
-<body>
+
+<body class="bg-slate-950 text-slate-100 flex flex-col min-h-screen">
 
   <!-- Inclusión de Barra de Navegación Pública -->
   <%- include('partials/navbar') %>
 
-  <!-- Espacio para diseño: Morao - Venta de Aeronaves y Piezas (Aircraft Sales) -->
-  <main class="main-content">
-  </main>
+    <main class="main-content flex-grow font-['Montserrat'] text-slate-100 bg-slate-950 w-full overflow-x-hidden">
 
-  <!-- Inclusión de Footer -->
-  <%- include('partials/footer') %>
+      <!-- Banner Hero Principal -->
+      <section
+        class="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mt-10 pt-24 pb-20 md:pt-32 md:pb-28 px-6 text-center border-b border-slate-800/80 bg-cover bg-center bg-no-repeat shadow-2xl"
+        style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.85)), url('/img/contact_tarmac.jpg');">
+        <div class="max-w-5xl mx-auto">
+          <span
+            class="text-amber-400/90 font-semibold uppercase tracking-widest text-xs px-4 py-1.5 bg-amber-500/10 rounded-full border border-amber-500/30 backdrop-blur-md inline-block">
+            Exclusividad & Desempeño Executive
+          </span>
+          <h1 class="text-3xl md:text-5xl font-extrabold mt-5 tracking-tight text-white drop-shadow-md">
+            Catálogo de Aeronaves & Repuestos
+          </h1>
+
+          <!-- Botones de Acción -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+            <!-- Botón que despliega el formulario de aeronave -->
+            <button type="button" onclick="toggleForm('form-section')"
+              class="w-full sm:w-auto px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg hover:shadow-amber-500/20 hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-sm border border-amber-400/50 flex items-center justify-center gap-2 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
+              Vender mi Aeronave
+            </button>
+
+            <!-- Botón que despliega el formulario de piezas -->
+            <button type="button" onclick="toggleForm('form-section-pieza')"
+              class="w-full sm:w-auto px-6 py-3.5 bg-slate-900/90 hover:bg-slate-800 text-amber-400 hover:text-amber-300 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg border border-amber-500/40 hover:border-amber-400/70 hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-md flex items-center justify-center gap-2 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766l1.232-.369a2.25 2.25 0 0 0 1.503-2.122v-.387a2.25 2.25 0 0 0-.659-1.591l-.643-.643a2.25 2.25 0 0 0-1.591-.659h-.387a2.25 2.25 0 0 0-2.122 1.503l-.369 1.232c-.14.468-.382.891-.766 1.208l-3.03 2.496m0 0a2.25 2.25 0 0 1-3.182 0l-1.061-1.06a2.25 2.25 0 0 1 0-3.182l3.03-2.496c.384-.317.626-.74.766-1.208l.369-1.232A2.25 2.25 0 0 1 9.083 2h.387a2.25 2.25 0 0 1 1.591.659l.643.643c.422.422.659.995.659 1.591v.387a2.25 2.25 0 0 1-1.503 2.122l-1.232.369a2.25 2.25 0 0 0-1.208.766l-2.496 3.03" />
+              </svg>
+              Vender una Pieza / Repuesto
+            </button>
+          </div>
+
+          <p class="text-slate-200/90 mt-4 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+            Adquisición ejecutiva de jets, helicópteros y partes certificadas FAA/EASA con trazabilidad garantizada.
+          </p>
+        </div>
+      </section>
+
+      <!-- Mensaje Notificación de Éxito al Enviar Solicitud -->
+      <div id="success-toast" class="hidden max-w-5xl mx-auto px-4 sm:px-6 mt-6">
+        <div
+          class="bg-amber-500/10 border border-amber-500/40 rounded-2xl p-4 sm:p-5 flex items-center justify-between backdrop-blur-md shadow-2xl text-amber-300">
+          <div class="flex items-center gap-3.5">
+            <div
+              class="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0 border border-amber-500/30">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs sm:text-sm font-extrabold text-white">¡Solicitud recibida correctamente!</p>
+              <p class="text-[11px] sm:text-xs text-slate-300">Su publicación ha sido registrada y será validada por
+                nuestro equipo comercial para su inclusión en catálogo.</p>
+            </div>
+          </div>
+          <button type="button" onclick="document.getElementById('success-toast').classList.add('hidden')"
+            class="text-slate-400 hover:text-white p-1.5 transition-colors cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenido Principal: Catálogo -->
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- Bloque de Controles Principal: Pestañas + Buscador -->
+        <div
+          class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center mb-6 gap-4 border-b border-slate-800/80 pb-6">
+
+          <!-- Pestañas (Tabs Interactivas) -->
+          <div class="inline-flex rounded-xl bg-slate-900/90 p-1.5 border border-slate-800 shadow-inner overflow-x-auto"
+            id="tab-container">
+            <button id="tab-all" onclick="setCategory('all')"
+              class="tab-btn active-tab px-4 py-2 rounded-lg text-xs md:text-sm font-semibold bg-amber-500 text-slate-950 shadow-md transition duration-200 whitespace-nowrap">
+              Catálogo Completo
+            </button>
+            <button id="tab-aircraft" onclick="setCategory('aircraft')"
+              class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-medium text-slate-400 hover:text-amber-300 transition duration-200 whitespace-nowrap">
+              Flota de Aeronaves
+            </button>
+            <button id="tab-parts" onclick="setCategory('part')"
+              class="tab-btn px-4 py-2 rounded-lg text-xs md:text-sm font-medium text-slate-400 hover:text-amber-300 transition duration-200 whitespace-nowrap">
+              Repuestos & Turbinas
+            </button>
+          </div>
+
+          <!-- Buscador -->
+          <div class="relative w-full lg:w-80">
+            <input type="text" id="search-input" onkeyup="applyFilters()"
+              placeholder="Buscar por modelo, P/N o fabricante..."
+              class="w-full bg-slate-900/90 text-slate-100 border border-slate-800 rounded-xl px-4 py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-amber-500/60 focus:ring-1 focus:ring-amber-500/40 transition-all duration-300 placeholder-slate-500 shadow-sm backdrop-blur-sm">
+
+            <span class="absolute left-3 top-2.5 text-slate-400 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-3.5 h-3.5 text-amber-500">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Barra de Filtro Dinámico de Precio -->
+        <div
+          class="flex flex-wrap items-center justify-between gap-4 mb-8 bg-slate-900/50 border border-slate-800/80 px-4 py-3 rounded-xl backdrop-blur-md">
+          <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-4 text-amber-400">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.874c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+              </svg>
+              Presupuesto USD:
+            </span>
+
+            <!-- Selectores de Rango Mínimo / Máximo -->
+            <div class="flex items-center gap-2">
+              <select id="min-price" onchange="applyFilters()"
+                class="bg-slate-950 border border-slate-800 text-slate-300 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500/60 transition-colors cursor-pointer">
+                <option value="0">Mín: Sin Mínimo</option>
+                <option value="500000">$500,000</option>
+                <option value="1000000">$1,000,000</option>
+                <option value="10000000">$10,000,000</option>
+                <option value="25000000">$25,000,000</option>
+              </select>
+
+              <span class="text-slate-600 text-xs">—</span>
+
+              <select id="max-price" onchange="applyFilters()"
+                class="bg-slate-950 border border-slate-800 text-slate-300 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500/60 transition-colors cursor-pointer">
+                <option value="Infinity">Máx: Sin Límite</option>
+                <option value="1000000">$1,000,000</option>
+                <option value="15000000">$15,000,000</option>
+                <option value="30000000">$30,000,000</option>
+                <option value="70000000">$70,000,000</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Botón Restablecer -->
+          <button onclick="resetFilters()"
+            class="text-xs text-amber-400/80 hover:text-amber-300 underline underline-offset-4 transition-colors cursor-pointer">
+            Limpiar Filtros
+          </button>
+        </div>
+
+        <!-- Cuadrícula de Tarjetas VIP -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="catalog-grid">
+
+          <% if (typeof aircrafts !=='undefined' && aircrafts.length> 0) { %>
+            <% aircrafts.forEach(item=> { %>
+              <% const isPart=item.category==='part' ; const cleanPN=(item.part_number || item.codigo_publico || ''
+                ).toString().replace(/^(pieza\s*p\/n\s*:?|repuesto\s*p\/n\s*:?|p\/n\s*:?|part\s*number\s*:?)\s*/i, ''
+                ).trim(); const hasValidImages=Boolean((item.has_images && item.image_url) || (item.imagenes &&
+                item.imagenes.length> 0 && !item.imagenes[0].includes('card_parts.jpg') &&
+                !item.imagenes[0].includes('card_sales.jpg')));
+                %>
+                <div data-category="<%= isPart ? 'part' : 'aircraft' %>" data-price="<%= item.price %>"
+                  class="card-item group bg-slate-800/90 border border-slate-700/80 rounded-2xl overflow-hidden hover:border-amber-400 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xl backdrop-blur-md">
+
+                  <div>
+                    <% if (!isPart || hasValidImages) { %>
+                      <!-- Imagen de Cabecera (Condicional en piezas: solo si tiene fotos reales) -->
+                      <div class="relative overflow-hidden">
+                        <img src="<%= isPart ? item.image_url : (item.image_url || '/img/card_sales.jpg') %>"
+                          alt="<%= isPart ? cleanPN : item.model %>"
+                          onerror="if (this.closest('.card-item')?.getAttribute('data-category') === 'part') { this.closest('.relative.overflow-hidden')?.remove(); } else { this.onerror = null; this.src = '/img/card_sales.jpg'; }"
+                          class="w-full h-24 sm:h-28 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span
+                          class="absolute top-2 right-2 bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider shadow-md backdrop-blur-sm">
+                          <%= item.estado || 'Disponible' %>
+                        </span>
+                      </div>
+                      <% } %>
+
+                        <!-- Contenido Central de la Tarjeta -->
+                        <div class="p-3">
+                          <% if (isPart) { %>
+                            <!-- TARJETA DE PIEZA: estrictamente Part Number, descripción y precio -->
+                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                              <span class="text-[10px] text-amber-400 font-extrabold tracking-wider uppercase">
+                                Repuestos & Turbinas
+                              </span>
+                              <% if (!hasValidImages) { %>
+                                <span
+                                  class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                  <%= item.estado || 'Disponible' %>
+                                </span>
+                                <% } %>
+                            </div>
+
+                            <h3
+                              class="text-sm sm:text-base font-bold text-white group-hover:text-amber-300 transition-colors">
+                              Part Number: <span class="font-mono text-amber-300 font-extrabold">
+                                <%= cleanPN %>
+                              </span>
+                            </h3>
+
+                            <p class="text-slate-200 text-xs mt-1.5 leading-relaxed line-clamp-2">
+                              <%= item.descripcion || 'Sin descripción técnica registrada.' %>
+                            </p>
+
+                            <% } else { %>
+                              <!-- TARJETA DE AERONAVE -->
+                              <span class="text-[10px] text-amber-400 font-extrabold tracking-wider uppercase">
+                                Flota de Aeronaves
+                              </span>
+                              <h3
+                                class="text-sm sm:text-base font-extrabold text-white mt-0.5 group-hover:text-amber-300 transition-colors truncate">
+                                <%= item.model %>
+                              </h3>
+                              <p class="text-slate-300 text-[11px] mt-0.5 font-medium">Año <%= item.year || 'N/A' %>
+                              </p>
+
+                              <!-- Especificaciones Clave de la Aeronave: Compacto y 100% legible -->
+                              <div
+                                class="my-2 p-2 bg-slate-900/90 rounded-xl border border-slate-700/80 space-y-1.5 text-[11px]">
+                                <!-- Fila 1: Año y Horas Totales -->
+                                <div class="grid grid-cols-2 gap-1.5">
+                                  <div
+                                    class="flex items-center justify-between bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700/60">
+                                    <span class="text-slate-300 font-medium text-[10px] flex items-center gap-1">📅
+                                      Año:</span>
+                                    <strong class="text-white font-bold text-[11px]">
+                                      <%= item.year || 'N/A' %>
+                                    </strong>
+                                  </div>
+                                  <div
+                                    class="flex items-center justify-between bg-amber-500/15 px-2 py-1 rounded-lg border border-amber-500/30">
+                                    <span class="text-amber-300 font-bold text-[10px] flex items-center gap-1">⏱️ Horas
+                                      Totales:</span>
+                                    <strong class="text-amber-300 font-extrabold text-[11px]">
+                                      <%= item.hours ? item.hours + ' hrs' : (item.horas_totales ? item.horas_totales
+                                        + ' hrs' : 'N/A' ) %>
+                                    </strong>
+                                  </div>
+                                </div>
+                                <!-- Fila 2: Horas Motores -->
+                                <div
+                                  class="flex items-center justify-between bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700/60">
+                                  <span class="text-slate-300 font-medium text-[10px] flex items-center gap-1.5">⚙️
+                                    Horas Motores:</span>
+                                  <strong class="text-white font-bold text-[11px]">
+                                    <%= item.horas_motores ? item.horas_motores + ' hrs' : 'N/A' %>
+                                  </strong>
+                                </div>
+                                <!-- Fila 3: Horas Turbinas / APU -->
+                                <div
+                                  class="flex items-center justify-between bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700/60">
+                                  <span class="text-slate-300 font-medium text-[10px] flex items-center gap-1.5">🌀
+                                    Horas Turbinas / APU:</span>
+                                  <strong class="text-white font-bold text-[11px]">
+                                    <%= item.horas_turbinas ? item.horas_turbinas + ' hrs' : 'N/A' %>
+                                  </strong>
+                                </div>
+                                <!-- Fila 4: Ubicación -->
+                                <div
+                                  class="flex items-center justify-between bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700/60">
+                                  <span class="text-slate-300 font-medium text-[10px] flex items-center gap-1.5">📍
+                                    Ubicación:</span>
+                                  <strong class="text-slate-100 font-bold text-[11px] truncate max-w-[170px]"
+                                    title="<%= item.ubicacion || 'Internacional' %>">
+                                    <%= item.ubicacion || 'Internacional' %>
+                                  </strong>
+                                </div>
+                              </div>
+                              <% } %>
+                        </div>
+                  </div>
+
+                  <!-- Barra Inferior de Acción -->
+                  <div
+                    class="px-3 py-2 flex items-center justify-between border-t border-slate-700/60 gap-2 mt-auto bg-slate-900/40">
+                    <div class="flex flex-col justify-center">
+                      <span
+                        class="text-[9px] text-slate-300 uppercase tracking-widest block font-bold leading-none mb-0.5">Precio</span>
+                      <span class="text-sm sm:text-base font-extrabold text-white leading-tight">$<%=
+                          Number(item.price).toLocaleString('en-US') %>
+                          USD</span>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                      <!-- Botón Ver Detalles (Abre Panel Lateral Drawer) -->
+                      <button type="button"
+                        onclick="openDetailDrawer(`<%= isPart ? 'part' : 'aircraft' %>_<%= item.id %>`)"
+                        class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 transition-all duration-200 flex items-center gap-1.5 shadow-sm hover:border-amber-400/60 cursor-pointer active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                          stroke="currentColor" class="w-3.5 h-3.5">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                        <span>Ver detalles</span>
+                      </button>
+
+                      <!-- Botón COMPRAR: enlace dinámico de WhatsApp al número de la empresa -->
+                      <% const empresaWA='584248101179' ; let waMsg='' ; if (isPart) { waMsg='Hola. Saludos.\n'
+                        + 'Estoy interesado en solicitar informacion o comprar el siguiente repuesto:\n\n'
+                        + 'Part Number: ' + cleanPN + '\n' + 'Descripcion: ' + (item.descripcion
+                        || 'Sin descripcion registrada.' ) + '\n' + 'Precio publicado: $' +
+                        Number(item.price).toLocaleString('en-US') + ' USD\n\n'
+                        + 'Me gustaria conocer disponibilidad y proceso de compra. ¡Muchas gracias!' ; } else {
+                        waMsg='Hola. Saludos.\n'
+                        + 'Estoy interesado en solicitar informacion o comprar la siguiente aeronave:\n\n'
+                        + 'Registro o Codigo: ' + (item.codigo_publico || item.model || 'N/A' ) + '\n'
+                        + 'Ano de fabricacion: ' + (item.year || 'N/A' ) + '\n' + 'Horas totales: ' + (item.hours ||
+                        item.horas_totales || 'N/A' ) + '\n' + 'Ubicacion: ' + (item.ubicacion || 'Internacional' )
+                        + '\n' + 'Precio publicado: $' + Number(item.price).toLocaleString('en-US') + ' USD\n\n'
+                        + 'Me gustaria conocer disponibilidad y opciones de financiamiento. ¡Muchas gracias!' ; } %>
+                        <a href="https://wa.me/<%= empresaWA %>?text=<%= encodeURIComponent(waMsg) %>" target="_blank"
+                          class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-2.5 py-1.5 rounded-lg text-[11px] uppercase tracking-wide transition-all duration-200 shadow-md flex items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-3.5 h-3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                          </svg>
+                          <span>COMPRAR</span>
+                        </a>
+                    </div>
+                  </div>
+
+                </div>
+                <% }); %>
+                  <% } %>
+
+        </div>
+
+        <!-- Estado Vacío -->
+        <div id="empty-state"
+          class="<%= (typeof aircrafts !== 'undefined' && aircrafts.length > 0) ? 'hidden' : '' %> text-center py-16 bg-slate-900/40 border border-slate-800/80 rounded-2xl backdrop-blur-md mt-6">
+          <div class="w-10 h-10 mx-auto text-amber-400/80 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold text-white">No se encontraron unidades</h3>
+          <p class="text-slate-400 text-xs mt-1 max-w-md mx-auto leading-relaxed">
+            Intenta ajustar los límites de precio o realiza una búsqueda libre. Si requieres un modelo específico,
+            contáctanos directamente.
+          </p>
+          <a href="https://wa.me/584120000000?text=Hola,%20busco%20una%20aeronave%20o%20repuesto%20especifico"
+            target="_blank"
+            class="inline-block mt-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all duration-200">
+            Consultar Asesor VIP
+          </a>
+        </div>
+
+      </section>
+
+      <!-- SECCIÓN FORMULARIO 1: Vender Aeronave -->
+      <section id="form-section"
+        class="hidden w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] my-12 py-16 px-4 sm:px-6 bg-cover bg-center bg-no-repeat shadow-2xl relative overflow-hidden transition-all duration-500"
+        style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.80)), url('/img/card_sales.jpg');">
+
+        <!-- Tarjeta Interna Más Transparente y Difuminada (Glassmorphism) -->
+        <form id="form-vender-aeronave" action="/sales/vender-aeronave" method="POST" enctype="multipart/form-data"
+          class="max-w-5xl mx-auto bg-slate-950/50 border border-amber-500/30 rounded-2xl p-6 md:p-10 shadow-2xl backdrop-blur-md space-y-8">
+
+          <!-- Encabezado del Formulario -->
+          <div class="text-center pb-6 border-b border-slate-700/50 space-y-2">
+            <h1 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow">
+              Publicar Aeronave para la Venta
+            </h1>
+            <p class="text-slate-200 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed">
+              Complete el siguiente formulario para registrar su aeronave en nuestro sistema de ventas.
+            </p>
+          </div>
+
+          <!-- Bloque Principal: 2 Columnas -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Columna Izquierda: Especificaciones Técnicas -->
+            <div class="space-y-4">
+              <h2
+                class="text-amber-400 text-sm font-bold tracking-wide uppercase border-b border-slate-700/50 pb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-4 text-amber-400">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                </svg>
+                Detalles de la Aeronave
+              </h2>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Año de Fabricación -->
+                <div>
+                  <label class="block text-xs text-slate-200 font-medium mb-1.5">Año de Fabricación</label>
+                  <div class="relative">
+                    <input type="number" name="anio_fabricacion" placeholder="Ej: 2020" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm pr-9 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Horas Totales -->
+                <div>
+                  <label class="block text-xs text-slate-200 font-medium mb-1.5">Horas Totales</label>
+                  <div class="relative">
+                    <input type="number" step="0.1" name="horas_totales" placeholder="Ej: 1250.5" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm pr-9 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Horas Totales Motores -->
+                <div>
+                  <label class="block text-xs text-slate-200 font-medium mb-1.5">Horas Totales de Motores</label>
+                  <div class="relative">
+                    <input type="number" step="0.1" name="horas_motores" placeholder="Ej: 1250.5" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm pr-9 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Horas Totales Turbinas -->
+                <div>
+                  <label class="block text-xs text-slate-200 font-medium mb-1.5">Horas Totales de Turbinas</label>
+                  <div class="relative">
+                    <input type="number" step="0.1" name="horas_turbinas" placeholder="Ej: 800.0" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm pr-9 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Precio Interno Solicitado -->
+              <div>
+                <label class="block text-xs text-slate-200 font-medium mb-1.5">Precio Interno Solicitado (USD)</label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-3.5 text-slate-400 text-xs">$</span>
+                  <input type="number" name="precio_interno" placeholder="0.00" required
+                    class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-8 pr-12 py-2.5 text-xs text-amber-400 font-bold placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                  <span class="absolute right-3.5 text-slate-400 text-xs font-semibold">USD</span>
+                </div>
+              </div>
+
+              <!-- Ubicación -->
+              <div>
+                <label class="block text-xs text-slate-200 font-medium mb-1.5">Ubicación / Residencia Actual</label>
+                <div class="relative flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                  </svg>
+                  <input type="text" name="ubicacion_residencia" placeholder="Ej: Hangar 4, Aeropuerto de Caracas"
+                    required
+                    class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Documentos y Contacto -->
+            <div class="space-y-4">
+              <h2
+                class="text-amber-400 text-sm font-bold tracking-wide uppercase border-b border-slate-700/50 pb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-4 text-amber-400">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
+                Documentación y Contacto
+              </h2>
+
+              <!-- Selector: Log Books -->
+              <div class="bg-slate-900/60 p-3.5 border border-slate-700/80 rounded-xl space-y-2 backdrop-blur-sm">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-medium text-slate-200">¿Posee Libro de Mantenimiento (Log Books)?</label>
+                  <select name="tiene_log_books" onchange="toggleFileField('log_books_container', this.value)"
+                    class="bg-slate-950/80 border border-slate-600 text-amber-400 text-xs font-bold rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-400 cursor-pointer">
+                    <option value="0">NO</option>
+                    <option value="1">SÍ</option>
+                  </select>
+                </div>
+                <div id="log_books_container" class="hidden pt-2 border-t border-slate-700/50">
+                  <label class="block text-[11px] text-slate-300 mb-1">Adjuntar Log Books (PDF / ZIP):</label>
+                  <input type="file" name="log_books_file" accept=".pdf,.zip,.rar"
+                    class="w-full text-xs text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-400 file:text-slate-950 hover:file:bg-amber-300 cursor-pointer">
+                </div>
+              </div>
+
+              <!-- Selector: Historial de Daños -->
+              <div class="bg-slate-900/60 p-3.5 border border-slate-700/80 rounded-xl space-y-2 backdrop-blur-sm">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-medium text-slate-200">¿Tiene Historial de Daños (Damage History)?</label>
+                  <select name="tiene_damage_history" onchange="toggleFileField('damage_history_container', this.value)"
+                    class="bg-slate-950/80 border border-slate-600 text-amber-400 text-xs font-bold rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-400 cursor-pointer">
+                    <option value="0">NO</option>
+                    <option value="1">SÍ</option>
+                  </select>
+                </div>
+                <div id="damage_history_container" class="hidden pt-2 border-t border-slate-700/50">
+                  <label class="block text-[11px] text-slate-300 mb-1">Adjuntar Reporte de Daños (PDF / ZIP):</label>
+                  <input type="file" name="damage_history_file" accept=".pdf,.zip,.rar"
+                    class="w-full text-xs text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-400 file:text-slate-950 hover:file:bg-amber-300 cursor-pointer">
+                </div>
+              </div>
+
+              <!-- Datos del Vendedor -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div>
+                  <label class="block text-xs font-medium text-slate-200 mb-1.5">Nombre</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <input type="text" name="vendedor_nombre" placeholder="Nombre" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-200 mb-1.5">Apellido</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <input type="text" name="vendedor_apellido" placeholder="Apellido" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-slate-200 mb-1.5">Teléfono (WhatsApp)</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.826-1.47-5.112-3.756-6.58-6.58l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                    </svg>
+                    <input type="tel" name="vendedor_telefono" placeholder="+58 412 0000000" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-200 mb-1.5">Correo Electrónico</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                    <input type="email" name="vendedor_correo" placeholder="correo@ejemplo.com" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bloque: Carga de Fotografías -->
+          <div class="space-y-4 border-t border-slate-700/50 pt-6">
+            <div class="flex items-center justify-between">
+              <h2 class="text-amber-400 text-sm font-bold tracking-wide uppercase flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-4 text-amber-400">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+                Fotografías de la Aeronave
+              </h2>
+              <span class="text-[11px] text-slate-300">Mínimo 2 y Máximo 10 imágenes</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- Carga Fotografías Interior -->
+              <div
+                class="border border-dashed border-slate-600 hover:border-amber-400 rounded-2xl p-6 bg-slate-900/50 backdrop-blur-sm text-center flex flex-col items-center justify-center transition-colors min-h-[160px]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-7 h-7 text-amber-400 mb-2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                </svg>
+                <h3 class="text-xs font-bold text-white mb-0.5">Fotos del Interior / Cabina</h3>
+                <p class="text-[10px] text-slate-300 mb-4">Formatos JPG, PNG, WEBP (Max 5MB cada una)</p>
+
+                <div class="flex items-center gap-3">
+                  <label
+                    class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl cursor-pointer transition-all hover:scale-105 shadow-md inline-block">
+                    Elegir archivos
+                    <input type="file" name="fotos_interior" multiple accept="image/*" class="hidden"
+                      onchange="updateFileCount(this, 'interior-count')">
+                  </label>
+                  <span id="interior-count" class="text-xs text-slate-300 font-medium">Ningún archivo
+                    seleccionado</span>
+                </div>
+              </div>
+
+              <!-- Carga Fotografías Exterior -->
+              <div
+                class="border border-dashed border-slate-600 hover:border-amber-400 rounded-2xl p-6 bg-slate-900/50 backdrop-blur-sm text-center flex flex-col items-center justify-center transition-colors min-h-[160px]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-7 h-7 text-amber-400 mb-2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                </svg>
+                <h3 class="text-xs font-bold text-white mb-0.5">Fotos del Exterior / Fuselaje</h3>
+                <p class="text-[10px] text-slate-300 mb-4">Formatos JPG, PNG, WEBP (Max 5MB cada una)</p>
+
+                <div class="flex items-center gap-3">
+                  <label
+                    class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl cursor-pointer transition-all hover:scale-105 shadow-md inline-block">
+                    Elegir archivos
+                    <input type="file" name="fotos_exterior" multiple accept="image/*" class="hidden"
+                      onchange="updateFileCount(this, 'exterior-count')">
+                  </label>
+                  <span id="exterior-count" class="text-xs text-slate-300 font-medium">Ningún archivo
+                    seleccionado</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Botón Enviar Solicitud -->
+          <div class="pt-4 text-center flex justify-center">
+            <button type="submit"
+              class="px-10 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-xl transition-all hover:scale-[1.02] flex items-center gap-2 cursor-pointer">
+              <span>Enviar solicitud de publicación</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-4 text-slate-950">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.24a4.5 4.5 0 0 0-1.04 1.83l-.128.384a.75.75 0 0 0 .914.914l.384-.128a4.5 4.5 0 0 0 1.83-1.04m2.24-2.24 2.24-2.24" />
+              </svg>
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- SECCIÓN FORMULARIO 2: Vender Pieza / Repuesto -->
+      <section id="form-section-pieza"
+        class="hidden w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] my-12 py-16 px-4 sm:px-6 bg-cover bg-center bg-no-repeat shadow-2xl relative overflow-hidden transition-all duration-500"
+        style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.80)), url('/img/card_sales.jpg');">
+
+        <!-- Tarjeta Interna Más Transparente y Difuminada (Glassmorphism) -->
+        <form id="form-vender-pieza" action="/sales/vender-pieza" method="POST" enctype="multipart/form-data"
+          class="max-w-5xl mx-auto bg-slate-950/50 border border-amber-500/30 rounded-2xl p-6 md:p-10 shadow-2xl backdrop-blur-md space-y-8">
+
+          <!-- Encabezado Unificado -->
+          <div class="text-center pb-6 border-b border-slate-700/50 space-y-2">
+            <h1 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight">
+              Publicar Pieza o Repuesto
+            </h1>
+            <p class="text-slate-200 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed">
+              Complete el siguiente formulario para registrar su pieza o repuesto en nuestro sistema de ventas.
+            </p>
+          </div>
+
+          <!-- Contenedor principal en 2 columnas -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Columna Izquierda: Detalles de la Pieza -->
+            <div class="space-y-4">
+              <h2
+                class="text-amber-400 text-sm font-bold tracking-wide uppercase border-b border-slate-700/50 pb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-4 text-amber-400">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766l1.232-.369a2.25 2.25 0 0 0 1.503-2.122v-.387a2.25 2.25 0 0 0-.659-1.591l-.643-.643a2.25 2.25 0 0 0-1.591-.659h-.387a2.25 2.25 0 0 0-2.122 1.503l-.369 1.232c-.14.468-.382.891-.766 1.208l-3.03 2.496m0 0a2.25 2.25 0 0 1-3.182 0l-1.061-1.06a2.25 2.25 0 0 1 0-3.182l3.03-2.496c.384-.317.626-.74.766-1.208l.369-1.232A2.25 2.25 0 0 1 9.083 2h.387a2.25 2.25 0 0 1 1.591.659l.643.643c.422.422.659.995.659 1.591v.387a2.25 2.25 0 0 1-1.503 2.122l-1.232.369a2.25 2.25 0 0 0-1.208.766l-2.496 3.03" />
+                </svg>
+                Detalles de la Pieza
+              </h2>
+
+              <!-- Part Number (P/N) -->
+              <div>
+                <label for="part_number" class="block text-xs text-slate-200 font-medium mb-1.5">Part Number
+                  (P/N)</label>
+                <div class="relative">
+                  <input type="text" id="part_number" name="part_number" placeholder="Ej: CFM56-7B26-001" required
+                    class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm pr-9 transition-colors">
+                  <svg class="w-4 h-4 text-slate-400 absolute right-3 top-2.5 pointer-events-none" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z">
+                    </path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Descripción de la parte -->
+              <div>
+                <label for="descripcion" class="block text-xs text-slate-200 font-medium mb-1.5">Descripción de la parte
+                  / repuesto</label>
+                <textarea id="descripcion" name="descripcion" rows="3"
+                  placeholder="Detalle condición (Nueva, Overhauled, As Removed), especificaciones y certificación..."
+                  required
+                  class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors resize-none"></textarea>
+              </div>
+
+              <!-- Precio Interno Solicitado -->
+              <div>
+                <label for="precio" class="block text-xs text-slate-200 font-medium mb-1.5">Precio Interno Solicitado
+                  (USD)</label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-3.5 text-slate-400 text-xs">$</span>
+                  <input type="number" id="precio" name="precio" placeholder="0.00" step="0.01" required
+                    class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-8 pr-12 py-2.5 text-xs text-amber-400 font-bold placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                  <span class="absolute right-3.5 text-slate-400 text-xs font-semibold">USD</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Información del Vendedor -->
+            <div class="space-y-4">
+              <h2
+                class="text-amber-400 text-sm font-bold tracking-wide uppercase border-b border-slate-700/50 pb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-4 text-amber-400">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+                Información del Vendedor
+              </h2>
+
+              <!-- Nombre y Apellido -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="vendedor_nombre_pieza"
+                    class="block text-xs font-medium text-slate-200 mb-1.5">Nombre</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <input type="text" id="vendedor_nombre_pieza" name="vendedor_nombre" placeholder="Nombre" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+
+                <div>
+                  <label for="vendedor_apellido_pieza"
+                    class="block text-xs font-medium text-slate-200 mb-1.5">Apellido</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <input type="text" id="vendedor_apellido_pieza" name="vendedor_apellido" placeholder="Apellido"
+                      required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Teléfono y Correo Electrónico -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="vendedor_telefono_pieza" class="block text-xs font-medium text-slate-200 mb-1.5">Teléfono
+                    (WhatsApp)</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.826-1.47-5.112-3.756-6.58-6.58l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                    </svg>
+                    <input type="tel" id="vendedor_telefono_pieza" name="vendedor_telefono"
+                      placeholder="+58 412 0000000" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+
+                <div>
+                  <label for="vendedor_correo_pieza" class="block text-xs font-medium text-slate-200 mb-1.5">Correo
+                    Electrónico</label>
+                  <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                    <input type="email" id="vendedor_correo_pieza" name="vendedor_correo"
+                      placeholder="correo@ejemplo.com" required
+                      class="w-full bg-slate-900/60 border border-slate-700/80 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 backdrop-blur-sm transition-colors">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bloque: Carga de Fotografías -->
+          <div class="space-y-4 border-t border-slate-700/50 pt-6">
+            <div class="flex items-center justify-between">
+              <h2 class="text-amber-400 text-sm font-bold tracking-wide uppercase flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-4 text-amber-400">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+                Fotografías de la Pieza o Repuesto
+              </h2>
+              <span class="text-[11px] text-slate-300">Mínimo 1 y Máximo 4 imágenes</span>
+            </div>
+
+            <div
+              class="border border-dashed border-slate-600 hover:border-amber-400 rounded-2xl p-6 bg-slate-900/50 backdrop-blur-sm text-center flex flex-col items-center justify-center transition-colors min-h-[160px]">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-7 h-7 text-amber-400 mb-2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15a2.25 2.25 0 0 0 2.25-2.25V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+              </svg>
+              <h3 class="text-xs font-bold text-white mb-0.5">Fotos del Repuesto / Componente</h3>
+              <p class="text-[10px] text-slate-300 mb-4">Formatos JPG, PNG, WEBP (Max 5MB cada una)</p>
+
+              <div class="flex flex-col sm:flex-row items-center gap-3">
+                <label
+                  class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl cursor-pointer transition-all hover:scale-105 shadow-md inline-block">
+                  Elegir archivos
+                  <input type="file" id="fotos-pieza-input" name="fotos" multiple accept="image/*" class="hidden"
+                    onchange="handlePiezaFiles(this)">
+                </label>
+
+                <div class="flex items-center gap-2">
+                  <span id="pieza-fotos-count" class="text-xs text-slate-300 font-medium">Ningún archivo
+                    seleccionado</span>
+                  <span id="pieza-fotos-badge"
+                    class="hidden px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">0
+                    / 4</span>
+                </div>
+              </div>
+
+              <div id="pieza-fotos-preview" class="flex flex-wrap gap-2.5 justify-center mt-4 hidden"></div>
+            </div>
+          </div>
+
+          <!-- Botón de Envío -->
+          <div class="pt-4 text-center flex justify-center">
+            <button type="submit"
+              class="px-10 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-xl transition-all hover:scale-[1.02] flex items-center gap-2 cursor-pointer">
+              <span>Enviar solicitud de publicación</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-4 text-slate-950">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.24a4.5 4.5 0 0 0-1.04 1.83l-.128.384a.75.75 0 0 0 .914.914l.384-.128a4.5 4.5 0 0 0 1.83-1.04m2.24-2.24 2.24-2.24" />
+              </svg>
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- PANEL LATERAL TIPO DRAWER (100vh de altura, 25% a 30% de ancho con scroll interno fluido) -->
+      <div id="detail-drawer-container" class="fixed inset-0 z-50 pointer-events-none" role="dialog" aria-modal="true"
+        aria-labelledby="drawer-title">
+        <!-- Backdrop Blur Oscuro -->
+        <div id="detail-drawer-backdrop" onclick="closeDetailDrawer()"
+          class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-in-out pointer-events-none">
+        </div>
+
+        <!-- Panel Lateral Plegado a la Derecha -->
+        <aside id="detail-drawer"
+          class="fixed top-0 right-0 bottom-0 h-screen w-full sm:w-[380px] md:w-[30%] lg:w-[28%] min-w-[320px] max-w-lg bg-[#0b1120] border-l border-slate-800 shadow-2xl flex flex-col pointer-events-auto transform translate-x-full transition-transform duration-300 ease-in-out z-10">
+
+          <!-- Encabezado Fijo del Drawer -->
+          <div
+            class="px-5 py-4 border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-md flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-2 truncate pr-2">
+              <span id="drawer-category-badge"
+                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40 flex-shrink-0"></span>
+              <h3 id="drawer-title" class="text-sm sm:text-base font-extrabold text-white tracking-tight truncate"></h3>
+            </div>
+            <button type="button" onclick="closeDetailDrawer()"
+              class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer flex-shrink-0"
+              aria-label="Cerrar panel">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Contenido del Drawer con Scroll Fluido -->
+          <div class="flex-1 overflow-y-auto p-5 space-y-5 text-slate-200 scrollbar-thin">
+
+            <!-- Sección de Galería Fotográfica (Oculta si la pieza no tiene imágenes) -->
+            <div id="drawer-gallery-section" class="space-y-2.5">
+              <div
+                class="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800 aspect-video flex items-center justify-center shadow-inner">
+                <img id="drawer-main-img" src="" alt="Vista previa del artículo"
+                  class="w-full h-full object-cover transition-all duration-300">
+                <span id="drawer-img-tag"
+                  class="absolute bottom-2.5 left-2.5 px-2 py-0.5 bg-slate-950/85 text-amber-400 text-[10px] font-bold rounded-lg backdrop-blur-md border border-slate-800"></span>
+              </div>
+
+              <!-- Pestañas de Galería (Exterior / Interior) -->
+              <div id="drawer-gallery-tabs" class="flex gap-2 empty:hidden"></div>
+
+              <!-- Miniaturas -->
+              <div id="drawer-thumbnails" class="flex gap-2 overflow-x-auto pb-1.5 scrollbar-thin"></div>
+            </div>
+
+            <!-- Especificaciones Técnicas -->
+            <div>
+              <h4
+                class="text-xs uppercase tracking-wider font-extrabold text-amber-400 mb-2.5 flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                  stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                </svg>
+                Especificaciones
+              </h4>
+              <div id="drawer-specs-grid" class="grid grid-cols-2 gap-2 text-xs"></div>
+            </div>
+
+            <!-- Descripción Detallada -->
+            <div id="drawer-desc-container" class="hidden">
+              <h4 class="text-xs uppercase tracking-wider font-extrabold text-slate-300 mb-1.5">Descripción</h4>
+              <p id="drawer-desc-text"
+                class="text-xs text-slate-300/90 leading-relaxed bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 whitespace-pre-line">
+              </p>
+            </div>
+
+            <!-- Reporte de Daños: DATO CONFIDENCIAL - no disponible en vista pública -->
+
+            <!-- Aviso Institucional de Privacidad de Log Books -->
+            <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3 flex items-start gap-2.5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+              <div class="text-[11px] text-slate-400 leading-relaxed">
+                <strong class="text-slate-200 block mb-0.5">Privacidad Técnica Certificada</strong>
+                Los libros de mantenimiento (Log Books) y bitácoras son confidenciales y se presentan en fase de
+                pre-compra o inspección física.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Pie Fijo del Drawer -->
+          <div
+            class="px-5 py-4 border-t border-slate-800/80 bg-slate-900/80 backdrop-blur-md flex items-center justify-between gap-3 flex-shrink-0">
+            <div>
+              <span class="text-[9px] uppercase tracking-widest text-slate-400 font-medium block">Precio</span>
+              <span id="drawer-price" class="text-base sm:text-lg font-extrabold text-amber-400"></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="closeDetailDrawer()"
+                class="px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors cursor-pointer">
+                Cerrar
+              </button>
+              <a id="drawer-whatsapp-btn" href="#" target="_blank"
+                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-amber-400 hover:bg-amber-300 text-slate-950 transition-all hover:scale-105 shadow-lg flex items-center gap-1.5 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                  stroke="currentColor" class="w-3.5 h-3.5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+                COMPRAR
+              </a>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+
+    </main>
+
+    <!-- Datos del Catálogo serializados de forma 100% segura mediante JSON block -->
+    <script type="application/json" id="catalog-data-raw">
+<%- JSON.stringify(typeof aircrafts !== 'undefined' ? aircrafts : []) %>
+    </script>
+
+    <script>
+      window.catalogData = {};
+      try {
+        const rawJsonEl = document.getElementById('catalog-data-raw');
+        if (rawJsonEl && rawJsonEl.textContent) {
+          const rawCatalog = JSON.parse(rawJsonEl.textContent);
+          rawCatalog.forEach(item => {
+            if (item && item.id) {
+              const key = (item.category || item.item_type) + '_' + item.id;
+              window.catalogData[key] = item;
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Error al inicializar catalogData:', err);
+      }
+    </script>
+
+    <!-- Scripts de Funcionalidad General -->
+    <script>
+      // 1. Alternar formularios con visibilidad exclusiva y scroll con compensación
+      function toggleForm(sectionId) {
+        const formSection = document.getElementById(sectionId);
+        const otherId = sectionId === 'form-section' ? 'form-section-pieza' : 'form-section';
+        const otherSection = document.getElementById(otherId);
+
+        if (otherSection) {
+          otherSection.classList.add('hidden');
+        }
+
+        if (formSection) {
+          if (formSection.classList.contains('hidden')) {
+            formSection.classList.remove('hidden');
+
+            setTimeout(() => {
+              const headerOffset = 95;
+              const elementPosition = formSection.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+              window.scrollTo({
+                top: Math.max(0, offsetPosition),
+                behavior: 'smooth'
+              });
+            }, 60);
+          } else {
+            formSection.classList.add('hidden');
+          }
+        }
+      }
+
+      // 2. Al enviar cualquier formulario, hacer scroll suave al inicio
+      document.getElementById('form-vender-aeronave')?.addEventListener('submit', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      document.getElementById('form-vender-pieza')?.addEventListener('submit', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // 3. Comprobar parámetro ?success=1 al cargar y volver arriba
+      window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === '1') {
+          const successToast = document.getElementById('success-toast');
+          if (successToast) {
+            successToast.classList.remove('hidden');
+          }
+          document.getElementById('form-section')?.classList.add('hidden');
+          document.getElementById('form-section-pieza')?.classList.add('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      });
+
+      // 4. Filtros de categoría y búsqueda
+      let currentCategory = 'all';
+
+      function setCategory(category) {
+        currentCategory = category;
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('bg-amber-500', 'text-slate-950', 'font-semibold', 'shadow-md');
+          btn.classList.add('text-slate-400', 'font-medium');
+        });
+
+        const activeBtn = document.getElementById(`tab-${category}`);
+        if (activeBtn) {
+          activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'font-semibold', 'shadow-md');
+          activeBtn.classList.remove('text-slate-400', 'font-medium');
+        }
+
+        applyFilters();
+      }
+
+      function applyFilters() {
+        const query = document.getElementById('search-input').value.toLowerCase().trim();
+        const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+        const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+        const cards = document.querySelectorAll('.card-item');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          const price = parseFloat(card.getAttribute('data-price') || '0');
+          const cardText = card.innerText.toLowerCase();
+
+          const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+          const matchesText = cardText.includes(query);
+          const matchesPrice = (price >= minPrice && price <= maxPrice);
+
+          if (matchesCategory && matchesText && matchesPrice) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        const emptyState = document.getElementById('empty-state');
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+
+      function resetFilters() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('min-price').value = '0';
+        document.getElementById('max-price').value = 'Infinity';
+        setCategory('all');
+      }
+
+      // 5. Desplegar/ocultar campos adjuntos según el selector SÍ/NO
+      function toggleFileField(containerId, value) {
+        const container = document.getElementById(containerId);
+        if (container) {
+          if (value === "1") {
+            container.classList.remove('hidden');
+          } else {
+            container.classList.add('hidden');
+          }
+        }
+      }
+
+      // 6. Actualizar contador simple de archivos para aeronave
+      function updateFileCount(input, targetId) {
+        const countSpan = document.getElementById(targetId);
+        if (input.files && input.files.length > 0) {
+          countSpan.textContent = input.files.length === 1
+            ? '1 archivo'
+            : `${input.files.length} archivos`;
+          countSpan.classList.remove('text-slate-400');
+          countSpan.classList.add('text-amber-400', 'font-semibold');
+        } else {
+          countSpan.textContent = 'Ningún archivo seleccionado';
+          countSpan.classList.remove('text-amber-400', 'font-semibold');
+          countSpan.classList.add('text-slate-400');
+        }
+      }
+
+      // 7. Contador visual en tiempo real de imágenes en formulario de piezas
+      function handlePiezaFiles(input) {
+        const countSpan = document.getElementById('pieza-fotos-count');
+        const badgeSpan = document.getElementById('pieza-fotos-badge');
+        const previewContainer = document.getElementById('pieza-fotos-preview');
+        previewContainer.innerHTML = '';
+
+        if (input.files && input.files.length > 0) {
+          const files = Array.from(input.files);
+          const count = files.length;
+
+          countSpan.textContent = count === 1 ? '1 imagen seleccionada' : `${count} imágenes seleccionadas`;
+          countSpan.classList.remove('text-slate-400');
+          countSpan.classList.add('text-amber-400', 'font-bold');
+
+          badgeSpan.textContent = `${count} / 4`;
+          badgeSpan.classList.remove('hidden');
+
+          previewContainer.classList.remove('hidden');
+
+          files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'relative group w-14 h-14 rounded-lg overflow-hidden border border-amber-500/50 shadow-md bg-slate-900 flex-shrink-0';
+              itemDiv.innerHTML = `
+                <img src="${e.target.result}" alt="Preview ${index + 1}" class="w-full h-full object-cover">
+                <span class="absolute top-0.5 right-0.5 bg-slate-950/80 text-amber-400 text-[9px] font-bold px-1 rounded backdrop-blur-sm">#${index + 1}</span>
+              `;
+              previewContainer.appendChild(itemDiv);
+            };
+            reader.readAsDataURL(file);
+          });
+        } else {
+          countSpan.textContent = 'Ningún archivo seleccionado';
+          countSpan.classList.remove('text-amber-400', 'font-bold');
+          countSpan.classList.add('text-slate-400');
+          badgeSpan.classList.add('hidden');
+          previewContainer.classList.add('hidden');
+        }
+      }
+
+      // 8. Control del Panel Lateral Deslizante (Drawer)
+      function openDetailDrawer(key) {
+        const item = window.catalogData ? window.catalogData[key] : null;
+        if (!item) return;
+
+        const container = document.getElementById('detail-drawer-container');
+        const backdrop = document.getElementById('detail-drawer-backdrop');
+        const drawer = document.getElementById('detail-drawer');
+
+        const isPart = item.category === 'part';
+        const cleanPN = (item.part_number || item.codigo_publico || '').toString().replace(/^(pieza\s*p\/n\s*:?|repuesto\s*p\/n\s*:?|p\/n\s*:?|part\s*number\s*:?)\s*/i, '').trim();
+
+        // Encabezado del Drawer
+        document.getElementById('drawer-category-badge').textContent = isPart ? 'Repuestos & Turbinas' : 'Flota de Aeronaves';
+        document.getElementById('drawer-title').textContent = isPart ? ('Part Number: ' + cleanPN) : (item.model || item.codigo_publico);
+        document.getElementById('drawer-price').textContent = `$${Number(item.price).toLocaleString('en-US')} USD`;
+
+        // Botón WhatsApp
+        const phone = (item.vendedor_telefono || '584120000000').replace(/[^0-9]/g, '');
+        const waTitle = isPart ? ('Part Number: ' + cleanPN) : (item.model || item.codigo_publico);
+        const waText = encodeURIComponent(`Hola, me interesa comprar: ${waTitle} (Ref ID: ${item.id})`);
+        document.getElementById('drawer-whatsapp-btn').href = `https://wa.me/${phone}?text=${waText}`;
+
+        // Galería Interactiva
+        const gallerySection = document.getElementById('drawer-gallery-section');
+        const mainImg = document.getElementById('drawer-main-img');
+        const imgTag = document.getElementById('drawer-img-tag');
+        const thumbsContainer = document.getElementById('drawer-thumbnails');
+        const tabsContainer = document.getElementById('drawer-gallery-tabs');
+
+        thumbsContainer.innerHTML = '';
+        tabsContainer.innerHTML = '';
+
+        const images = (item.imagenes && item.imagenes.length > 0)
+          ? item.imagenes.filter(src => src && !src.includes('card_parts.jpg') && !src.includes('card_sales.jpg'))
+          : (item.image_url && !item.image_url.includes('card_parts.jpg') && !item.image_url.includes('card_sales.jpg') ? [item.image_url] : []);
+
+        if (isPart && images.length === 0) {
+          // Ocultar sección de fotos si la pieza no tiene imágenes
+          gallerySection.classList.add('hidden');
+        } else {
+          gallerySection.classList.remove('hidden');
+          const displayImgs = images.length > 0 ? images : [item.image_url || '/img/card_sales.jpg'];
+          const interiorImgs = item.fotos_interior || [];
+          const exteriorImgs = item.fotos_exterior || [];
+
+          mainImg.src = displayImgs[0];
+          imgTag.textContent = isPart ? 'Pieza Certificada' : (exteriorImgs.includes(displayImgs[0]) ? 'Exterior' : (interiorImgs.includes(displayImgs[0]) ? 'Interior' : 'Vista General'));
+
+          function renderThumbs(imgList, tagLabel) {
+            thumbsContainer.innerHTML = '';
+            if (!imgList || imgList.length === 0) return;
+            imgList.forEach((src, idx) => {
+              const thumb = document.createElement('button');
+              thumb.type = 'button';
+              thumb.className = `flex-shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${idx === 0 ? 'border-amber-400 scale-105' : 'border-slate-800 opacity-70 hover:opacity-100'}`;
+              thumb.innerHTML = `<img src="${src}" class="w-full h-full object-cover" onerror="this.src='/img/card_sales.jpg'">`;
+              thumb.onclick = () => {
+                mainImg.src = src;
+                imgTag.textContent = tagLabel || 'Foto';
+                thumbsContainer.querySelectorAll('button').forEach(b => {
+                  b.className = 'flex-shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 border-slate-800 opacity-70 hover:opacity-100 transition-all cursor-pointer';
+                });
+                thumb.className = 'flex-shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 border-amber-400 scale-105 transition-all cursor-pointer';
+              };
+              thumbsContainer.appendChild(thumb);
+            });
+          }
+
+          if (!isPart && (interiorImgs.length > 0 || exteriorImgs.length > 0)) {
+            tabsContainer.innerHTML = `
+              <button type="button" id="drawer-tab-all" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500 text-slate-950 transition-colors cursor-pointer">Todas (${displayImgs.length})</button>
+              ${exteriorImgs.length > 0 ? `<button type="button" id="drawer-tab-ext" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-amber-400 transition-colors cursor-pointer">Exterior (${exteriorImgs.length})</button>` : ''}
+              ${interiorImgs.length > 0 ? `<button type="button" id="drawer-tab-int" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-amber-400 transition-colors cursor-pointer">Interior (${interiorImgs.length})</button>` : ''}
+            `;
+
+            const switchTab = (tabId, list, label) => {
+              tabsContainer.querySelectorAll('button').forEach(b => {
+                b.className = 'px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-amber-400 transition-colors cursor-pointer';
+              });
+              document.getElementById(tabId).className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500 text-slate-950 transition-colors cursor-pointer';
+              if (list.length > 0) {
+                mainImg.src = list[0];
+                imgTag.textContent = label;
+              }
+              renderThumbs(list, label);
+            };
+
+            document.getElementById('drawer-tab-all').onclick = () => switchTab('drawer-tab-all', displayImgs, 'General');
+            if (document.getElementById('drawer-tab-ext')) {
+              document.getElementById('drawer-tab-ext').onclick = () => switchTab('drawer-tab-ext', exteriorImgs, 'Exterior');
+            }
+            if (document.getElementById('drawer-tab-int')) {
+              document.getElementById('drawer-tab-int').onclick = () => switchTab('drawer-tab-int', interiorImgs, 'Interior');
+            }
+
+            renderThumbs(displayImgs, 'General');
+          } else {
+            renderThumbs(displayImgs, isPart ? 'Pieza' : 'General');
+          }
+        }
+
+        // Especificaciones
+        const specsGrid = document.getElementById('drawer-specs-grid');
+        specsGrid.innerHTML = '';
+
+        const addSpec = (label, val, icon = '', isHighlight = false) => {
+          const el = document.createElement('div');
+          if (isHighlight) {
+            el.className = 'col-span-2 bg-gradient-to-r from-amber-500/20 via-slate-900 to-slate-900/90 border-2 border-amber-400/80 rounded-xl p-3 flex flex-col justify-center shadow-lg';
+            el.innerHTML = `
+              <span class="text-[10px] uppercase tracking-wider text-amber-300 font-extrabold flex items-center gap-1.5">${icon} ${label}</span>
+              <span class="text-sm font-black text-amber-300 mt-1 truncate">${val || 'N/A'}</span>
+            `;
+          } else {
+            el.className = 'bg-slate-900/90 border border-slate-700/80 rounded-xl p-2.5 flex flex-col justify-center shadow-sm';
+            el.innerHTML = `
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1">${icon} ${label}</span>
+              <span class="text-xs font-bold text-white mt-0.5 truncate">${val || 'N/A'}</span>
+            `;
+          }
+          specsGrid.appendChild(el);
+        };
+
+        if (isPart) {
+          addSpec('Part Number', cleanPN, '🏭');
+          addSpec('Disponibilidad', item.estado || 'Disponible', '⚡');
+          addSpec('Trazabilidad', 'Garantizada', '🛡️');
+          addSpec('Estado', item.estado || 'En Venta', '📦');
+        } else {
+          addSpec('Horas Totales', item.hours ? `${item.hours} hrs` : (item.horas_totales ? `${item.horas_totales} hrs` : 'N/A'), '⏱️', true);
+          addSpec('Año', item.year, '📅');
+          addSpec('Horas Motores', item.horas_motores ? `${item.horas_motores} hrs` : 'N/A', '⚙️');
+          addSpec('Horas Turbinas / APU', item.horas_turbinas ? `${item.horas_turbinas} hrs` : 'N/A', '🌀');
+          addSpec('Ubicación', item.ubicacion || 'Internacional', '📍');
+          addSpec('Estado', item.estado || 'En Venta', '⚡');
+        }
+
+        // Descripción
+        const descContainer = document.getElementById('drawer-desc-container');
+        const descText = document.getElementById('drawer-desc-text');
+        if (item.descripcion && item.descripcion.trim()) {
+          descText.textContent = item.descripcion;
+          descContainer.classList.remove('hidden');
+        } else {
+          descContainer.classList.add('hidden');
+        }
+
+        // Reporte de Daños: dato privado/confidencial — removido completamente del catálogo público.
+
+        // Abrir Drawer deslizante lateral
+        container.classList.remove('pointer-events-none');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100', 'pointer-events-auto');
+        drawer.classList.remove('translate-x-full');
+        drawer.classList.add('translate-x-0');
+        document.body.classList.add('overflow-hidden');
+      }
+
+      function closeDetailDrawer() {
+        const container = document.getElementById('detail-drawer-container');
+        const backdrop = document.getElementById('detail-drawer-backdrop');
+        const drawer = document.getElementById('detail-drawer');
+
+        if (!drawer) return;
+
+        drawer.classList.remove('translate-x-0');
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+
+        setTimeout(() => {
+          container.classList.add('pointer-events-none');
+          document.body.classList.remove('overflow-hidden');
+        }, 300);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDetailDrawer();
+      });
+    </script>
+
+    <!-- Inclusión de Footer -->
+    <%- include('partials/footer') %>
+
+</body>
+
+</html>

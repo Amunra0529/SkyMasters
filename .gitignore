@@ -19,3 +19,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Ignorar imágenes subidas localmente de prueba
+public/img/ITEM-*
+public/img/*-pieza-*
