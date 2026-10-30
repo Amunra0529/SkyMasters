@@ -10,8 +10,8 @@
  */
 
 const Candidate = require('../models/Candidate');
-const multer    = require('multer');
-const path      = require('path');
+const multer = require('multer');
+const path = require('path');
 
 // Configuracion Multer para subida de CVs en PDF (max 5 MB)
 const cvStorage = multer.diskStorage({
@@ -37,9 +37,47 @@ const cvUpload = multer({
 const showPublicCareers = async (req, res, next) => {
   try {
     const vacancies = [
-      { id: 1, title: 'Capitan / Primer Oficial - Flota Jet Ejecutivo', department: 'Operaciones de Vuelo', location: 'Base Principal' },
-      { id: 2, title: 'Tecnico de Mantenimiento Aeronautico (TMA)', department: 'Mantenimiento & Hangares', location: 'Hangar Central' },
-      { id: 3, title: 'Tripulante de Cabina Corporativo / VIP', department: 'Servicio a Bordo', location: 'Base Principal' }
+      {
+        id: 1,
+        title: 'Piloto al Mando / Capitán de Vuelo',
+        position_name: 'Piloto / Capitán',
+        department: 'Operaciones de Vuelo & Flota Ejecutiva',
+        location: 'Base Principal / Rutas Internacionales',
+        type: 'Tiempo Completo',
+        image: '/img/Capitan de vuelo.jpg',
+        image_position: 'center 15%',
+        category: 'Operaciones de Vuelo',
+        badge: 'Flota Pesada VIP',
+        description: 'Comanda reactores ejecutivos de largo alcance en misiones corporativas internacionales bajo los más altos estándares de seguridad.',
+        highlights: ['Licencia ATP / ICAO', 'Simulador CAE 100% Cubierto', 'Roster 15/15']
+      },
+      {
+        id: 2,
+        title: 'Tripulante de Cabina de Pasajeros (TCP / VIP)',
+        position_name: 'Tripulante de Cabina',
+        department: 'Servicio a Bordo & Seguridad de Cabina',
+        location: 'Base Principal / Red de Rutas',
+        type: 'Tiempo Completo',
+        image: '/img/tripulante de cabina.jpg',
+        category: 'Hospitalidad VIP',
+        badge: 'Servicio de Lujo',
+        description: 'Brinda una experiencia de servicio de primera clase, protocolo corporativo y máxima seguridad a nuestros pasajeros distinguidos en cabina.',
+        highlights: ['Inglés Fluido (C1)', 'Protocolo de Alta Gama', 'Seguro Médico Global']
+      },
+      {
+        id: 3,
+        title: 'Técnico en Mantenimiento Aeronáutico (TMA) / Mecánico',
+        position_name: 'Mecánico',
+        department: 'Mantenimiento, Hangares & Soporte Técnico',
+        location: 'Hangar Central / Base Técnica',
+        type: 'Tiempo Completo',
+        image: '/img/mecanico.jpg',
+        image_position: 'center top',
+        category: 'Ingeniería Aeronáutica',
+        badge: 'Mantenimiento Mayor',
+        description: 'Responsable de la inspección técnica, mantenimiento preventivo y certificación de aeronavegabilidad de reactores ejecutivos.',
+        highlights: ['Certificación FAA / INAC', 'Aviónica & Turbofanes', 'Capacitación Fabril']
+      }
     ];
     let successMessage = null;
     let errorMessage = null;
@@ -48,6 +86,9 @@ const showPublicCareers = async (req, res, next) => {
     }
     if (req.query.error === 'upload') {
       errorMessage = 'Ocurrió un error al subir el CV. Verifica que sea un PDF menor a 5MB.';
+    }
+    if (req.query.error === 'duplicate' && req.query.msg) {
+      errorMessage = decodeURIComponent(req.query.msg);
     }
     res.render('careers', { title: 'Bolsa de Trabajo y Carreras | SkyMaster', vacancies, successMessage, errorMessage });
   } catch (error) { next(error); }
@@ -64,10 +105,26 @@ const submitApplication = (req, res, next) => {
 
     try {
       const data = { ...req.body };
+      const { email, phone } = data;
+
+      // ── Validación: solo 1 postulación cada 24 horas por email o teléfono ──
+      const recent = await Candidate.checkRecentSubmission(email, phone);
+      if (recent) {
+        const submitted = new Date(recent.created_at);
+        const nextAllowed = new Date(submitted.getTime() + 24 * 60 * 60 * 1000);
+        const nowMs = Date.now();
+        const remainMs = nextAllowed.getTime() - nowMs;
+        const remainH = Math.ceil(remainMs / (1000 * 60 * 60));
+        const msg = encodeURIComponent(
+          `Ya existe una postulación reciente con ese correo o teléfono. Podrás volver a postular en aprox. ${remainH} hora${remainH !== 1 ? 's' : ''}.`
+        );
+        return res.redirect(`/careers?error=duplicate&msg=${msg}`);
+      }
+
       if (req.file) {
         data.resume_url = `/uploads/cv/${req.file.filename}`;
       }
-      
+
       await Candidate.create(data);
 
       res.redirect('/careers?success=true');
@@ -150,11 +207,11 @@ const viewCv = (req, res, next) => {
   try {
     const fileParam = req.query.file;
     if (!fileParam) return res.status(400).send('Archivo no especificado');
-    
+
     // Convertir la ruta web /uploads/cv/... a ruta absoluta del sistema de archivos
     const fileName = path.basename(fileParam);
     const filePath = path.join(__dirname, '../../public/uploads/cv', fileName);
-    
+
     res.sendFile(filePath, {
       headers: {
         'Content-Type': 'application/pdf',
