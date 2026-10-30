@@ -20,12 +20,14 @@
   "author": "SkyMaster Development Team",
   "license": "ISC",
   "dependencies": {
+    "@fontsource/montserrat": "^5.3.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "morgan": "^1.10.0",
+    "multer": "^2.4.0",
     "mysql2": "^3.9.7"
   },
   "devDependencies": {
